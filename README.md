@@ -2,7 +2,7 @@
 
 ## Partecipanti
 
-Longo
+Longhetto
 Orlich
 Tassara
 
