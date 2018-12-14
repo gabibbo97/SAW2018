@@ -1,0 +1,43 @@
+#
+# Avvio del server
+#   docker-compose up
+# Accedere ai servizi
+#   http://127.0.0.1:8080   Progetto
+#   http://127.0.0.1:8000   PHPMyAdmin
+#   http://127.0.0.1:8888   Validatore HTML
+#
+version: '3'
+services:
+  webserver:
+    image: php:apache
+    networks:
+      - database
+    ports:
+      - 127.0.0.1:8080:80
+    volumes:
+      - ./public_html:/var/www/html/:ro
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    networks:
+      - database
+    environment:
+      PMA_HOST: sqldb
+      PMA_PORT: 3306
+    ports:
+      - 127.0.0.1:8000:80
+  sqldb:
+    image: mariadb:latest
+    networks:
+      - database
+    environment:
+      MYSQL_ROOT_PASSWORD: saw
+      MYSQL_DATABASE: saw
+      MYSQL_USER: saw
+      MYSQL_PASSWORD: saw
+  validator:
+    image: validator/validator
+    command: ['java','-cp','/vnu.jar','nu.validator.servlet.Main','8888']
+    ports:
+      - 127.0.0.1:8888:8888
+networks:
+  database:

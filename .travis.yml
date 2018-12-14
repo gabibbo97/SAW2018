@@ -1,0 +1,54 @@
+---
+dist: xenial
+
+services:
+  - docker
+
+addons:
+  apt:
+    packages:
+      - wget
+      - lftp
+
+jobs:
+  include:
+    - stage: Lint
+      before_script:
+      # Prepara i container per il lancio
+        - docker pull php:latest
+      script:
+      # Usa il linter di PHP
+        - docker run --rm -it -v $(pwd)/public_html:/saw --entrypoint find php:latest /saw -name '*.php' -type f -exec php -l -f {} \;
+    - stage: Lint
+      before_script:
+      # Prepara i container per il lancio
+        - docker pull phpstan/phpstan
+      script:
+      # Analizza staticamente il PHP
+        - docker run --rm -it -v $(pwd)/public_html:/saw phpstan/phpstan analyze --level=max /saw
+    - stage: Validate
+      before_script:
+      # Prepara i container per il lancio
+        - docker pull validator/validator
+      script:
+      # Valida staticamente i contenuti
+        - docker run --rm -it -v $(pwd)/public_html:/saw validator/validator java -jar /vnu.jar --skip-non-html --also-check-css --format text /saw
+    - stage: Validate
+      before_script:
+      # Prepara i container per il lancio
+        - docker pull validator/validator
+        - docker-compose pull
+      # Attiva il sito web
+        - docker-compose up --detach
+      # Attendi che sia online
+        - until wget -q --spider http://127.0.0.1:8080; do sleep 1; done
+      script:
+      # Ottieni una lista di tutte le pagine web e validale
+        - wget --spider --force-html --recursive --level=1024 http://127.0.0.1:8080 2>&1 | grep '^--' | awk '{ print $3 }' | sort | uniq | docker run --rm validator/validator java -cp /vnu.jar nu.validator.client.HttpClient --skip-non-html --also-check-css --format text -
+      after_script:
+      # Spegni il sito
+        - docker-compose down
+    - stage: Upload
+      script:
+      # Carica sul server
+        - lftp -e "mirror --continue --delete --recursion=always --reverse --verbose public_html public_html" -u ${USER},${PASS} sftp://${SERVER}
