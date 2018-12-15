@@ -4,6 +4,8 @@ dist: xenial
 services:
   - docker
 
+language: minimal
+
 addons:
   apt:
     packages:
@@ -42,9 +44,11 @@ jobs:
         - docker-compose up --detach
       # Attendi che sia online
         - until wget -q --spider http://127.0.0.1:8080; do sleep 1; done
+      # Scarica ogni singola pagina
+        - wget --recursive --level=4096 --convert-links --page-requisites --no-directories --directory-prefix=downloaded http://127.0.0.1:8080
       script:
-      # Ottieni una lista di tutte le pagine web e validale
-        - wget --spider --force-html --recursive --level=1024 http://127.0.0.1:8080 2>&1 | grep '^--' | awk '{ print $3 }' | sort | uniq | docker run --rm validator/validator java -cp /vnu.jar nu.validator.client.HttpClient --skip-non-html --also-check-css --format text -
+      # Valida le pagine scaricate
+        - docker run --rm -it -v $(pwd)/downloaded:/saw validator/validator java -jar /vnu.jar --skip-non-html --also-check-css --format text /saw
       after_script:
       # Spegni il sito
         - docker-compose down
@@ -52,3 +56,9 @@ jobs:
       script:
       # Carica sul server
         - lftp -e "mirror --continue --delete --recursion=always --reverse --verbose public_html public_html" -u ${USER},${PASS} sftp://${SERVER}
+
+notifications:
+  email:
+    - alessandro.orlich@live.it
+    - gabibbo97@gmail.com
+    - roberta.tassara.97@gmail.com
