@@ -28,6 +28,20 @@ jobs:
       script:
       # Analizza staticamente il PHP
         - docker run --rm -it -v $(pwd)/public_html:/saw phpstan/phpstan analyze --level=max /saw
+    - stage: Lint
+      before_script:
+      # Prepara i container per il lancio
+        - docker pull node:latest
+      # Lancia in background il container
+        - docker run --rm --detach --name node -v $(pwd)/.eslintrc.json:/eslintrc.json -v $(pwd)/public_html:/saw node:latest tail -f /dev/null
+      # Installa i tool nel container
+        - docker exec node npm install -g eslint
+      script:
+      # Analizza staticamente il JS
+        - docker exec node eslint --config /eslintrc.json /saw/**/*.js
+      after_script:
+      # Spegni il container
+        - docker rm --force node
     - stage: Validate
       before_script:
       # Prepara i container per il lancio

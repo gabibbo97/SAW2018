@@ -1,0 +1,27 @@
+{
+    "extends": "eslint:all",
+    "parserOptions": {
+        "ecmaVersion": 2019
+    },
+    "env": {
+        "browser": true
+    },
+    "rules" : {
+        "indent": ["error", 2],
+        "no-implicit-globals": "off",
+        "func-style": ["error","declaration"],
+        "no-unused-vars": ["error",{
+            "vars": "local"
+        }],
+        "prefer-destructuring": ["off"],
+        "one-var": ["off"],
+        "no-magic-numbers": ["error", { 
+            "ignoreArrayIndexes": true 
+        }],
+        "padded-blocks": ["error", {
+            "blocks": "always",
+            "classes": "always",
+            "switches": "never"
+        }]
+    }
+}
