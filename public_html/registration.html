@@ -6,265 +6,138 @@
   <!-- Compatibilit&aacute; con iPhone -->
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Registrazione</title>
-  
+
   <!-- Colore barra su Chrome mobile -->
   <meta name="theme-color" content="#ffa82e">
-  
+
   <meta name="author" content="Longo, Orlich, Tassara">
   <meta name="description" content="Pagina di registrazione">
   <!--<meta name="keywords" content="paperelle, gioco, compagnia, giallo, gomma">-->
-  
-  
+
+
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   <script async defer src="assets/js/header.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
-  <style>
-    #Registrazione_mobile {
-      position: absolute;
-      margin: auto;
-      top: 5%;
-      left: 5%;
-      right: 5%;
-      
-      color: #0a0606;
-      font-size: 20pt;
-      text-align: center;
-    }
-    #Registrazione {
-      position: absolute;
-      margin: auto;
-      top: 5%;
-      left: 30%;
-      right: 30%;
-      
-      color: #0a0606;
-      font-size: 20pt;
-      text-align: center;
-    }
-    fieldset {
-      padding: 20px;
-    }
-  </style>
 </head>
+
 <body>
-  <form id="Registrazione" class="is-hidden-touch">
-    <fieldset >
-      <legend>
-        Registrazione
-      </legend>
-      <div class="field">
-        <label class="label">Name</label>
-        <div class="control">
-          <input class="input" type="text" placeholder="Nome">
+  <section class="section is-large">
+    <div class="container">
+      <div class="level">
+        <div class="level-item">
+          <h1 class="title">Registrazione</h1>
         </div>
       </div>
-      <div class="field">
-        <label class="label">Cognome</label>
-        <div class="control">
-          <input class="input" type="text" placeholder="Cognome">
-        </div>
-      </div>
-      <div class="field">
-        <label class="label">Username</label>
-        <div class="control has-icons-left has-icons-right">
-          <!--input is-correct quando è disponibile il bordo diventa verde
-            input is-warning giallo
-            input is-danger rosso
-            input is-info blu-->
-            <input class="input" type="text" placeholder="Username">
-            <span class="icon is-small is-left">
-              <i class="fas fa-user"></i>
-            </span>
-            <span class="icon is-small is-right">
-              <i class="fas fa-check"></i>
-            </span>
-          </div>
-          
-        </div>
-        <div class="field">
-          <label class="label">Email</label>
-          <div class="control has-icons-left has-icons-right">
-            <input class="input" type="email" placeholder="Email">
-            <span class="icon is-small is-left">
-              <i class="fas fa-envelope"></i>
-            </span>
-            <span class="icon is-small is-right">
-              <i class="fas fa-exclamation-triangle"></i>
-            </span>
-          </div>
-        </div>
-        
-        <div class="field">
-          <label class="label">Regione</label>
-          <div class="control">
-            <div class="select">
-              <select name="Regioni">
-                <option disabled selected>Seleziona regione</option>
-                <option >Abruzzo</option>
-                <option>Basilicata</option>
-                <option>Calabria</option>
-                <option>Campania</option>
-                <option>Emilia-Romagna</option>
-                <option>Friuli-Venezia Giulia</option>
-                <option>Lazio</option>
-                <option>Liguria</option>
-                <option>Lombardia</option>
-                <option>Marche</option>
-                <option>Molisa</option>
-                <option>Piemonte</option>
-                <option>Puglia</option>
-                <option>Sardegna</option>
-                <option>Sicilia</option>
-                <option>Toscana</option>
-                <option>Trentino-Alto Adige</option>
-                <option>Umbria</option>
-                <option>Valle d'Aosta</option>
-                <option>Veneto</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        
-        <div class="field">
-          <div class="control">
-            <label class="checkbox">
-              <input type="checkbox">
-                Acconsento ai <a href="#">termini e condizioni</a>
-            </label>
-          </div>
-        </div>
-        
-        <div class="field">
-          <div class="control">
-            <label class="checkbox">
-              <input type="checkbox">
-              Iscrivimi alla newsletter
-            </label>
-          </div>
-        </div>
-        <div class="level">
-          <div class="level-item has-text-centered">
-            <div class="field is-grouped">
+      <div class="level">
+        <div class="level-item">
+          <form id="Registrazione">
+            <div class="field">
+              <label class="label">Name</label>
               <div class="control">
-                <button class="button is-link">Registrati</button>
+                <input class="input" type="text" placeholder="Nome">
               </div>
+            </div>
+            <div class="field">
+              <label class="label">Cognome</label>
               <div class="control">
-                <button class="button is-text">Annulla</button>
+                <input class="input" type="text" placeholder="Cognome">
               </div>
             </div>
-          </div>
-        </div>
-      </fieldset>
-    </form>
-    <form id="Registrazione_mobile" class="is-hidden-desktop">
-      <fieldset >
-        <legend>
-          Registrazione
-        </legend>
-        <div class="field">
-          <label class="label">Nome</label>
-          <div class="control">
-            <input class="input" type="text" placeholder="Nome">
-          </div>
-        </div>
-        <div class="field">
-          <label class="label">Cognome</label>
-          <div class="control">
-            <input class="input" type="text" placeholder="Cognome">
-          </div>
-        </div>
-        <div class="field">
-          <label class="label">Username</label>
-          <div class="control has-icons-left has-icons-right">
-            <!--input is-correct quando è disponibile il bordo diventa verde
-              input is-warning giallo
-              input is-danger rosso
-              input is-info blu-->
-              <input class="input" type="text" placeholder="Username">
-              <span class="icon is-small is-left">
-                <i class="fas fa-user"></i>
-              </span>
-              <span class="icon is-small is-right">
-                <i class="fas fa-check"></i>
-              </span>
+            <div class="field">
+              <label class="label">Username</label>
+              <div class="control has-icons-left has-icons-right">
+                <!--input is-correct quando è disponibile il bordo diventa verde
+                  input is-warning giallo
+                  input is-danger rosso
+                  input is-info blu-->
+                <input class="input" type="text" placeholder="Username">
+                <span class="icon is-small is-left">
+                  <i class="fas fa-user"></i>
+                </span>
+                <span class="icon is-small is-right">
+                  <i class="fas fa-check"></i>
+                </span>
+              </div>
+
             </div>
-            
-          </div>
-          <div class="field">
-            <label class="label">Email</label>
-            <div class="control has-icons-left has-icons-right">
-              <input class="input" type="email" placeholder="Email">
-              <span class="icon is-small is-left">
-                <i class="fas fa-envelope"></i>
-              </span>
-              <span class="icon is-small is-right">
-                <i class="fas fa-exclamation-triangle"></i>
-              </span>
-            </div>
-          </div>
-          
-          <div class="field">
-            <label class="label">Regione</label>
-            <div class="control">
-              <div class="select">
-                <select name="Regioni">
-                  <option disabled selected>Seleziona regione</option>
-                  <option >Abruzzo</option>
-                  <option>Basilicata</option>
-                  <option>Calabria</option>
-                  <option>Campania</option>
-                  <option>Emilia-Romagna</option>
-                  <option>Friuli-Venezia Giulia</option>
-                  <option>Lazio</option>
-                  <option>Liguria</option>
-                  <option>Lombardia</option>
-                  <option>Marche</option>
-                  <option>Molisa</option>
-                  <option>Piemonte</option>
-                  <option>Puglia</option>
-                  <option>Sardegna</option>
-                  <option>Sicilia</option>
-                  <option>Toscana</option>
-                  <option>Trentino-Alto Adige</option>
-                  <option>Umbria</option>
-                  <option>Valle d'Aosta</option>
-                  <option>Veneto</option>
-                </select>
+            <div class="field">
+              <label class="label">Email</label>
+              <div class="control has-icons-left has-icons-right">
+                <input class="input" type="email" placeholder="Email">
+                <span class="icon is-small is-left">
+                  <i class="fas fa-envelope"></i>
+                </span>
+                <span class="icon is-small is-right">
+                  <i class="fas fa-exclamation-triangle"></i>
+                </span>
               </div>
             </div>
-          </div>
-          
-          <div class="field">
-            <div class="control">
-              <label class="checkbox">
-                <input type="checkbox">
-                Acconsento ai <a href="#">termini e condizioni</a>
-              </label>
-            </div>
-          </div>
-          
-          <div class="field">
-            <div class="control">
-              <label class="checkbox">
-                <input type="checkbox">
-                Iscrivimi alla newsletter
-              </label>
-            </div>
-          </div>
-          <div class="level">
-            <div class="level-item has-text-centered">
-              <div class="field is-grouped">
-                <div class="control">
-                  <button class="button is-link">Registrati</button>
-                </div>
-                <div class="control">
-                  <button class="button is-text">Annulla</button>
+
+            <div class="field">
+              <label class="label">Regione</label>
+              <div class="control">
+                <div class="select">
+                  <select name="Regioni">
+                    <option disabled selected>Seleziona regione</option>
+                    <option>Abruzzo</option>
+                    <option>Basilicata</option>
+                    <option>Calabria</option>
+                    <option>Campania</option>
+                    <option>Emilia-Romagna</option>
+                    <option>Friuli-Venezia Giulia</option>
+                    <option>Lazio</option>
+                    <option>Liguria</option>
+                    <option>Lombardia</option>
+                    <option>Marche</option>
+                    <option>Molisa</option>
+                    <option>Piemonte</option>
+                    <option>Puglia</option>
+                    <option>Sardegna</option>
+                    <option>Sicilia</option>
+                    <option>Toscana</option>
+                    <option>Trentino-Alto Adige</option>
+                    <option>Umbria</option>
+                    <option>Valle d'Aosta</option>
+                    <option>Veneto</option>
+                  </select>
                 </div>
               </div>
             </div>
-          </div>
-        </fieldset>
-      </form>
-    </body>
-    
-    </html>
+
+            <div class="field">
+              <div class="control">
+                <label class="checkbox">
+                  <input type="checkbox">
+                  Acconsento ai <a href="#">termini e condizioni</a>
+                </label>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="control">
+                <label class="checkbox">
+                  <input type="checkbox">
+                  Iscrivimi alla newsletter
+                </label>
+              </div>
+            </div>
+            <div class="level">
+              <div class="level-item has-text-centered">
+                <div class="field is-grouped">
+                  <div class="control">
+                    <button class="button is-link">Registrati</button>
+                  </div>
+                  <div class="control">
+                    <button class="button is-text">Annulla</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+
+</html>
