@@ -133,6 +133,9 @@
 
     var i = 1; // Il primo elemento é giá impostato nel CSS
     function changeBg() {
+      // Se l'immagine richiesta non é pronta ritenta tra 0.5s
+      if (i >= imageElements.length)
+        setTimeout(changeBg, 500);
       // Cambia sfondo al body
       document.body.style.backgroundImage = "url('" + imageElements[i].src + "')";
       // Avanza l'indice
