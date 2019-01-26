@@ -5,67 +5,159 @@
   <meta charset="UTF-8">
   <!-- Compatibilit&aacute; con iPhone -->
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Homepage</title>
+  <title>Benvenuti</title>
 
   <!-- Colore barra su Chrome mobile -->
   <meta name="theme-color" content="#ffa82e">
 
   <meta name="author" content="Longo, Orlich, Tassara">
-  <meta name="description" content="La nostra homepage">
+  <meta name="description" content="La nostra landing page">
   <meta name="keywords" content="paperelle, gioco, compagnia, giallo, gomma">
 
-  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-  <script async defer src="assets/js/header.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
   <style>
-    #slideshow {
-      animation: comparsa 20s linear infinite alternate;
-      background: transparent;
+    /* Pagina */
+    body,
+    html {
+      height: 100%;
+      margin: 0;
+      padding: 0;
     }
-    @keyframes comparsa {
-      0%   {
-        background-image: url("assets/images/slideshow/1.jpg");
-      }
-      33%   {
-        background-image: url("assets/images/slideshow/2.jpg");
-      }
-      66%   {
-        background-image: url("assets/images/slideshow/3.jpg");
-      }
-      100% {
-        background-image: url("assets/images/slideshow/4.jpg");
-      }
+
+    body {
+      /* Rappresenta con una colonna centrata e allineata orizzontalmente */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      /* Imposta immagine di sfondo iniziale */
+      background-image: url('assets/images/slideshow.finale/1.jpg');
+      /* Imposta immagine di sfondo centrata, senza ripetizioni e grande come la pagina */
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
     }
-    @keyframes sfuma {
-      0%   {
-        opacity: 0.5;
-      }
-      25%   {
-      }
-      75%   {
-      }
-      100% {
-        opacity: 1;
-      }
+    /* Elemento */
+    main {
+      font-family: 'sans-serif';
+      text-align: center;
+      color: white;
+      background-color: rgba(255, 187, 0, 0.671);
+
+      /* Bordi arrotondati */
+      border-radius: 1em;
+      padding: 3em;
+
+      /* Mantieni un minimo di spaziatura orizzontale */
+      margin: 0em 3em;
+    }
+
+    /* Titolo e sottotitolo */
+    main>h1,
+    main>h2 {
+      /* L'ombra rende il testo chiaro piú leggibile */
+      text-shadow: 0em 0em 0.3em rgb(63, 63, 63);
+    }
+
+    /* Titolo */
+    main>h1 {
+      font-size: 3em;
+    }
+
+    /* Sottotitolo */
+    main>h2 {
+      font-size: 1.75em;
+    }
+
+    /* Pulsante */
+    main>a {
+      /* Rimuovi la colorazione da link */
+      text-transform: uppercase;
+      text-decoration: none;
+      color: white;
+
+      font-size: 3em;
+
+      border-radius: 1em;
+
+      background-color: rgba(255, 187, 0, 0.842);
+
+      /* Spaziatura del pulsante */
+      margin: 0.1em;
+      padding: 0.5em;
+
+      /* Evita che venga visualizzato in linea */
+      display: block;
+
+      /* Transizione del colore quando si passa con il mouse */
+      transition: background-color 0.8s, text-shadow 0.8s;
+    }
+
+    main>a:hover {
+      background-color: rgb(255, 238, 0);
+      /* L'ombra rende il testo chiaro piú leggibile */
+      text-shadow: 0em 0em 0.5em rgb(63, 63, 63);
     }
   </style>
+  <script>
+    // Intervallo tra le immagini
+    const interval = 5000;
+    // Lista delle immagini
+    const images = ['1.jpg', '2.jpg', '3.jpg', '4.jpg'];
+
+    // Creo gli elementi image in modo che il browser precarichi le immagini
+    let imageElements = [];
+    function preload(imageIndex) {
+      // Esci anticipatamente se l'indice é oltre il massimo
+      if (imageIndex >= images.length)
+        return;
+      // Crea un nuovo elemento <img>
+      let newImage = new Image();
+      /*
+       * Precarica l'immagine dopo quando hai finito di caricare quella prima
+       * In questo modo le immagini vengono caricate
+       * Nell'ordine in cui sono nell'array e non in parallelo
+       * Su connessioni lente potrebbe succedere che cercare di scaricare tutto insieme
+       * Provochi un blocco
+       */
+      newImage.onload = function() {
+        preload(imageIndex + 1);
+      }
+      // Imposta la nuova immagine
+      newImage.src = "assets/images/slideshow.finale/" + images[imageIndex];
+      // Aggiungi all'array delle immagini pronte
+      imageElements.push(newImage);
+    }
+    // Precarica la prima immagine
+    preload(0);
+
+    var i = 1; // Il primo elemento é giá impostato
+    function changeBg() {
+      // Cambia sfondo al body
+      document.body.style.backgroundImage = "url('" + imageElements[i].src + "')";
+      // Avanza l'indice
+      if (imageIndex >= images.length)
+        i = 0;
+      else
+        i++;
+      // Rischedula la funzione
+      setTimeout(changeBg, 5000);
+    }
+
+    // Imposta la funzione all'avvio
+    document.addEventListener("DOMContentLoaded", function () { setTimeout(changeBg, 5000) });
+  </script>
 </head>
 
 <body>
   <main>
-    <section id="slideshow" class="hero is-success is-fullheight">
-      <div class="hero-body">
-        <div class="container has-text-centered">
-          <h1 class="title is-size-1">
-            Le mille pi&ugrave; uno paperelle
-          </h1>
-          <h2 class="subtitle">
-            Leader universali nel commercio di pennuti in vinile
-          </h2>
-          <a href="index.html" class="button is-large">Scopri</a>
-        </div>
-      </div>
-    </section>
+    <h1 class="title is-size-1">
+      Le mille pi&ugrave; uno paperelle
+    </h1>
+    <h2 class="subtitle">
+      Leader universali nel commercio di pennuti in vinile
+    </h2>
+    <a href="index.html">Scopri</a>
   </main>
 </body>
 
