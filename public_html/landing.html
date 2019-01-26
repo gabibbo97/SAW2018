@@ -100,7 +100,7 @@
     }
   </style>
   <script>
-    // Intervallo tra le immagini
+    // Intervallo tra le immagini in millisecondi
     const interval = 5000;
     // Lista delle immagini
     const images = ['1.jpg', '2.jpg', '3.jpg', '4.jpg'];
@@ -114,7 +114,7 @@
       // Crea un nuovo elemento <img>
       let newImage = new Image();
       /*
-       * Precarica l'immagine dopo quando hai finito di caricare quella prima
+       * Precarica l'immagine dopo solo alla fine del caricamento della precedente
        * In questo modo le immagini vengono caricate
        * Nell'ordine in cui sono nell'array e non in parallelo
        * Su connessioni lente potrebbe succedere che cercare di scaricare tutto insieme
@@ -131,15 +131,14 @@
     // Precarica la prima immagine
     preload(0);
 
-    var i = 1; // Il primo elemento é giá impostato
+    var i = 1; // Il primo elemento é giá impostato nel CSS
     function changeBg() {
       // Cambia sfondo al body
       document.body.style.backgroundImage = "url('" + imageElements[i].src + "')";
       // Avanza l'indice
-      if (imageIndex >= images.length)
+      i++;
+      if (i >= imageElements.length)
         i = 0;
-      else
-        i++;
       // Rischedula la funzione
       setTimeout(changeBg, 5000);
     }
