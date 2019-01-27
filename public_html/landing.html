@@ -135,7 +135,7 @@
     function changeBg() {
       // Se l'immagine richiesta non é pronta ritenta tra 0.5s
       if (i >= imageElements.length)
-        setTimeout(changeBg, 500);
+        setTimeout(changeBg, interval * 0.1);
       // Cambia sfondo al body
       document.body.style.backgroundImage = "url('" + imageElements[i].src + "')";
       // Avanza l'indice
@@ -143,11 +143,11 @@
       if (i >= imageElements.length)
         i = 0;
       // Rischedula la funzione
-      setTimeout(changeBg, 5000);
+      setTimeout(changeBg, interval);
     }
 
     // Imposta la funzione all'avvio
-    document.addEventListener("DOMContentLoaded", function () { setTimeout(changeBg, 5000) });
+    document.addEventListener("DOMContentLoaded", function () { setTimeout(changeBg, interval); });
   </script>
 </head>
 
