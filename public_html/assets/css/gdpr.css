@@ -1,0 +1,35 @@
+#GDPR {
+    display: none;
+
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #000000dd;
+
+    /* Rappresenta con una colonna centrata e allineata orizzontalmente */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    font-family: 'sans-serif';
+}
+#GDPR > form {
+    background-color: #ffffffee;
+    border-radius: 1em;
+    padding: 1em;
+    color: black;
+    margin: 0em 1.5em;
+    max-width: 40em;
+    font-size: 1.4em;
+    text-align: center;
+}
+#GDPR > form > button {
+    display: block;
+    color: white;
+    border-radius: 0.7em;
+    padding: 0.1em 1em;
+    background-color: rgb(75, 207, 251);
+    font-size: 1.2em;
+    width: 100%;
+    margin-bottom: 0.5em;
+}
