@@ -38,9 +38,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginMobile = document.getElementById("login-link-mobile");
 
   // Mostra nascondi la barra e cambia tutti i pulsanti associati
-  function toggleLoginBar() {
-  
-    if (loginBar.style.display == "none") {
+  function toggleLoginBar () {
+
+    if (loginBar.style.display === "none") {
 
       // Mostra la barra
       loginBar.style.display = "block";
