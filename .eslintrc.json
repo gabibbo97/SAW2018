@@ -10,6 +10,7 @@
         "indent": ["error", 2],
         "no-implicit-globals": "off",
         "func-style": ["error","declaration"],
+        "func-names": ["error", "as-needed"],
         "no-unused-vars": ["error",{
             "vars": "local"
         }],
@@ -22,6 +23,9 @@
             "blocks": "always",
             "classes": "always",
             "switches": "never"
-        }]
+        }],
+        "max-lines-per-function" : ["warn"],
+        "max-statements" : ["warn"],
+        "max-len" : ["warn"]
     }
 }
