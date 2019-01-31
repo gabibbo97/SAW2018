@@ -26,3 +26,46 @@ function headerOpenHamburgerMenu () {
   toggleActive(burger);
 
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  "use strict";
+  // Barra di login
+  const loginBar = document.getElementById("login-bar");
+
+  // Pulsanti accedi
+  const loginDesktop = document.getElementById("login-button-desktop");
+  const loginMobile = document.getElementById("login-link-mobile");
+
+  // Mostra nascondi la barra e cambia tutti i pulsanti associati
+  function toggleLoginBar() {
+  
+    if (loginBar.style.display == "none") {
+
+      // Mostra la barra
+      loginBar.style.display = "block";
+      // Cambia il pulsante desktop
+      loginDesktop.textContent = "Chiudi";
+      loginDesktop.classList.replace("is-light", "is-danger");
+      // Cambia il link mobile
+      loginMobile.children[1].textContent = "Chiudi";
+
+    } else {
+
+      // Nascondi la barra
+      loginBar.style.display = "none";
+      // Cambia il pulsante desktop
+      loginDesktop.textContent = "Accedi";
+      loginDesktop.classList.replace("is-danger", "is-light");
+      // Cambia il link mobile
+      loginMobile.children[1].textContent = "Accedi";
+
+    }
+
+  }
+
+  // Imposta per entrambi la stessa funzione
+  loginDesktop.onclick = toggleLoginBar;
+  loginMobile.onclick = toggleLoginBar;
+
+});

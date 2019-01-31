@@ -26,6 +26,10 @@
     .footer {
       padding: 3rem 1.5rem 3rem;
     }
+
+    #login-bar {
+      display: none;
+    }
   </style>
 </head>
 
@@ -87,7 +91,7 @@
             </span>
             <span>Registrati</span>
           </a>
-          <a class="navbar-item is-hidden-desktop">
+          <a id="login-link-mobile" class="navbar-item is-hidden-desktop">
             <span class="icon">
               <i class="fas fa-sign-in-alt"></i>
             </span>
@@ -104,7 +108,7 @@
               <a class="button is-link">
                 <strong>Registrati</strong>
               </a>
-              <a class="button is-light">
+              <a id="login-button-desktop" class="button is-light">
                 Accedi
               </a>
             </div>
@@ -112,6 +116,37 @@
         </div>
       </div>
     </nav>
+    <section id="login-bar" class="hero is-primary">
+      <div class="hero-body">
+        <div class="container">
+          <form>
+            <div class="field is-horizontal">
+              <div class="field-body">
+                <div class="field">
+                  <p class="control is-expanded has-icons-left">
+                    <input class="input" type="text" placeholder="Username">
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-user"></i>
+                    </span>
+                  </p>
+                </div>
+                <div class="field">
+                  <p class="control has-icons-left">
+                    <input class="input" type="password" placeholder="Password">
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-lock"></i>
+                    </span>
+                  </p>
+                </div>
+                <div class="control">
+                  <button class="button is-fullwidth">Submit</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
   </header>
   <main class="section">
     <section class="box hero is-warning is-bold">
