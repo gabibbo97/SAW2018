@@ -31,11 +31,11 @@ function headerOpenHamburgerMenu () {
 function headerOpenLoginBar () {
 
   "use strict";
-    
+
   // Pulsanti accedi
   const loginDesktop = document.getElementById("login-button-desktop");
   const loginMobile = document.getElementById("login-link-mobile");
-  
+
   // Barra di login
   const loginBar = document.getElementById("login-bar");
 

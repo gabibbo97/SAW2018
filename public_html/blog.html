@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <!-- Compatibilit&aacute; con iPhone -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Homepage</title>
+
+  <!-- Colore barra su Chrome mobile -->
+  <meta name="theme-color" content="#ffa82e">
+
+  <meta name="author" content="Longo, Orlich, Tassara">
+  <meta name="description" content="La nostra homepage">
+  <meta name="keywords" content="paperelle, gioco, compagnia, giallo, gomma">
+
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  <script async defer src="assets/js/header.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+  <style>
+    .divider {
+      margin-left: 0.2em;
+      margin-right: 0.2em;
+    }
+
+    .footer {
+      padding: 3rem 1.5rem 3rem;
+    }
+
+    #login-bar {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav class="navbar is-primary">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+          <img src="assets/images/rubber-duck-icon-logo.png" width="112" height="28" alt="Il nostro logo">
+        </a>
+        <a class="navbar-burger" onclick="headerOpenHamburgerMenu()">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu">
+        <div class="navbar-start">
+          <a class="navbar-item">
+            <span class="icon">
+              <i class="fas fa-info"></i>
+            </span>
+            <span>Chi siamo</span>
+          </a>
+          <a class="navbar-item">
+            <span class="icon">
+              <i class="far fa-newspaper"></i>
+            </span>
+            <span>Blog</span>
+          </a>
+          <a class="navbar-item">
+            <span class="icon">
+              <i class="fas fa-book-open"></i>
+            </span>
+            <span>Catalogo</span>
+          </a>
+        </div>
+        <div class="navbar-end">
+          <!--
+            <div class="navbar-item is-hidden-touch">
+              <div class="level">
+                <div class="level-left">
+                  <div class="level-item">
+                    <span>Ciao, <a>Gianni</a></span>
+                    <span class="divider"></span>
+                  </div>
+                </div>
+                <div class="level-right">
+                  <figure class="level-item image is-32x32">
+                    <img class="is-rounded" src="assets/images/profile.jpeg">
+                  </figure>
+                </div>
+              </div>
+            </div>
+          -->
+          <a class="navbar-item is-hidden-desktop">
+            <span class="icon">
+              <i class="fas fa-user-plus"></i>
+            </span>
+            <span>Registrati</span>
+          </a>
+          <a id="login-link-mobile" class="navbar-item is-hidden-desktop" onclick="headerOpenLoginBar()">
+            <span class="icon">
+              <i class="fas fa-sign-in-alt"></i>
+            </span>
+            <span>Accedi</span>
+          </a>
+          <a class="navbar-item is-hidden-desktop">
+            <span class="icon">
+              <i class="fas fa-user"></i>
+            </span>
+            <span>Profilo</span>
+          </a>
+          <div class="buttons is-hidden-touch">
+            <div class="navbar-item">
+              <a class="button is-link">
+                <strong>Registrati</strong>
+              </a>
+              <a id="login-button-desktop" class="button is-light" onclick="headerOpenLoginBar()">
+                Accedi
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <section id="login-bar" class="hero is-primary">
+      <div class="hero-body">
+        <div class="container">
+          <form>
+            <div class="field is-horizontal">
+              <div class="field-body">
+                <div class="field">
+                  <p class="control is-expanded has-icons-left">
+                    <input class="input" type="text" placeholder="Username">
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-user"></i>
+                    </span>
+                  </p>
+                </div>
+                <div class="field">
+                  <p class="control has-icons-left">
+                    <input class="input" type="password" placeholder="Password">
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-lock"></i>
+                    </span>
+                  </p>
+                </div>
+                <div class="control">
+                  <button class="button is-fullwidth">Submit</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </header>
+  <main class="section">
+    <div class="box">
+      <h1 class="title">How to become an almost perfect duck</h1>
+      <h2 class="subtitle">A guide by Sergeya The Duckeya</h2>
+      <div class="content">
+        Nando
+      </div>
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="content">
+      <div class="columns is-vcentered">
+        <div class="column">
+          <figure class="image is-4by1">
+            <img src="assets/images/rubber-duck-icon-logo.png" alt="Il nostro logo">
+          </figure>
+        </div>
+        <div class="column">
+          <div>
+            <h4>Le mille pi&uacute; uno paperelle s.n.c.</h4>
+            <p>
+              <span class="icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </span>
+              Via Dodecaneso, 35, 16146 Genova (GE)
+            </p>
+            <p>
+              <span class="icon">
+                <i class="fas fa-phone"></i>
+              </span>
+              +39 010 353 2148
+            </p>
+            <p>
+              <span class="icon">
+                <i class="fas fa-at"></i>
+              </span>
+              paperelle@dibris.unige.it
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
