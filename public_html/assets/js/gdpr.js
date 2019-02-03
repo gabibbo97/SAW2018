@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     formElement2.textContent = "Gnam cookies";
 
     // Link ai termini e condizioni
-    const formElement3 = document.createElement("href");
+    const formElement3 = document.createElement("a");
     formElement3.textContent = "La ricetta dei nostri cookies";
     formElement3.href = "https://ricette.giallozafferano.it/Cookies.html";
 
