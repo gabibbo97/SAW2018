@@ -30,7 +30,81 @@
     #login-bar {
       display: none;
     }
+
+    #map { height: 40em; }
   </style>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+    crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js" integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+    crossorigin=""></script>
+
+  <script>
+    // Zibello
+    const centerLatitude = 45.021973;
+    const centerLongitude = 10.136450;
+
+    // Lista dei punti vendita
+    const places = [
+      {
+        "name": "Genova Fiumara",
+        "position": [44.412704, 8.881479]
+      },
+      {
+        "name": "Milano Fiera",
+        "position": [45.468781, 9.182521]
+      },
+      {
+        "name": "Torino Lingotto",
+        "position": [45.037581, 7.628243]
+      }
+    ];
+
+    var map = null;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Carica e mostra la mappa
+      map = L.map('map').setView([centerLatitude, centerLongitude], 8);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+
+      // Crea icona
+      var myIcon = L.icon({
+        iconUrl: 'assets/images/rubber-duck-icon.png',
+        iconSize: [40, 40],
+        iconAnchor: [20, 20],
+        popupAnchor: [25, -15]
+      });
+
+      // Aggiungi ogni punto vendita alla mappa
+      places.forEach(element => {
+        L.marker(element.position, { icon: myIcon })
+          .bindPopup(element.name)
+          .openPopup()
+          .addTo(map);
+      });
+    });
+
+    function centerMap(element) {
+      
+      // Ottieni il nome
+      let name = element.textContent;
+
+      // Trova l'oggetto place associato a quel nome
+      let place = places.find((e) => { return e.name == name });
+
+      // Sposta il centro della mappa
+      map.panTo(place.position);
+
+      // Zoom
+      setTimeout(() => {
+        map.setZoom(12, {
+          animate: true
+        });
+      }, 750)
+    }
+  </script>
 </head>
 
 <body>
@@ -148,36 +222,41 @@
       </div>
     </section>
   </header>
-  <main class="section">
-    <section class="box hero is-warning is-bold">
-      <div class="hero-body">
-        <div class="container">
-          <p class="title is-size-1">Le mille piú uno paperelle</p>
-          <p class="subtitle is-size-3">Scegli la tua preferita tra una ricca scelta di papere selezionate dai
-            migliori esperti del globo in pennuti in vinile.</p>
-        </div>
+  <main>
+    <section class="section">
+      <div class="container is-fluid">
+        <h1 class="title">Le mille più uno paperelle è dal 2018 il leader nel settore della vendita di papere di gomma.</h1>
+        <h2 class="subtitle" style="margin-bottom: 0.7em">Trova il punto vendita più vicino a te.</h2>
       </div>
-    </section>
-    <section class="box">
-      <div class="container">
-        <figure class="image is-16by9">
-          <img style="filter: drop-shadow(0.0em 0.0em 1.0em black);" alt="Tre papere si godono un bagno rilassante" src="assets/images/home.jpg">
-        </figure>
+      <div class="container is-fluid" id="map">
       </div>
-    </section>
-    <section class="box hero is-primary">
-      <div class="hero-body">
-        <div class="container">
-          <p class="title">Un prodotto pregiato</p>
-          <div class="content is-size-3">
-            <ul>
-              <li>Tutte le nostre papere sono certificate CE (Comunitá Europea).</li>
-              <li>Nessun materiale tossico o nocivo.</li>
-              <li>Severo controllo di qualitá (ciascuna papera viene sottoposta a un bagno di prova da uno dei
-                nostri addetti).</li>
-              <li>Tutti i nostri impiegati sono contenti di lavorare per noi.</li>
-            </ul>
-          </div>
+      <br>
+      <div class="container is-fluid">
+        <div class="columns">
+          <article class="column message is-info">
+            <div class="message-body">
+              <a onclick="centerMap(this)">Genova Fiumara</a>
+              <p>Via Fiumara 1, Genova</p>
+              <p>Tutti i giorni dalle 10 alle 21</p>
+            </div>
+          </article>
+          <article class="column message is-warning">
+            <div class="message-body">
+              <a onclick="centerMap(this)">Torino Lingotto</a>
+              <p>Via Paolo Gaidano 280, Torino</p>
+              <p>Lun-Ven: 9:30-12:30 / 15:00-18:00</p>
+              <p>Chiuso nei weekend</p>
+            </div>
+          </article>
+          <article class="column message is-danger">
+            <div class="message-body">
+              <a onclick="centerMap(this)">Milano Fiera</a>
+              <p>Foro Buonaparte 77, Milano</p>
+              <p>Lun-Ven: 9:30-12:30 / 15:00-18:00</p>
+              <p>Sab: 10:00-15:00</p>
+              <p>Domenica chiuso</p>
+            </div>
+          </article>
         </div>
       </div>
     </section>
