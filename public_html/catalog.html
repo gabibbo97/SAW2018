@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <!-- Compatibilit&aacute; con iPhone -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Homepage</title>
+
+  <!-- Colore barra su Chrome mobile -->
+  <meta name="theme-color" content="#ffa82e">
+
+  <meta name="author" content="Longo, Orlich, Tassara">
+  <meta name="description" content="La nostra homepage">
+  <meta name="keywords" content="paperelle, gioco, compagnia, giallo, gomma">
+
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  <script async defer src="assets/js/header.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/bulma-slider@2.0.0/dist/css/bulma-slider.min.css" />
+  <style>
+    .divider {
+      margin-left: 0.2em;
+      margin-right: 0.2em;
+    }
+
+    .footer {
+      padding: 3rem 1.5rem 3rem;
+    }
+
+    #login-bar {
+      display: none;
+    }
+  </style>
+  <script>
+
+    let categories = [];
+
+    function updateCategories(button) {
+
+      // Scambia le classi
+      button.classList.toggle("is-outlined");
+      button.classList.toggle("is-danger");
+
+      // Prendi la mia categoria
+      const category = button.textContent;
+
+      // Prendi tutte le card
+      const cards = Array.from(document.querySelectorAll(".columns > .card"));
+
+      if (Array.from(button.classList).includes("is-danger")) {
+        // Il pulsante é premuto
+        categories.push(category);
+      } else {
+        // Il pulsante non é premuto
+        categories = categories.filter((cat) => { return cat != category; });
+      }
+
+      if (categories.length === 0) {
+        // Mostra tutte le card
+        cards.forEach((card) => { card.style.display = 'block'; });
+      } else {
+        // Nascondi le card la cui categoria non é selezionata
+        cards.filter((card) => {
+          return ! categories.includes(card.children[1].children[1].textContent);
+        }).forEach((card) => {
+          card.style.display = 'none';
+        });
+
+        // Mostra le card la cui categoria é selezionata
+        cards.filter((card) => {
+          return categories.includes(card.children[1].children[1].textContent);
+        }).forEach((card) => {
+          card.style.display = 'block';
+        });
+      }
+
+    }
+
+    function updatePrice(newPrice) {
+
+      // Prendi l'elemento che mostra il prezzo
+      const priceTag = document.getElementsByTagName("output")[0];
+
+      // Imposta il prezzo al numero, con due cifre decimali
+      priceTag.textContent = `${Number(newPrice).toFixed(2)} euro`;
+
+      // Prendi tutte le card
+      const cards = Array.from(document.querySelectorAll(".columns > .card"));
+
+      // Seleziona tutte le card che vanno nascoste
+      cards.filter((card) => {
+        return Number(card            // Con il cast a `Number` converto tutto a numero
+          .children[1]                // Seleziona la parte sotto la foto
+          .children[2]                // Seleziona il paragrafo con il prezzo
+          .textContent.split(' ')[0]  // Separa il numero da 'euro'
+        ) > newPrice                  // Controllo il prezzo
+      }).forEach((card) => {
+        card.style.display = 'none';
+      });
+
+      // Seleziona tutte le card che vanno mostrate
+      cards.filter((card) => {
+        return Number(card            // Con il cast a `Number` converto tutto a numero
+          .children[1]                // Seleziona la parte sotto la foto
+          .children[2]                // Seleziona il paragrafo con il prezzo
+          .textContent.split(' ')[0]  // Separa il numero da 'euro'
+        ) <= newPrice                 // Controllo il prezzo
+      }).forEach((card) => {
+        card.style.display = 'block';
+      });
+
+    }
+
+    function searchByName(button) {
+
+      // Prendi la barra di ricerca
+      const searchBar = document.getElementById("searchBar");
+
+      // Se il testo della barra é troppo corto esci
+      if (searchBar.value.length < 1) {
+        window.alert("Inserisci il termine di ricerca");
+        return;
+      }
+
+      // Prendi tutte le card
+      const cards = Array.from(document.querySelectorAll(".columns > .card"));
+
+      // Cambia il colore al tasto
+      button.classList.toggle("is-danger");
+
+      if (button.textContent.trim() === "Cerca") {
+        // Effettua la ricerca
+        const searchTerm = searchBar.value.toLowerCase().trim(); // Prendi il termine di ricerca
+
+        cards.filter((card) => {
+          return card
+            .children[1]                // Seleziona la parte sotto la foto
+            .children[0]                // Seleziona il paragrafo con il nome
+            .textContent                // Seleziona il testo del nome
+            .toLowerCase()              // Minuscolo
+            .search(searchTerm) !== -1  // Confronta con il testo cercato
+        }).forEach((card) => {
+          card.style.display = 'block';
+        });
+        cards.filter((card) => {
+          return card
+            .children[1]               // Seleziona la parte sotto la foto
+            .children[0]               // Seleziona il paragrafo con il nome
+            .textContent               // Seleziona il testo del nome
+            .toLowerCase()             // Minuscolo
+            .search(searchTerm) === -1 // Confronta con il testo cercato
+        }).forEach((card) => {
+          card.style.display = 'none';
+        });
+
+        // Imposta la casella di ricerca su disabilitata
+        searchBar.disabled = true;
+
+        // Cambia il testo del pulsante
+        button.textContent = "Mostra tutte";
+      } else {
+        // Reimposta i risultati
+
+        // Mostra tutte le card
+        cards.forEach((card) => { card.style.display = 'block'; });
+
+        // Imposta la casella di ricerca su abilitata
+        searchBar.disabled = false;
+
+        // Resetta il contenuto della casella di ricerca
+        searchBar.textContent = '';
+
+        // Cambia il testo del pulsante
+        button.textContent = "Cerca";
+      }
+
+    }
+  </script>
+</head>
+
+<body>
+  <header>
+    <nav class="navbar is-primary">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="index.html">
+          <img src="assets/images/rubber-duck-icon-logo.png" width="112" height="28" alt="Il nostro logo">
+        </a>
+        <a class="navbar-burger" onclick="headerOpenHamburgerMenu()">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu">
+        <div class="navbar-start">
+          <a href="about.html" class="navbar-item">
+            <span class="icon">
+              <i class="fas fa-info"></i>
+            </span>
+            <span>Chi siamo</span>
+          </a>
+          <a href="blog.html" class="navbar-item">
+            <span class="icon">
+              <i class="far fa-newspaper"></i>
+            </span>
+            <span>Blog</span>
+          </a>
+          <a class="navbar-item">
+            <span class="icon">
+              <i class="fas fa-book-open"></i>
+            </span>
+            <span>Catalogo</span>
+          </a>
+        </div>
+        <div class="navbar-end">
+          <!--
+            <div class="navbar-item is-hidden-touch">
+              <div class="level">
+                <div class="level-left">
+                  <div class="level-item">
+                    <span>Ciao, <a>Gianni</a></span>
+                    <span class="divider"></span>
+                  </div>
+                </div>
+                <div class="level-right">
+                  <figure class="level-item image is-32x32">
+                    <img class="is-rounded" src="assets/images/profile.jpeg">
+                  </figure>
+                </div>
+              </div>
+            </div>
+          -->
+          <a href="registration.html" class="navbar-item is-hidden-desktop">
+            <span class="icon">
+              <i class="fas fa-user-plus"></i>
+            </span>
+            <span>Registrati</span>
+          </a>
+          <a id="login-link-mobile" class="navbar-item is-hidden-desktop" onclick="headerOpenLoginBar()">
+            <span class="icon">
+              <i class="fas fa-sign-in-alt"></i>
+            </span>
+            <span>Accedi</span>
+          </a>
+          <a class="navbar-item is-hidden-desktop">
+            <span class="icon">
+              <i class="fas fa-user"></i>
+            </span>
+            <span>Profilo</span>
+          </a>
+          <div class="buttons is-hidden-touch">
+            <div class="navbar-item">
+              <a href="registration.html" class="button is-link">
+                <strong>Registrati</strong>
+              </a>
+              <a id="login-button-desktop" class="button is-light" onclick="headerOpenLoginBar()">
+                Accedi
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div id="login-bar" class="hero is-primary">
+      <div class="hero-body">
+        <div class="container">
+          <form>
+            <div class="field is-horizontal">
+              <div class="field-body">
+                <div class="field">
+                  <p class="control is-expanded has-icons-left">
+                    <input class="input" type="text" placeholder="Username">
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-user"></i>
+                    </span>
+                  </p>
+                </div>
+                <div class="field">
+                  <p class="control has-icons-left">
+                    <input class="input" type="password" placeholder="Password">
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-lock"></i>
+                    </span>
+                  </p>
+                </div>
+                <div class="control">
+                  <button class="button is-fullwidth">Submit</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="tile is-ancestor">
+      <div class="tile is-child is-3 section">
+        <form>
+          <p class="title is-size-4">Ricerca per nome:</p>
+          <div class="field has-addons">
+            <div class="control is-expanded">
+              <input id="searchBar" class="input is-info" type="text" placeholder="Cerca una paperella">
+            </div>
+            <div class="control">
+              <a id="searchButton" class="button is-info" onclick="searchByName(this)">
+                Cerca
+              </a>
+            </div>
+          </div>
+          <br>
+          <p class="title is-size-4">Ricerca per prezzo:</p>
+          <p>Prezzo massimo: <output for="priceSelector">50.00 euro</output></p>
+          <input id="priceSelector" class="slider is-fullwidth is-large is-warning" step="5" min="5" max="50" value="50"
+            type="range" oninput="updatePrice(this.value)" onchange="updatePrice(this.value)">
+          <br>
+          <p class="title is-size-4">Ricerca per categorie:</p>
+          <div class="field">
+            <a class="button is-outlined is-fullwidth" onclick="updateCategories(this)">Al naturale</a>
+          </div>
+          <div class="field">
+            <a class="button is-outlined is-fullwidth" onclick="updateCategories(this)">Celebritá</a>
+          </div>
+          <div class="field">
+            <a class="button is-outlined is-fullwidth" onclick="updateCategories(this)">Eroi</a>
+          </div>
+          <div class="field">
+            <a class="button is-outlined is-fullwidth" onclick="updateCategories(this)">Professioni</a>
+          </div>
+          <div class="field">
+            <a class="button is-outlined is-fullwidth" onclick="updateCategories(this)">Sport</a>
+          </div>
+        </form>
+      </div>
+      <div class="tile is-child is-9 section">
+        <div class="columns is-multiline">
+          <div class="column is-one-quarter card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title">Prodotto</p>
+              <p class="subtitle">Categoria</p>
+              <p>43.20 euro</p>
+            </div>
+          </div>
+          <div class="column is-one-quarter card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title">Prodotto</p>
+              <p class="subtitle">Categoria</p>
+              <p>43.20 euro</p>
+            </div>
+          </div>
+          <div class="column is-one-quarter card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title">Prodotto</p>
+              <p class="subtitle">Eroi</p>
+              <p>43.20 euro</p>
+            </div>
+          </div>
+          <div class="column is-one-quarter card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title">Prodotto</p>
+              <p class="subtitle">Eroi</p>
+              <p>43.20 euro</p>
+            </div>
+          </div>
+          <div class="column is-one-quarter card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title">Prodotto</p>
+              <p class="subtitle">Categoria</p>
+              <p>43.20 euro</p>
+            </div>
+          </div>
+          <div class="column is-one-quarter card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title">Prodotto</p>
+              <p class="subtitle">Sport</p>
+              <p>43.20 euro</p>
+            </div>
+          </div>
+          <div class="column is-one-quarter card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title">Prodotto</p>
+              <p class="subtitle">Categoria</p>
+              <p>43.20 euro</p>
+            </div>
+          </div>
+          <div class="column is-one-quarter card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title">Prodotto</p>
+              <p class="subtitle">Categoria</p>
+              <p>43.20 euro</p>
+            </div>
+          </div>
+          <div class="column is-one-quarter card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title">Prodotto</p>
+              <p class="subtitle">Categoria</p>
+              <p>22.20 euro</p>
+            </div>
+          </div>
+          <div class="column is-one-quarter card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title">Prodotto</p>
+              <p class="subtitle">Categoria</p>
+              <p>37.20 euro</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="content">
+      <div class="columns is-vcentered">
+        <div class="column">
+          <figure class="image is-4by1">
+            <img src="assets/images/rubber-duck-icon-logo.png" alt="Il nostro logo">
+          </figure>
+        </div>
+        <div class="column">
+          <div>
+            <h4>Le mille pi&uacute; uno paperelle s.n.c.</h4>
+            <p>
+              <span class="icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </span>
+              Via Dodecaneso, 35, 16146 Genova (GE)
+            </p>
+            <p>
+              <span class="icon">
+                <i class="fas fa-phone"></i>
+              </span>
+              +39 010 353 2148
+            </p>
+            <p>
+              <span class="icon">
+                <i class="fas fa-at"></i>
+              </span>
+              paperelle@dibris.unige.it
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
