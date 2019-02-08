@@ -38,18 +38,10 @@ function headerOpenLoginBar () {
 
   // Barra di login
   const loginBar = document.getElementById("login-bar");
+  console.log(loginBar);
+  console.log(loginBar.style.display);
 
-  if (loginBar.style.display === "none") {
-
-    // Mostra la barra
-    loginBar.style.display = "block";
-    // Cambia il pulsante desktop
-    loginDesktop.textContent = "Chiudi";
-    loginDesktop.classList.replace("is-light", "is-danger");
-    // Cambia il link mobile
-    loginMobile.children[1].textContent = "Chiudi";
-
-  } else {
+  if (loginBar.style.display === "block") {
 
     // Nascondi la barra
     loginBar.style.display = "none";
@@ -58,6 +50,16 @@ function headerOpenLoginBar () {
     loginDesktop.classList.replace("is-danger", "is-light");
     // Cambia il link mobile
     loginMobile.children[1].textContent = "Accedi";
+
+  } else {
+
+    // Mostra la barra
+    loginBar.style.display = "block";
+    // Cambia il pulsante desktop
+    loginDesktop.textContent = "Chiudi";
+    loginDesktop.classList.replace("is-light", "is-danger");
+    // Cambia il link mobile
+    loginMobile.children[1].textContent = "Chiudi";
 
   }
 
