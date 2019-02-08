@@ -1,7 +1,7 @@
-// Rende errore codice mal scritto
-"use strict";
-
 function headerOpenHamburgerMenu () {
+
+  // Rende errore codice mal scritto
+  "use strict";
 
   // Prendi navbar-menu
   const navbar = document.getElementsByClassName("navbar-menu")[0];
@@ -31,6 +31,9 @@ function headerOpenHamburgerMenu () {
 
 // Mostra nascondi la barra e cambia tutti i pulsanti associati
 function headerOpenLoginBar () {
+
+  // Rende errore codice mal scritto
+  "use strict";
 
   // Pulsanti accedi
   const loginDesktop = document.getElementById("login-button-desktop");
@@ -63,7 +66,10 @@ function headerOpenLoginBar () {
 
 }
 
-function showPassword(button) {
+function showPassword (button) {
+
+  // Rende errore codice mal scritto
+  "use strict";
 
   // Prendi l'elemento della password
   const password = document.getElementById("loginPassword");
