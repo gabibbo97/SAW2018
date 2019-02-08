@@ -31,6 +31,10 @@
     #login-bar {
       display: none;
     }
+
+    .card-image {
+      cursor: pointer;
+    }
   </style>
   <script>
 
@@ -176,6 +180,39 @@
       }
 
     }
+
+    function closeImagePreview() {
+
+      // Prendi il modale
+      const imagePreview = document.getElementById("imagePreview");
+
+      // Nascondilo
+      imagePreview.classList.toggle("is-active");
+
+    }
+
+    function openImagePreview(cardImage) {
+
+      // Prendi il modale
+      const imagePreview = document.getElementById("imagePreview");
+
+      // Prendi l'immagine
+      const innerImage = cardImage.children[0].children[0];
+      
+      // Prendi l'immagine dentro al modale
+      const modalImage = imagePreview.children[1].children[0].children[0];
+
+      // Copia le proprietá dall'immagine cliccata
+      modalImage.alt = innerImage.alt;
+      modalImage.src = innerImage.src;
+
+      // Effettua il cambio solo quando l'immagine é effettivamente caricata nell'elemento
+      modalImage.onload = () => {
+        // Mostralo
+        imagePreview.classList.toggle("is-active");
+      }      
+
+    }
   </script>
 </head>
 
@@ -295,6 +332,15 @@
     </div>
   </header>
   <main>
+    <div id="imagePreview" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <p class="image is-4by3">
+          <img src="https://bulma.io/images/placeholders/1280x960.png" alt="">
+        </p>
+      </div>
+      <button class="modal-close is-large" aria-label="close" onclick="closeImagePreview()"></button>
+    </div>
     <div class="tile is-ancestor">
       <div class="tile is-child is-3 section">
         <form>
@@ -336,7 +382,7 @@
       <div class="tile is-child is-9 section">
         <div class="columns is-multiline">
           <div class="column is-one-quarter card">
-            <div class="card-image">
+            <div onclick="openImagePreview(this)" class="card-image">
               <figure class="image is-4by3">
                 <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
               </figure>
@@ -348,7 +394,7 @@
             </div>
           </div>
           <div class="column is-one-quarter card">
-            <div class="card-image">
+            <div onclick="openImagePreview(this)" class="card-image">
               <figure class="image is-4by3">
                 <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
               </figure>
@@ -360,7 +406,7 @@
             </div>
           </div>
           <div class="column is-one-quarter card">
-            <div class="card-image">
+            <div onclick="openImagePreview(this)" class="card-image">
               <figure class="image is-4by3">
                 <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
               </figure>
@@ -372,7 +418,7 @@
             </div>
           </div>
           <div class="column is-one-quarter card">
-            <div class="card-image">
+            <div onclick="openImagePreview(this)" class="card-image">
               <figure class="image is-4by3">
                 <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
               </figure>
@@ -384,7 +430,7 @@
             </div>
           </div>
           <div class="column is-one-quarter card">
-            <div class="card-image">
+            <div onclick="openImagePreview(this)" class="card-image">
               <figure class="image is-4by3">
                 <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
               </figure>
@@ -396,7 +442,7 @@
             </div>
           </div>
           <div class="column is-one-quarter card">
-            <div class="card-image">
+            <div onclick="openImagePreview(this)" class="card-image">
               <figure class="image is-4by3">
                 <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
               </figure>
@@ -408,7 +454,7 @@
             </div>
           </div>
           <div class="column is-one-quarter card">
-            <div class="card-image">
+            <div onclick="openImagePreview(this)" class="card-image">
               <figure class="image is-4by3">
                 <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
               </figure>
@@ -420,7 +466,7 @@
             </div>
           </div>
           <div class="column is-one-quarter card">
-            <div class="card-image">
+            <div onclick="openImagePreview(this)" class="card-image">
               <figure class="image is-4by3">
                 <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
               </figure>
@@ -432,7 +478,7 @@
             </div>
           </div>
           <div class="column is-one-quarter card">
-            <div class="card-image">
+            <div onclick="openImagePreview(this)" class="card-image">
               <figure class="image is-4by3">
                 <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
               </figure>
@@ -444,7 +490,7 @@
             </div>
           </div>
           <div class="column is-one-quarter card">
-            <div class="card-image">
+            <div onclick="openImagePreview(this)" class="card-image">
               <figure class="image is-4by3">
                 <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
               </figure>
