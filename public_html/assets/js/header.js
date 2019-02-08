@@ -38,8 +38,6 @@ function headerOpenLoginBar () {
 
   // Barra di login
   const loginBar = document.getElementById("login-bar");
-  console.log(loginBar);
-  console.log(loginBar.style.display);
 
   if (loginBar.style.display === "block") {
 
