@@ -15,6 +15,7 @@
   <meta name="keywords" content="paperelle, gioco, compagnia, giallo, gomma">
 
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  <script async defer src="assets/js/lib.js"></script>
   <script async defer src="assets/js/header.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
   <style>
@@ -30,10 +31,23 @@
     #login-bar {
       display: none;
     }
+
+    thead > tr > td {
+      font-weight: bold;
+    }
+
+    thead > tr > td, tbody > tr > td {
+      text-align: center;
+    }
+
+    #blog, #newsletter, #users {
+      display: none;
+    }
+    
   </style>
   <script>
 
-    function closeDeleteModal () {
+    function closeDeleteModal() {
 
       "use strict";
 
@@ -45,7 +59,7 @@
 
     }
 
-    function openDeleteModal () {
+    function openDeleteModal() {
 
       "use strict";
 
@@ -55,6 +69,49 @@
       // Imposta is-active
       modal.classList.toggle("is-active");
 
+    }
+
+    function showOldPassword(button) {
+
+      showPassword(button, "oldPassword");
+
+    }
+
+    function menu(button, section) {
+
+      // Prendi tutti i pulsanti delle tab
+      const tabs = Array.from(document.querySelectorAll("main > .section > .tabs > ul > li"));
+
+      // Aggiungi isActive al selezionato
+      tabs.filter((tab) => {
+        return tab.children[0] === button;
+      }).forEach((e) => {
+        e.classList.add("is-active");
+      });
+
+      // Rimuovi isActive da tutti gli altri
+      tabs.filter((tab) => {
+        return tab.children[0] !== button;
+      }).forEach((e) => {
+        e.classList.remove("is-active");
+      });
+
+      // Prendi tutti i div
+      const divs = Array.from(document.querySelectorAll("main > div"));
+
+      // Elimina tutti i div
+      divs.slice(1).filter((div) => {
+        return div.id !== section;
+      }).forEach((div) => {
+        div.style.display = "none";
+      });
+
+      // Mostra il div scelto
+      divs.slice(1).filter((div) => {
+        return div.id === section;
+      }).forEach((div) => {
+        div.style.display = "block";
+      });
     }
 
   </script>
@@ -165,7 +222,7 @@
                     </span>
                   </p>
                   <p class="control">
-                    <a class="button" onclick="showPassword(this)">
+                    <a class="button" onclick="showLoginPassword(this)">
                       <span class="icon">
                         <i class="far fa-eye"></i>
                       </span>
@@ -184,6 +241,36 @@
   </header>
   <main>
     <div class="section">
+      <div class="tabs is-centered is-medium is-toggle">
+        <ul>
+          <li class="is-active">
+            <a onclick="menu(this, 'profile')">
+              <span class="icon is-small"><i class="fas fa-user" aria-hidden="true"></i></span>
+              <span>Profilo</span>
+            </a>
+          </li>
+          <li>
+            <a onclick="menu(this, 'blog')">
+              <span class="icon is-small"><i class="far fa-newspaper" aria-hidden="true"></i></span>
+              <span>Blog</span>
+            </a>
+          </li>
+          <li>
+            <a onclick="menu(this, 'newsletter')">
+              <span class="icon is-small"><i class="far fa-envelope-open" aria-hidden="true"></i></span>
+              <span>Newsletter</span>
+            </a>
+          </li>
+          <li>
+            <a onclick="menu(this, 'users')">
+              <span class="icon is-small"><i class="fas fa-users" aria-hidden="true"></i></span>
+              <span>Utenti</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div id="profile" class="section">
       <form class="columns">
         <div class="column is-3">
           <p class="title">Immagine del profilo</p>
@@ -253,22 +340,6 @@
 
           </div>
           <div class="field">
-            <label class="label">Password</label>
-            <div class="field has-addons">
-              <div class="control is-expanded">
-                <input required class="input is-primary" type="password" placeholder="Password">
-              </div>
-            </div>
-          </div>
-          <div class="field">
-            <label class="label">Ripeti password</label>
-            <div class="field has-addons">
-              <div class="control is-expanded">
-                <input required class="input is-primary" type="password" placeholder="Ripeti password">
-              </div>
-            </div>
-          </div>
-          <div class="field">
             <label class="label">Email</label>
             <div class="control has-icons-left has-icons-right">
               <input required class="input is-primary" type="email" placeholder="Email">
@@ -327,6 +398,51 @@
       <hr>
       <form class="columns">
         <div class="column is-3">
+          <p class="title">Credenziali di accesso</p>
+          <p class="subtitle">Cambia qui la tua password</p>
+        </div>
+        <div class="column">
+          <label class="label">Vecchia password</label>
+          <div class="field has-addons">
+            <p class="control has-icons-left is-expanded">
+              <input id="oldPassword" class="input is-primary" type="password" placeholder="Vecchia password">
+              <span class="icon is-small is-left">
+                <i class="fas fa-lock"></i>
+              </span>
+            </p>
+            <p class="control">
+              <a class="button" onclick="showOldPassword(this)">
+                <span class="icon">
+                  <i class="far fa-eye"></i>
+                </span>
+              </a>
+            </p>
+          </div>
+          <div class="field">
+            <label class="label">Nuova password</label>
+            <div class="field has-addons">
+              <div class="control is-expanded">
+                <input required class="input is-primary" type="password" placeholder="Password">
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Ripeti nuova password</label>
+            <div class="field has-addons">
+              <div class="control is-expanded">
+                <input required class="input is-primary" type="password" placeholder="Ripeti password">
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="control">
+            <button type="submit" class="button is-warning">Aggiorna la password</button>
+          </div>
+        </div>
+      </form>
+      <hr>
+      <form class="columns">
+        <div class="column is-3">
           <p class="title">Newsletter</p>
           <p class="subtitle">Modifica le impostazioni sul ricevimento della newsletter</p>
         </div>
@@ -361,21 +477,131 @@
         </div>
       </form>
       <div id="deleteModal" class="modal">
-          <div class="modal-background"></div>
-          <div class="modal-card">
-            <header class="modal-card-head">
-              <p class="modal-card-title">Cancellazione account</p>
-            </header>
-            <div class="modal-card-body">
-              <p>Sei veramente sicuro di voler eliminare permanentemente il tuo profilo?</p>
-              <p>Tutti i tuoi dati saranno persi e non potrai piú recuperarli</p>
-            </div>
-            <footer class="modal-card-foot">
-              <button class="button is-danger">S&iacute; sono sicuro</button>
-              <button class="button" onclick="closeDeleteModal()">Annulla</button>
-            </footer>
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Cancellazione account</p>
+          </header>
+          <div class="modal-card-body">
+            <p>Sei veramente sicuro di voler eliminare permanentemente il tuo profilo?</p>
+            <p>Tutti i tuoi dati saranno persi e non potrai piú recuperarli</p>
+          </div>
+          <footer class="modal-card-foot">
+            <button class="button is-danger">S&iacute; sono sicuro</button>
+            <button class="button" onclick="closeDeleteModal()">Annulla</button>
+          </footer>
+        </div>
+      </div>
+    </div>
+    <div id="blog" class="section">
+      <form>
+        <div class="field">
+          <label class="label">Titolo del post</label>
+          <div class="control">
+            <input class="input is-primary" type="text" placeholder="Titolo del post">
           </div>
         </div>
+        <div class="field">
+          <label class="label">Testo del post</label>
+          <div class="control">
+            <textarea class="textarea is-primary" placeholder="Testo del post" rows="15"></textarea>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Tags <small>(separa i tags con la virgola)</small></label>
+          <div class="control">
+            <input class="input is-primary" type="text" placeholder="Tags">
+          </div>
+        </div>
+        <div class="field">
+          <a class="button is-warning is-fullwidth">Pubblica</a>
+        </div>
+      </form>
+    </div>
+    <div id="newsletter" class="section">
+      <form>
+        <div class="field">
+          <label class="label">Oggetto</label>
+          <div class="control">
+            <input class="input is-primary" type="text" placeholder="Oggetto della mail">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Testo dell'email</label>
+          <div class="control">
+            <textarea class="textarea is-primary" placeholder="Testo dell'email" rows="15"></textarea>
+          </div>
+        </div>
+        <div class="field">
+          <a class="button is-warning is-fullwidth">Invia</a>
+        </div>
+      </form>
+    </div>
+    <div id="users" class="section">
+      <form>
+        <table class="table is-striped is-fullwidth">
+          <thead>
+            <tr>
+              <td>Username</td>
+              <td>Email</td>
+              <td>Nome</td>
+              <td>Cognome</td>
+              <td>Regione</td>
+              <td>Azioni</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Babdidd</td>
+              <td>ffsdasd</td>
+              <td>dasdasdad</td>
+              <td>gdgdgd</td>
+              <td>gsdgsdgsg</td>
+              <td>gsgdsgsdg</td>
+            </tr>
+            <tr>
+              <td>Babdidd</td>
+              <td>ffsdasd</td>
+              <td>dasdasdad</td>
+              <td>gdgdgd</td>
+              <td>gsdgsdgsg</td>
+              <td>gsgdsgsdg</td>
+            </tr>
+            <tr>
+              <td>Babdidd</td>
+              <td>ffsdasd</td>
+              <td>dasdasdad</td>
+              <td>gdgdgd</td>
+              <td>gsdgsdgsg</td>
+              <td>gsgdsgsdg</td>
+            </tr>
+            <tr>
+              <td>Babdidd</td>
+              <td>ffsdasd</td>
+              <td>dasdasdad</td>
+              <td>gdgdgd</td>
+              <td>gsdgsdgsg</td>
+              <td>gsgdsgsdg</td>
+            </tr>
+            <tr>
+              <td>Babdidd</td>
+              <td>ffsdasd</td>
+              <td>dasdasdad</td>
+              <td>gdgdgd</td>
+              <td>gsdgsdgsg</td>
+              <td>gsgdsgsdg</td>
+            </tr>
+            <tr>
+              <td>Babdidd</td>
+              <td>ffsdasd</td>
+              <td>dasdasdad</td>
+              <td>gdgdgd</td>
+              <td>gsdgsdgsg</td>
+              <td>gsgdsgsdg</td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
     </div>
   </main>
   <footer class="footer">
