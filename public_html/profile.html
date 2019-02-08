@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <!-- Compatibilit&aacute; con iPhone -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Homepage</title>
+
+  <!-- Colore barra su Chrome mobile -->
+  <meta name="theme-color" content="#ffa82e">
+
+  <meta name="author" content="Longo, Orlich, Tassara">
+  <meta name="description" content="La nostra homepage">
+  <meta name="keywords" content="paperelle, gioco, compagnia, giallo, gomma">
+
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  <script async defer src="assets/js/header.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+  <style>
+    .divider {
+      margin-left: 0.2em;
+      margin-right: 0.2em;
+    }
+
+    .footer {
+      padding: 3rem 1.5rem 3rem;
+    }
+
+    #login-bar {
+      display: none;
+    }
+  </style>
+  <script>
+
+    function closeDeleteModal () {
+
+      "use strict";
+
+      // Prendi il modale
+      const modal = document.getElementById("deleteModal");
+
+      // Imposta is-active
+      modal.classList.toggle("is-active");
+
+    }
+
+    function openDeleteModal () {
+
+      "use strict";
+
+      // Prendi il modale
+      const modal = document.getElementById("deleteModal");
+
+      // Imposta is-active
+      modal.classList.toggle("is-active");
+
+    }
+
+  </script>
+</head>
+
+<body>
+  <header>
+    <nav class="navbar is-primary">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="index.html">
+          <img src="assets/images/rubber-duck-icon-logo.png" width="112" height="28" alt="Il nostro logo">
+        </a>
+        <a class="navbar-burger" onclick="headerOpenHamburgerMenu()">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu">
+        <div class="navbar-start">
+          <a href="about.html" class="navbar-item">
+            <span class="icon">
+              <i class="fas fa-info"></i>
+            </span>
+            <span>Chi siamo</span>
+          </a>
+          <a href="blog.html" class="navbar-item">
+            <span class="icon">
+              <i class="far fa-newspaper"></i>
+            </span>
+            <span>Blog</span>
+          </a>
+          <a href="catalog.html" class="navbar-item">
+            <span class="icon">
+              <i class="fas fa-book-open"></i>
+            </span>
+            <span>Catalogo</span>
+          </a>
+        </div>
+        <div class="navbar-end">
+          <!--
+            <div class="navbar-item is-hidden-touch">
+              <div class="level">
+                <div class="level-left">
+                  <div class="level-item">
+                    <span>Ciao, <a>Gianni</a></span>
+                    <span class="divider"></span>
+                  </div>
+                </div>
+                <div class="level-right">
+                  <figure class="level-item image is-32x32">
+                    <img class="is-rounded" src="assets/images/profile.jpeg">
+                  </figure>
+                </div>
+              </div>
+            </div>
+          -->
+          <a href="registration.html" class="navbar-item is-hidden-desktop">
+            <span class="icon">
+              <i class="fas fa-user-plus"></i>
+            </span>
+            <span>Registrati</span>
+          </a>
+          <a id="login-link-mobile" class="navbar-item is-hidden-desktop" onclick="headerOpenLoginBar()">
+            <span class="icon">
+              <i class="fas fa-sign-in-alt"></i>
+            </span>
+            <span>Accedi</span>
+          </a>
+          <a class="navbar-item is-hidden-desktop">
+            <span class="icon">
+              <i class="fas fa-user"></i>
+            </span>
+            <span>Profilo</span>
+          </a>
+          <div class="buttons is-hidden-touch">
+            <div class="navbar-item">
+              <a href="registration.html" class="button is-link">
+                <strong>Registrati</strong>
+              </a>
+              <a id="login-button-desktop" class="button is-light" onclick="headerOpenLoginBar()">
+                Accedi
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div id="login-bar" class="hero is-primary">
+      <div class="hero-body">
+        <div class="container">
+          <form>
+            <div class="field is-horizontal">
+              <div class="field-body">
+                <div class="field">
+                  <p class="control is-expanded has-icons-left">
+                    <input class="input" type="text" placeholder="Username">
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-user"></i>
+                    </span>
+                  </p>
+                </div>
+                <div class="field has-addons">
+                  <p class="control has-icons-left is-expanded">
+                    <input id="loginPassword" class="input" type="password" placeholder="Password">
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-lock"></i>
+                    </span>
+                  </p>
+                  <p class="control">
+                    <a class="button" onclick="showPassword(this)">
+                      <span class="icon">
+                        <i class="far fa-eye"></i>
+                      </span>
+                    </a>
+                  </p>
+                </div>
+                <div class="control">
+                  <button class="button is-fullwidth">Accedi</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section class="section">
+      <form class="columns">
+        <div class="column is-3">
+          <p class="title">Immagine del profilo</p>
+          <p class="subtitle">Puoi caricare la tua foto qui</p>
+        </div>
+        <div class="column">
+          <nav class="columns is-vcentered">
+            <div class="column is-narrow has-text-centered">
+              <figure class="image is-128x128">
+                <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png">
+              </figure>
+            </div>
+            <div class="column">
+              <strong>Carica una nuova foto</strong>
+              <div class="file">
+                <label class="file-label">
+                  <input class="file-input" type="file" name="resume">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-upload"></i>
+                    </span>
+                    <span class="file-label">
+                      Scegli un file
+                    </span>
+                  </span>
+                </label>
+              </div>
+              <small>La dimensione massima concessa é 200KB.</small>
+            </div>
+          </nav>
+        </div>
+      </form>
+      <hr>
+      <form class="columns">
+        <div class="column is-3">
+          <p class="title">Dati personali</p>
+          <p class="subtitle">Queste sono le informazioni del tuo profilo</p>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label class="label">Name</label>
+            <div class="control">
+              <input required class="input is-primary" type="text" placeholder="Nome">
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Cognome</label>
+            <div class="control">
+              <input required class="input is-primary" type="text" placeholder="Cognome">
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Username</label>
+            <div class="control has-icons-left has-icons-right">
+              <!--input is-correct quando è disponibile il bordo diventa verde
+                        input is-warning giallo
+                        input is-danger rosso
+                        input is-info blu-->
+              <input required class="input is-primary" type="text" placeholder="Username">
+              <span class="icon is-small is-left">
+                <i class="fas fa-user"></i>
+              </span>
+              <span class="icon is-small is-right">
+                <i class="fas fa-check"></i>
+              </span>
+            </div>
+
+          </div>
+          <div class="field">
+            <label class="label">Password</label>
+            <div class="field has-addons">
+              <div class="control is-expanded">
+                <input required class="input is-primary" type="password" placeholder="Password">
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Ripeti password</label>
+            <div class="field has-addons">
+              <div class="control is-expanded">
+                <input required class="input is-primary" type="password" placeholder="Ripeti password">
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Email</label>
+            <div class="control has-icons-left has-icons-right">
+              <input required class="input is-primary" type="email" placeholder="Email">
+              <span class="icon is-small is-left">
+                <i class="fas fa-envelope"></i>
+              </span>
+              <span class="icon is-small is-right">
+                <i class="fas fa-exclamation-triangle"></i>
+              </span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Regione</label>
+            <div class="control">
+              <div class="select">
+                <select name="Regioni">
+                  <option disabled selected>Seleziona regione</option>
+                  <option>Abruzzo</option>
+                  <option>Basilicata</option>
+                  <option>Calabria</option>
+                  <option>Campania</option>
+                  <option>Emilia-Romagna</option>
+                  <option>Friuli-Venezia Giulia</option>
+                  <option>Lazio</option>
+                  <option>Liguria</option>
+                  <option>Lombardia</option>
+                  <option>Marche</option>
+                  <option>Molisa</option>
+                  <option>Piemonte</option>
+                  <option>Puglia</option>
+                  <option>Sardegna</option>
+                  <option>Sicilia</option>
+                  <option>Toscana</option>
+                  <option>Trentino-Alto Adige</option>
+                  <option>Umbria</option>
+                  <option>Valle d'Aosta</option>
+                  <option>Veneto</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <br>
+
+          <div class="field is-grouped">
+            <div class="control">
+              <button type="submit" class="button is-warning">Aggiorna i tuoi dati</button>
+            </div>
+            <div class="control">
+              <button type="reset" class="button is-text">Annulla</button>
+            </div>
+          </div>
+        </div>
+      </form>
+      <hr>
+      <form class="columns">
+        <div class="column is-3">
+          <p class="title">Newsletter</p>
+          <p class="subtitle">Modifica le impostazioni sul ricevimento della newsletter</p>
+        </div>
+        <div class="column">
+          <div class="control is-size-5">
+            <label class="radio">
+              <input type="radio" name="answer">
+              <strong>Iscrivimi</strong> alla newsletter
+            </label>
+            <br>
+            <label class="radio">
+              <input type="radio" name="answer">
+              <strong>Disiscrivimi</strong> dalla newsletter
+            </label>
+          </div>
+          <br>
+          <div class="control">
+            <button type="submit" class="button is-warning">Aggiorna le preferenze</button>
+          </div>
+        </div>
+      </form>
+      <hr>
+      <form class="columns is-vcentered">
+        <div class="column is-3">
+          <p class="title">Cancellazione account</p>
+          <p class="subtitle">Elimina definitivamente il tuo profilo</p>
+        </div>
+        <div class="column">
+          <div class="control">
+            <a onclick="openDeleteModal()" class="button is-danger">Elimina per sempre il mio profilo</a>
+          </div>
+        </div>
+      </form>
+      <div id="deleteModal" class="modal">
+          <div class="modal-background"></div>
+          <div class="modal-card">
+            <header class="modal-card-head">
+              <p class="modal-card-title">Cancellazione account</p>
+            </header>
+            <section class="modal-card-body">
+              <p>Sei veramente sicuro di voler eliminare permanentemente il tuo profilo?</p>
+              <p>Tutti i tuoi dati saranno persi e non potrai piú recuperarli</p>
+            </section>
+            <footer class="modal-card-foot">
+              <button class="button is-danger">S&iacute; sono sicuro</button>
+              <button class="button" onclick="closeDeleteModal()">Annulla</button>
+            </footer>
+          </div>
+        </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="content">
+      <div class="columns is-vcentered">
+        <div class="column">
+          <figure class="image is-4by1">
+            <img src="assets/images/rubber-duck-icon-logo.png" alt="Il nostro logo">
+          </figure>
+        </div>
+        <div class="column">
+          <div>
+            <h4>Le mille pi&uacute; uno paperelle s.n.c.</h4>
+            <p>
+              <span class="icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </span>
+              Via Dodecaneso, 35, 16146 Genova (GE)
+            </p>
+            <p>
+              <span class="icon">
+                <i class="fas fa-phone"></i>
+              </span>
+              +39 010 353 2148
+            </p>
+            <p>
+              <span class="icon">
+                <i class="fas fa-at"></i>
+              </span>
+              paperelle@dibris.unige.it
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
