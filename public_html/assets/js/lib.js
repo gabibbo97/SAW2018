@@ -2,7 +2,7 @@
  * @param {*} button L'oggetto button con dentro l'icona
  * @param {*} inputID L'ID dell'elemento che contiene la password
  */
-function showPassword(button, inputID) {
+function showPassword (button, inputID) {
 
   // Rende errore codice mal scritto
   "use strict";
