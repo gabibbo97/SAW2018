@@ -1,6 +1,8 @@
+// Rende errore codice mal scritto
+"use strict";
+
 function headerOpenHamburgerMenu () {
 
-  "use strict";
   // Prendi navbar-menu
   const navbar = document.getElementsByClassName("navbar-menu")[0];
   // Prendi navbar-burger
@@ -29,8 +31,6 @@ function headerOpenHamburgerMenu () {
 
 // Mostra nascondi la barra e cambia tutti i pulsanti associati
 function headerOpenLoginBar () {
-
-  "use strict";
 
   // Pulsanti accedi
   const loginDesktop = document.getElementById("login-button-desktop");
