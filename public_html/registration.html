@@ -38,8 +38,13 @@
       /* Sfuma attorno */
       box-shadow: inset 0 0 5em black;
 
-      /* Rendi il body grande come lo schermo */
       height: 100%;
+    }
+
+    @media screen and (max-width: 600px) {
+      html {
+        height: auto;
+      }
     }
   </style>
 
