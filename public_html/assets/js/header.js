@@ -66,7 +66,11 @@ function headerOpenLoginBar () {
 
 }
 
+// Indica al linter che showPassword in realtá é dichiarata altrove
+/* global showPassword */
 function showLoginPassword (button) {
+
+  "use strict";
 
   showPassword(button, "loginPassword");
 
