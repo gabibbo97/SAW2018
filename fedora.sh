@@ -10,6 +10,7 @@
 #   http://127.0.0.1:8080   Progetto
 #   http://127.0.0.1:8000   Adminer
 #   http://127.0.0.1:8888   Validatore HTML
+#   127.0.0.1:3306          MySQL
 
 case "$1" in  # In base al primo argomento del programma
   u|up|U|UP)
@@ -21,7 +22,8 @@ case "$1" in  # In base al primo argomento del programma
     sudo podman pod create --name "SAW" \
       --publish 127.0.0.1:8080:80 \
       --publish 127.0.0.1:8000:8080 \
-      --publish 127.0.0.1:8888:8888
+      --publish 127.0.0.1:8888:8888 \
+      --publish 127.0.0.1:3306:3306
     sudo podman run --pod SAW \
       --name webserver \
       --detach \

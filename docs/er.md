@@ -46,78 +46,7 @@
 
 ## Tabelle
 
-### articolo
 
-```sql
-CREATE TABLE articolo (
-    id SERIAL PRIMARY KEY,
-    titolo VARCHAR(100) NOT NULL,
-    sottotitolo VARCHAR(200) NULL,
-    data DATE NOT NULL DEFAULT (CURRENT_DATE()),
-    corpo MEDIUMTEXT NOT NULL,
-    autore VARCHAR(20) NOT NULL,
-    FOREIGN KEY (autore) REFERENCES utente (username) ON DELETE SET NULL ON UPDATE CASCADE
-)
-CREATE FULLTEXT INDEX testo_articoli ON articolo(corpo)
-```
-
-### caratterizza
-
-```sql
-CREATE TABLE caratterizza (
-    id_articolo BIGINT UNSIGNED REFERENCES articolo (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    tag VARCHAR(20) REFERENCES tag (nome) ON DELETE CASCADE ON UPDATE CASCADE,
-    PRIMARY KEY(id_articolo, tag),
-    FOREIGN KEY (tag) REFERENCES tag (nome) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (id_articolo) REFERENCES articolo (id) ON DELETE CASCADE ON UPDATE CASCADE
-)
-```
-
-### tag
-
-```sql
-CREATE TABLE tag (
-    nome VARCHAR(20) PRIMARY KEY,
-    descrizione VARCHAR(100) NULL
-)
-```
-
-### utente
-
-```sql
-CREATE TABLE utente (
-    username VARCHAR(20) PRIMARY KEY,
-    nome VARCHAR(20) NOT NULL,
-    cognome VARCHAR(20) NOT NULL,
-    email TINYTEXT NOT NULL,
-    password TINYTEXT NOT NULL,
-    percorsoImmagine VARCHAR(20) NULL,
-    riceveNewsletter BOOLEAN NOT NULL,
-    tipoUtente ENUM('USER','ADMIN') NOT NULL, -- If a DEFAULT clause is missing, the default value will be the first value in the enumaration
-    regione ENUM(
-        'Abruzzo',
-        'Basilicata',
-        'Calabria',
-        'Campania',
-        'EmiliaRomagna',
-        'FriuliVeneziaGiulia',
-        'Lazio',
-        'Liguria',
-        'Lombardia',
-        'Marche',
-        'Molisa',
-        'Piemonte',
-        'Puglia',
-        'Sardegna',
-        'Sicilia',
-        'Toscana',
-        'TrentinoAltoAdige',
-        'Umbria',
-        'ValleDAosta',
-        'Veneto'
-    ) NULL
-)
-```
 
 ## Dati di prova
 

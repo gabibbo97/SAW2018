@@ -31,7 +31,7 @@ WHERE
     AND (
         articoli_successivi.id = (                                                                -- Il successivo é il post con ID minimo tra quelli con ID superiore a quello dell'articolo
             SELECT
-                Max(id)
+                Min(id)
             FROM
                 articolo
             WHERE
