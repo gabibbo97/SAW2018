@@ -6,6 +6,12 @@
     echo ("Connesso\n");
 
     $creaTabelle = TRUE;
+
+    $numUtenti = 50;
+    $numArticoli = 250;
+    $numTag = 250;
+    $tagPerArticolo = 5;
+
     // Cancella tabelle
     if ($creaTabelle) {
         $listaTabelle = array(
@@ -61,14 +67,14 @@
     $queryInserisciUtente->bindParam(":riceveNewsletter", $riceveNewsletter);
     $queryInserisciUtente->bindParam(":tipoUtente", $tipoUtente);
     $queryInserisciUtente->bindParam(":regione", $regione);
-    for ($i=0; $i < 75; $i++) { 
+    for ($i=0; $i < $numUtenti; $i++) { 
         $username = "utente".$i;
         $nome = "Franco";
         $cognome = "Testoni";
         $email = "FrancoTestoni".$i."@email.com";
         $password = password_hash("testPass".$i, PASSWORD_BCRYPT);
         $riceveNewsletter = $i > 10 ? 1 : 0;
-        $tipoUtente = $i < 5 ? "ADMIN" : "USER";
+        $tipoUtente = $i < 10 ? "ADMIN" : "USER";
         $regione = NULL;
         if($queryInserisciUtente->execute()) {
             echo ("Inserito un utente con successo\n");
@@ -81,9 +87,9 @@
     $queryInserisciTag = $connessione->prepare("INSERT INTO tag (nome, descrizione) VALUES (?, ?)");
     $queryInserisciTag->bindParam(1, $nomeTag);
     $queryInserisciTag->bindParam(2, $descrizioneTag);
-    for ($i=0; $i < 75; $i++) { 
+    for ($i=0; $i < $numTag; $i++) { 
         $nomeTag = "tag".$i;
-        $descrizioneTag = $i < 50 ? "Descrizione tag".$i : NULL;
+        $descrizioneTag = $i < ($numTag * 0.75) ? "Descrizione tag".$i : NULL;
         if($queryInserisciTag->execute()) {
             echo ("Inserito un tag con successo\n");
         } else {
@@ -97,9 +103,9 @@
     $queryInserisciArticoli->bindParam(":sottotitolo", $sottotitolo);
     $queryInserisciArticoli->bindParam(":corpo", $corpo);
     $queryInserisciArticoli->bindParam(":autore", $autore);
-    for ($i=0; $i < 75; $i++) {
+    for ($i=0; $i < $numArticoli; $i++) {
         $titolo = "Articolo ".$i;
-        $sottotitolo = $i < 50 ? "Sottotitolo articolo ".$i : NULL;
+        $sottotitolo = $i < ($numArticoli * 0.75) ? "Sottotitolo articolo ".$i : NULL;
 
         // Prendi uno username a caso
         if (($risQuery = $connessione->query("SELECT username FROM utente WHERE tipoUtente = 'admin' ORDER BY RAND() LIMIT 1"))) {
@@ -119,19 +125,32 @@
         }
     }
     // Caratterizza
-    $queryCaratterizza = $connessione->prepare("INSERT INTO caratterizza (id_articolo, tag) VALUES (:art, :tag)");
-    $queryCaratterizza->bindParam(":art", $idArticolo);
-    $queryCaratterizza->bindParam(":tag", $idTag);
-    for ($i=0; $i < 75; $i++) {
-        $idArticolo = $i;
-        for ($j=0; $j < $i; $j++) {
-            $idTag = "tag".$j;
-            if($queryCaratterizza->execute()) {
-                echo ("Inserito un collegamento articolo-tag con successo\n");
-            } else {
-                echo ("Inserimento fallito: ".join(' ', $queryCaratterizza->errorInfo())."\n");
+    // Itera sugli articoli
+    if (($risQuery = $connessione->query("SELECT id FROM articolo"))) {
+        $queryCaratterizza = $connessione->prepare("INSERT INTO caratterizza (id_articolo, tag) VALUES (:art, :tag)");
+        $queryCaratterizza->bindParam(":art", $idArticolo);
+        $queryCaratterizza->bindParam(":tag", $nomeTag);
+
+        $queryPrendiTag = $connessione->prepare("SELECT nome FROM tag ORDER BY RAND() LIMIT :numTags");
+        $queryPrendiTag->bindParam(":numTags", $tagPerArticolo, PDO::PARAM_INT);
+
+        while(($idArticolo = $risQuery->fetchColumn(0))) {
+            if (!$queryPrendiTag->execute()) {
+                echo ("Ricerca tag fallita: ".join(' ', $queryPrendiTag->errorInfo())."\n");
                 exit(1);
             }
+
+            while (($nomeTag = $queryPrendiTag->fetchColumn(0))) {
+                if($queryCaratterizza->execute()) {
+                    echo ("Creata associazione articolo->tag\n");
+                } else {
+                    echo("Associazione con tag fallita".join(' ', $queryCaratterizza->errorInfo())."\n");
+                    exit(1);
+                }
+            }
         }
+    } else {
+        echo ("Ricerca articoli fallita: ".join(' ', $queryInserisciArticoli->errorInfo())."\n");
+        exit(1);
     }
 ?>
