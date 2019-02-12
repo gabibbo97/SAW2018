@@ -21,6 +21,9 @@ const places = [
 var map = null;
 
 document.addEventListener("DOMContentLoaded", () => {
+
+  "use strict";
+
   // Carica e mostra la mappa
   map = L.map('map').setView([centerLatitude, centerLongitude], 8);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -45,6 +48,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function centerMap(element) {
+
+  "use strict";
 
   // Ottieni il nome
   let name = element.textContent;
