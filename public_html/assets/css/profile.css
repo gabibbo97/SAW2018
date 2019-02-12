@@ -1,0 +1,11 @@
+thead > tr > td {
+  font-weight: bold;
+}
+
+thead > tr > td, tbody > tr > td {
+  text-align: center;
+}
+
+#blog, #newsletter, #users {
+  display: none;
+}

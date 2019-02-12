@@ -1,54 +1,12 @@
 <!DOCTYPE html>
 <html lang="it">
 
-<head>
-  <meta charset="UTF-8">
-  <!-- Compatibilit&aacute; con iPhone -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Registrazione</title>
-
-  <!-- Colore barra su Chrome mobile -->
-  <meta name="theme-color" content="#ffa82e">
-
-  <meta name="author" content="Longo, Orlich, Tassara">
-  <meta name="description" content="Pagina di registrazione">
-  <!--<meta name="keywords" content="paperelle, gioco, compagnia, giallo, gomma">-->
-
-
-  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-  <script async defer src="assets/js/header.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
-
-  <style>
-    html {
-      /* Rappresenta con una colonna centrata e allineata orizzontalmente */
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-
-      /* Imposta immagine di sfondo */
-      background-image: url('assets/images/register.jpg');
-
-      /* Imposta immagine di sfondo centrata, senza ripetizioni e grande come la pagina */
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
-
-      /* Sfuma attorno */
-      box-shadow: inset 0 0 5em black;
-
-      height: 100%;
-    }
-
-    @media screen and (max-height: 1000px) {
-      html {
-        height: auto;
-      }
-    }
-  </style>
-
-</head>
+<?php
+  require ('lib/head.php');
+  drawHead("Profilo", "Gestione attivitá", array(
+    '<link rel="stylesheet" href="assets/css/registration.css">'
+  ));
+?>
 
 <body>
   <section class="section">
@@ -187,7 +145,7 @@
               </div>
               <div class="level">
                 <div class="level-item has-text-centered">
-                  <a href="index.html">Torna alla home</a>
+                  <a href="index.php">Torna alla home</a>
                 </div>
               </div>
             </form>

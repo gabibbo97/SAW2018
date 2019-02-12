@@ -1,0 +1,12 @@
+.divider {
+    margin-left: 0.2em;
+    margin-right: 0.2em;
+}
+
+.footer {
+    padding: 3rem 1.5rem 3rem;
+}
+
+#login-bar {
+    display: none;
+}

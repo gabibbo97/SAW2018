@@ -1,0 +1,26 @@
+html {
+  /* Rappresenta con una colonna centrata e allineata orizzontalmente */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  /* Imposta immagine di sfondo */
+  background-image: url('/assets/images/register.jpg');
+
+  /* Imposta immagine di sfondo centrata, senza ripetizioni e grande come la pagina */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  /* Sfuma attorno */
+  box-shadow: inset 0 0 5em black;
+
+  height: 100%;
+}
+
+@media screen and (max-height: 1000px) {
+  html {
+    height: auto;
+  }
+}
