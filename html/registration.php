@@ -2,7 +2,7 @@
 <html lang="it">
 
 <?php
-  require ('lib/head.php');
+  require ('../lib/head.php');
   drawHead("Profilo", "Gestione attivitá", array(
     '<link rel="stylesheet" href="assets/css/registration.css">'
   ));

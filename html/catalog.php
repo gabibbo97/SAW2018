@@ -2,7 +2,7 @@
 <html lang="it">
 
 <?php
-  require ('lib/head.php');
+  require ('../lib/head.php');
   drawHead("Catalogo", "I nostri prodotti", array(
     '<link rel="stylesheet" href="https://unpkg.com/bulma-slider@2.0.0/dist/css/bulma-slider.min.css" />',
     '<style rel="stylesheet" href="assets/css/catalog.css"></style>',
@@ -11,7 +11,7 @@
 ?>
 
 <body>
-  <?php require ('lib/header.php'); ?>
+  <?php require ('../lib/header.php'); ?>
   <main>
     <div id="imagePreview" class="modal">
       <div class="modal-background"></div>
@@ -186,7 +186,7 @@
       </div>
     </div>
   </main>
-  <?php require ('lib/footer.php'); ?>
+  <?php require ('../lib/footer.php'); ?>
 </body>
 
 </html>

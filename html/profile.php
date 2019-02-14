@@ -2,7 +2,7 @@
 <html lang="it">
 
 <?php
-  require ('lib/head.php');
+  require ('../lib/head.php');
   drawHead("Profilo", "Gestione attivitá", array(
     '<link rel="stylesheet" href="assets/css/profile.css">',
     '<script src="assets/js/profile.js"></script>'
@@ -10,7 +10,7 @@
 ?>
 
 <body>
-  <?php require ('lib/header.php'); ?>
+  <?php require ('../lib/header.php'); ?>
   <main>
     <div class="section">
       <div class="tabs is-centered is-medium is-toggle">
@@ -376,7 +376,7 @@
       </form>
     </div>
   </main>
-  <?php require ('lib/footer.php'); ?>
+  <?php require ('../lib/footer.php'); ?>
 </body>
 
 </html>

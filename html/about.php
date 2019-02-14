@@ -2,7 +2,7 @@
 <html lang="it">
 
 <?php
-  require ('lib/head.php');
+  require ('../lib/head.php');
   drawHead("Chi siamo", "I nostri punti vendita", array(
     '<link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin="" />',
     '<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js" integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg==" crossorigin=""></script>',
@@ -11,7 +11,7 @@
 ?>
 
 <body>
-  <?php require ('lib/header.php'); ?>
+  <?php require ('../lib/header.php'); ?>
   <main>
     <section class="section">
       <div class="container is-fluid">
@@ -53,7 +53,7 @@
       </div>
     </section>
   </main>
-  <?php require ('lib/footer.php'); ?>
+  <?php require ('../lib/footer.php'); ?>
 </body>
 
 </html>

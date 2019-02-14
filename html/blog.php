@@ -2,12 +2,12 @@
 <html lang="it">
 
 <?php
-  require ('lib/head.php');
+  require ('../lib/head.php');
   drawHead("Blog", "Il nostro blog");
 ?>
 
 <body>
-  <?php require ('lib/header.php'); ?>
+  <?php require ('../lib/header.php'); ?>
   <main class="section">
     <div class="columns">
       <aside class="menu column is-one-quarter">
@@ -93,7 +93,7 @@
       </div>
     </div>
   </main>
-  <?php require ('lib/footer.php'); ?>
+  <?php require ('../lib/footer.php'); ?>
 </body>
 
 </html>

@@ -2,12 +2,12 @@
 <html lang="it">
 
 <?php
-  require ('lib/head.php');
+  require ('../lib/head.php');
   drawHead("Homepage", "La nostra homepage");
 ?>
 
 <body>
-  <?php require ('lib/header.php'); ?>
+  <?php require ('../lib/header.php'); ?>
   <main class="section">
     <div class="box">
       <h1 class="title">How to become an almost perfect duck</h1>
@@ -21,7 +21,7 @@
       </nav>
     </div>
   </main>
-  <?php require ('lib/footer.php'); ?>
+  <?php require ('../lib/footer.php'); ?>
 </body>
 
 </html>

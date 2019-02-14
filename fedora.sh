@@ -27,7 +27,7 @@ case "$1" in  # In base al primo argomento del programma
     sudo podman run --pod SAW \
       --name webserver \
       --detach \
-      --volume "${PWD}/public_html:/var/www/html/:ro" \
+      --volume "${PWD}/:/var/www/:ro" \
       php:apache
     sudo podman run --pod SAW \
       --name adminer \
