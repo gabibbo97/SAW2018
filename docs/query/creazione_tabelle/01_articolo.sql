@@ -1,4 +1,4 @@
-CREATE TABLE articolo (
+CREATE TABLE IF NOT EXISTS articolo (
     id SERIAL PRIMARY KEY,
     titolo VARCHAR(100) NOT NULL,
     sottotitolo VARCHAR(200) NULL,
@@ -7,4 +7,4 @@ CREATE TABLE articolo (
     autore VARCHAR(20) NOT NULL,
     FOREIGN KEY (autore) REFERENCES utente (username) ON DELETE CASCADE ON UPDATE CASCADE
 );
-CREATE FULLTEXT INDEX testo_articoli ON articolo(corpo);
+CREATE FULLTEXT INDEX IF NOT EXISTS testo_articoli ON articolo(corpo);

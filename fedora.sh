@@ -28,7 +28,9 @@ case "$1" in  # In base al primo argomento del programma
       --name webserver \
       --detach \
       --volume "${PWD}/:/var/www/:ro" \
-      php:apache
+      --entrypoint /bin/sh \
+      php:apache \
+      -c 'docker-php-ext-install pdo_mysql && docker-php-entrypoint apache2-foreground'
     sudo podman run --pod SAW \
       --name adminer \
       --detach \

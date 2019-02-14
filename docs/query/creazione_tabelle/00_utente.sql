@@ -1,4 +1,4 @@
-CREATE TABLE utente (
+CREATE TABLE IF NOT EXISTS utente (
     username VARCHAR(20) PRIMARY KEY,
     nome VARCHAR(20) NOT NULL,
     cognome VARCHAR(20) NOT NULL,
