@@ -8,8 +8,8 @@
     $creaTabelle = TRUE;
 
     $numUtenti = 50;
-    $numArticoli = 250;
-    $numTag = 250;
+    $numArticoli = 15;
+    $numTag = 10;
     $tagPerArticolo = 5;
 
     // Cancella tabelle

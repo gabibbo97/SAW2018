@@ -4,8 +4,51 @@
 <?php
   require ('../lib/db.php');
   $db = dbConnect();
+  // Se viene fornito un numero di pagina valido usalo
+  if (isset($_GET['page'])) {
+    if (intval($_GET['page']) > 0) {
+      $pageNumber = intval($_GET['page']);
+    } else {
+      require('../lib/error.php');
+      drawError("Numero di pagina richiesto non disponibile");
+    }
+  } else {
+    $pageNumber = 1;
+  }
+  // Numero di articoli per ogni pagina
+  $articlesForEachPage = 5;
+  // Controllo se il numero di pagina richiesto é valido
+  if (isset($_GET['tag'])) {
+    $pageCountQuery = $db->prepare('SELECT CEIL(COUNT(*) / :articlesForEachPage) FROM articolo INNER JOIN caratterizza ON articolo.id = caratterizza.id_articolo WHERE caratterizza.tag = :tag');
+    $pageCountQuery->bindParam(":tag", $_GET['tag']);
+  } else if ($_GET['search']) {
+    $pageCountQuery = $db->prepare('SELECT CEIL(COUNT(*) / :articlesForEachPage) FROM articolo WHERE MATCH(corpo) AGAINST (:searchTerm);');
+    $pageCountQuery->bindParam(":searchTerm", $_GET['search']);
+  } else {
+    $pageCountQuery = $db->prepare('SELECT CEIL(COUNT(*) / :articlesForEachPage) FROM articolo');
+  }
+  $pageCountQuery->bindParam(":articlesForEachPage", $articlesForEachPage, PDO::PARAM_INT);
+  $pageCountQuery->execute();
+  $pageCount = $pageCountQuery->fetchColumn(0);
+  // Mostra un errore in caso di pagina errata
+  if ($pageCount < $pageNumber) {
+    require('../lib/error.php');
+    if ($_GET['search'])
+      drawError("Nessun risultato trovato");
+    else
+      drawError("Numero di pagina richiesto non disponibile");
+  }
   require ('../lib/head.php');
   drawHead("Blog", "Il nostro blog");
+
+  // Parametri per gli url
+  $params = array(
+    'page' => $pageNumber,
+  );
+  if ($_GET['tag'])
+    $params['tag'] = $_GET['tag'];
+  if ($_GET['search'])
+    $params['search'] = $_GET['search'];
 ?>
 
 <body>
@@ -17,28 +60,41 @@
           Ricerca
         </p>
         <ul class="menu-list">
-          <li class="field has-addons">
-            <div class="control">
-              <input class="input" type="text" placeholder="Ricerca">
-            </div>
-            <div class="control">
-              <a class="button is-info">
-                Cerca
-              </a>
-            </div>
-          </li>
+          <form>
+            <li class="field has-addons">
+              <div class="control">
+                <input class="input" type="text" placeholder="Ricerca" name="search">
+              </div>
+              <div class="control">
+                <button type="submit" class="button is-info">
+                  Cerca
+                </button>
+              </div>
+            </li>
+          </form>
         </ul>
         <p class="menu-label">
           Tags
         </p>
         <ul class="menu-list">
           <?php
-            if (($risQueryTags = $db->query('SELECT nome FROM tag ORDER BY LENGTH (nome), nome'))) {
+            // Prendi la lista dei tag dal database
+            if (($risQueryTags = $db->query('SELECT nome, descrizione FROM tag ORDER BY LENGTH (nome), nome'))) {
+
+              // Per ogni riga ritornata
               while (($tag = $risQueryTags->fetch(PDO::FETCH_ASSOC))) {
-                if (isset($_GET['tag']) && $_GET['tag'] === $tag['nome'])
-                  print ('<li><a href="?tag='.$tag['nome'].'" class="is-active">'.$tag['nome'].'</a></li>');
-                else
-                  print ('<li><a href="?tag='.$tag['nome'].'">'.$tag['nome'].'</a></li>');
+
+                $params['tag'] = $tag['nome'];
+
+                // Se in GET viene passato tag e il tag é il corrente
+                if (isset($_GET['tag']) && $_GET['tag'] === $tag['nome']) {
+                  if (isset($tag['descrizione']))
+                    print ('<li><a href="?'.http_build_query($params).'" class="is-active">'.$tag['nome'].'<br><small>'.$tag['descrizione'].'</small></a></li>');
+                  else
+                    print ('<li><a href="?'.http_build_query($params).'" class="is-active">'.$tag['nome'].'</a></li>');
+                } else {
+                  print ('<li><a href="?'.http_build_query($params).'">'.$tag['nome'].'</a></li>');
+                }
               }
             }
           ?>
@@ -46,59 +102,93 @@
       </aside>
       <div class="column">
         <?php
-          $articlesForEachPage = 5;
-
-          if (isset($_GET['page']) && 0 !== intval($_GET['page']) && intval($_GET['page']) > 0) {
-            $pageNumber = intval($_GET['page']);
+          // Prepara la query per gli articoli
+          if (isset($_GET['tag'])) {
+            $articlesQuery = $db->prepare('SELECT id, titolo, sottotitolo, data FROM articolo INNER JOIN caratterizza ON articolo.id = caratterizza.id_articolo WHERE caratterizza.tag = :tag ORDER BY data, id DESC LIMIT :limit OFFSET :offset');
+            $articlesQuery->bindParam(":tag", $_GET['tag']);
+          } else if ($_GET['search']) {
+            $articlesQuery = $db->prepare('SELECT id, titolo, sottotitolo, data FROM articolo WHERE MATCH(corpo) AGAINST (:searchTerm) LIMIT :limit OFFSET :offset');
+            $articlesQuery->bindParam(":searchTerm", $_GET['search']);
           } else {
-            $pageNumber = 0;
+            $articlesQuery = $db->prepare('SELECT id, titolo, sottotitolo, data FROM articolo ORDER BY data, id DESC LIMIT :limit OFFSET :offset');
           }
-
-          $articlesQuery = $db->prepare('SELECT id, titolo, sottotitolo, data FROM articolo ORDER BY data, id DESC LIMIT :limit OFFSET :offset');
           $articlesQuery->bindParam(":limit", $articlesForEachPage, PDO::PARAM_INT);
           $articlesQuery->bindParam(":offset", $articlesOffset, PDO::PARAM_INT);
-          $articlesOffset = $articlesForEachPage * $pageNumber;
 
+          // Calcola quante righe saltare del risultato
+          $articlesOffset = $articlesForEachPage * ($pageNumber - 1);
+
+          // Lancia la query sul database
           $articlesQuery->execute();
+
+          // Prendi e disegna gli articoli
           while (($article = $articlesQuery->fetch(PDO::FETCH_ASSOC))) {
+
             print('<div class="box">');
             print('<h1 class="title">'.$article['titolo'].'</h1>');
+
+            // Il campo sottotitolo é NULL
             if (isset($article['sottotitolo'])) {
               print('<h2 class="subtitle">'.$article['sottotitolo'].' - '.$article['data'].'</h2>');
             } else {
               print('<h2 class="subtitle">'.$article['data'].'</h2>');
             }
-            print('<a class="button">Leggi di piú</a>');
+            print('<a href="blog-article.php?id='.$article['id'].'" class="button">Leggi di piú</a>');
             print('</div>');
           }
+
+          // Stampa delle pagine
+          print('<nav class="pagination" aria-label="pagination">');
+          if ($pageNumber > 1) {
+            $params['page'] = $pageNumber - 1;
+            print('<a href="?'.http_build_query($params).'" class="pagination-previous">Pagina precedente</a>');
+          }
+          if ($pageNumber < $pageCount) {
+            $params['page'] = $pageNumber + 1;
+            print('<a href="?'.http_build_query($params).'" class="pagination-next">Pagina successiva</a>');
+          }
+          print('<ul class="pagination-list">');
+
+          // Casi particolari per ultima e penultima pagina
+          if ($pageNumber == $pageCount) {
+            $currentPage = $pageNumber - 4;
+          } else if ($pageNumber == $pageCount - 1) {
+            $currentPage = $pageNumber - 3;
+          } else {
+            $currentPage = $pageNumber - 2;
+          }
+          $pagesDisplayed = 0;
+          $lastPageDisplayed = false;
+
+          while ($pagesDisplayed < 5 && $currentPage <= $pageCount) {
+            // Salta le pagine in negativo
+            if ($currentPage <= 0) {
+              $currentPage++;
+              continue;
+            }
+
+            // Stampa la pagina
+            $params['page'] = $currentPage;
+            if ($pageNumber === $currentPage) {
+              print('<li><a href=?'.http_build_query($params).' class="pagination-link is-current">'.$currentPage.'</a></li>');
+            } else {
+              print('<li><a href=?'.http_build_query($params).' class="pagination-link">'.$currentPage.'</a></li>');
+            }
+            $pagesDisplayed++;
+
+            $currentPage++;
+          }
+
+          if ($currentPage <= $pageCount) {
+            if ($currentPage < $pageCount)
+              print('<span class="pagination-ellipsis">&hellip;</span>');
+
+            $params['page'] = $pageCount;
+            print('<li><a href="?'.http_build_query($params).'" class="pagination-link">'.$pageCount.'</a></li>');
+          }
+          print('</ul>');
+          print('</nav>');
         ?>
-        <nav class="pagination" aria-label="pagination">
-          <a class="pagination-previous">Previous</a>
-          <a class="pagination-next">Next page</a>
-          <ul class="pagination-list">
-            <li>
-              <a class="pagination-link" aria-label="Goto page 1">1</a>
-            </li>
-            <li>
-              <span class="pagination-ellipsis">&hellip;</span>
-            </li>
-            <li>
-              <a class="pagination-link" aria-label="Goto page 45">45</a>
-            </li>
-            <li>
-              <a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a>
-            </li>
-            <li>
-              <a class="pagination-link" aria-label="Goto page 47">47</a>
-            </li>
-            <li>
-              <span class="pagination-ellipsis">&hellip;</span>
-            </li>
-            <li>
-              <a class="pagination-link" aria-label="Goto page 86">86</a>
-            </li>
-          </ul>
-        </nav>
       </div>
     </div>
   </main>
