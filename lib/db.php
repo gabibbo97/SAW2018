@@ -2,7 +2,7 @@
   function dbConnect() {
     require('config.php'); // Includi le impostazioni di configurazione
     try {
-      $db = new PDO('mysql:'.'dbname='.$databaseName.';host='.$databaseHost, $databaseUser, $databasePassword);
+      $db = new PDO('mysql:'.'charset=UTF8;'.'dbname='.$databaseName.';host='.$databaseHost, $databaseUser, $databasePassword);
       
       // Inizializza automaticamente il database
       dbInit($db);

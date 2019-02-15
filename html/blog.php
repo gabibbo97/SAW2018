@@ -81,6 +81,9 @@
             // Prendi la lista dei tag dal database
             if (($risQueryTags = $db->query('SELECT nome, descrizione FROM tag ORDER BY LENGTH (nome), nome'))) {
 
+              // Salva e ripristina params['tag']
+              $oldTag = $params['tag'];
+
               // Per ogni riga ritornata
               while (($tag = $risQueryTags->fetch(PDO::FETCH_ASSOC))) {
 
@@ -89,13 +92,15 @@
                 // Se in GET viene passato tag e il tag é il corrente
                 if (isset($_GET['tag']) && $_GET['tag'] === $tag['nome']) {
                   if (isset($tag['descrizione']))
-                    print ('<li><a href="?'.http_build_query($params).'" class="is-active">'.$tag['nome'].'<br><small>'.$tag['descrizione'].'</small></a></li>');
+                    print ('<li><a href="?'.http_build_query($params).'" class="is-active">'.htmlspecialchars($tag['nome'], ENT_HTML5).'<br><small>'.$tag['descrizione'].'</small></a></li>');
                   else
-                    print ('<li><a href="?'.http_build_query($params).'" class="is-active">'.$tag['nome'].'</a></li>');
+                    print ('<li><a href="?'.http_build_query($params).'" class="is-active">'.htmlspecialchars($tag['nome'], ENT_HTML5).'</a></li>');
                 } else {
-                  print ('<li><a href="?'.http_build_query($params).'">'.$tag['nome'].'</a></li>');
+                  print ('<li><a href="?'.http_build_query($params).'">'.htmlspecialchars($tag['nome'], ENT_HTML5).'</a></li>');
                 }
               }
+
+              $params['tag'] = $oldTag;
             }
           ?>
         </ul>
@@ -125,11 +130,11 @@
           while (($article = $articlesQuery->fetch(PDO::FETCH_ASSOC))) {
 
             print('<div class="box">');
-            print('<h1 class="title">'.$article['titolo'].'</h1>');
+            print('<h1 class="title">'.htmlspecialchars($article['titolo'], ENT_HTML5).'</h1>');
 
             // Il campo sottotitolo é NULL
             if (isset($article['sottotitolo'])) {
-              print('<h2 class="subtitle">'.$article['sottotitolo'].' - '.$article['data'].'</h2>');
+              print('<h2 class="subtitle">'.htmlspecialchars($article['sottotitolo'], ENT_HTML5).' - '.$article['data'].'</h2>');
             } else {
               print('<h2 class="subtitle">'.$article['data'].'</h2>');
             }

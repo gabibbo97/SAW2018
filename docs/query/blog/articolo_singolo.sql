@@ -5,10 +5,10 @@
 SELECT
     articoli_precedenti.id AS 'id_prec',
     articoli_precedenti.titolo AS 'titolo_prec',
-    articolo.titolo,
-    articolo.sottotitolo,
-    articolo.data,
-    articolo.corpo,
+    articolo.titolo AS 'titolo',
+    articolo.sottotitolo AS 'sottotitolo',
+    articolo.corpo AS 'corpo',
+    articolo.autore AS 'autore',
     articoli_successivi.id AS 'id_succ',
     articoli_successivi.titolo AS 'titolo_succ'
 FROM                                                                                              -- Genera una tabella |PRECEDENTE|CORRENTE|SUCCESSIVO|
@@ -16,7 +16,7 @@ FROM                                                                            
     RIGHT OUTER JOIN articolo ON articoli_precedenti.id < articolo.id                             -- Ritorna NULL/Gli articoli con id < di articolo affiancata a sinistra di articolo
     LEFT OUTER JOIN articolo AS articoli_successivi ON articoli_successivi.id > articolo.id       -- Ritorna NULL/Gli articoli con id > di articolo affiancata a destra di articolo
 WHERE
-    articolo.id = 5                                                                               -- Verifica che l'ID dell'articolo corrente sia corretto
+    articolo.id = :id                                                                             -- Verifica che l'ID dell'articolo corrente sia corretto
     AND (
         articoli_precedenti.id = (                                                                -- Il precedente é il post con ID massimo tra quelli con ID inferiore a quello dell'articolo
             SELECT
@@ -24,7 +24,7 @@ WHERE
             FROM
                 articolo
             WHERE
-                articolo.id < 5
+                articolo.id < :id
         )
         OR articoli_precedenti.id IS NULL                                                         -- Altrimenti va bene un predecessore vuoto
     )
@@ -35,7 +35,7 @@ WHERE
             FROM
                 articolo
             WHERE
-                articolo.id > 5
+                articolo.id > :id
         )
         OR articoli_successivi.id IS NULL                                                         -- Altrimenti va bene un successivo vuoto
     )
