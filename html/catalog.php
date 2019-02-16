@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="it">
-
 <?php
   require ('../lib/head.php');
   drawHead("Catalogo", "I nostri prodotti", array(

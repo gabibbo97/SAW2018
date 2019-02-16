@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="it">
-
 <?php
   if (!isset($_GET['id'])) {
     require('../lib/error.php');

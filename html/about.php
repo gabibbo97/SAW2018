@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="it">
-
 <?php
   require ('../lib/head.php');
   drawHead("Chi siamo", "I nostri punti vendita", array(

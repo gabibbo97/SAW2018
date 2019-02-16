@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="it">
-
 <?php
   require ('../lib/db.php');
   $db = dbConnect();

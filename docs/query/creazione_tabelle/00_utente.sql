@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS utente (
         'Liguria',
         'Lombardia',
         'Marche',
-        'Molisa',
+        'Molise',
         'Piemonte',
         'Puglia',
         'Sardegna',

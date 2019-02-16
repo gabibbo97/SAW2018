@@ -1,6 +1,46 @@
-<!DOCTYPE html>
-<html lang="it">
+<?php
+  session_start();
 
+  // Login
+  if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset($_POST['password'])) {
+    require ('../lib/db.php');
+    $db = dbConnect();
+
+    $loginQuery = $db->prepare('SELECT password, tipoUtente FROM utente WHERE username = :username');
+    $loginQuery->bindParam(":username", $_POST['username']);
+    $loginQuery->execute();
+    $password_hash = $loginQuery->fetchColumn(0);
+
+    if ($password_hash == FALSE) {
+      require('../lib/error.php');
+      drawError('Username o password errati');
+    } else {
+      if (password_verify($_POST['password'], $password_hash)) {
+        $_SESSION['username'] = $_POST['username'];
+        $_SESSION['role'] = $loginQuery->fetchColumn(1);
+        header('Location: profile.php');
+        die();
+      } else {
+        require('../lib/error.php');
+        drawError('Username o password errati');
+      }
+    }
+  }
+
+  // Mostra errore se l'utente non é loggato
+  if (!isset($_SESSION['username'])) {
+    require ('../lib/error.php');
+    drawError("Area riservata, effettuare l'accesso");
+  }
+
+  // Logout
+  if (isset($_GET['logout']) && $_GET['logout'] == 'yes') {
+    session_destroy();
+    $_SESSION = array();
+    header("Location: index.php");
+    die();
+  }
+?>
 <?php
   require ('../lib/head.php');
   drawHead("Profilo", "Gestione attivitá", array(

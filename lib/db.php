@@ -35,7 +35,7 @@
     $initializedFile = dirname($_SERVER['SCRIPT_FILENAME']).'/db-initialized';
     if (file_exists($initializedFile))
       return;
-    touch ($initializedFile);
+    // TODO: RIMETTERE touch ($initializedFile);
 
     require('config.php'); // Includi le impostazioni di configurazione
 
