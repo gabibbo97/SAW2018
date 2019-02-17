@@ -44,7 +44,7 @@
           print('</div>');
           print('<div class="level-right">');
           print('<figure class="level-item image is-32x32">');
-          print('<img class="is-rounded" src="assets/images/profile.jpeg">');
+          print('<img class="is-rounded" src="profile-picture.php">');
           print('</figure>');
           print('</div>');
           print('</div>');

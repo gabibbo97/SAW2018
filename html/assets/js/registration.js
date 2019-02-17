@@ -1,4 +1,4 @@
-function checkEmail(inputElement) {
+function checkEmail(inputElement, oldEmail) {
 
     "use strict";
 
@@ -16,9 +16,15 @@ function checkEmail(inputElement) {
             let response = JSON.parse(checkIsDuplicateRequest.responseText);
 
             if (response.exists) {
-                inputElement.classList.remove("is-success");
-                inputElement.classList.add("is-danger");
-                inputElement.setCustomValidity("Email giá in uso");
+                if (oldEmail == inputElement.value.trim()) {
+                    inputElement.classList.remove("is-danger");
+                    inputElement.classList.add("is-success");
+                    inputElement.setCustomValidity("");
+                } else {
+                    inputElement.classList.remove("is-success");
+                    inputElement.classList.add("is-danger");
+                    inputElement.setCustomValidity("Email giá in uso");
+                }
             } else {
                 inputElement.classList.remove("is-danger");
                 inputElement.classList.add("is-success");
@@ -27,7 +33,7 @@ function checkEmail(inputElement) {
         }
     }
 
-    let URL = `registration.php?checkEmail=${encodeURI(inputElement.value.toLowerCase())}`;
+    let URL = `registration.php?checkEmail=${encodeURI(inputElement.value.toLowerCase().trim())}`;
     checkIsDuplicateRequest.open("GET", URL);
     checkIsDuplicateRequest.send();
 }
