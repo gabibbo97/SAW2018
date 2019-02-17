@@ -57,6 +57,7 @@
 
     foreach ($listaQuery as $query) {
       if (!$connection->query($query)) {
+        require('error.php');
         if ($isDevelopment) {
           // Mostra errore completo
           drawError("Creazione tabella fallita: ".join(' ', $connection->errorInfo())."\n");
