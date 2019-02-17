@@ -18,7 +18,7 @@
   if (isset($_GET['tag'])) {
     $pageCountQuery = $db->prepare('SELECT CEIL(COUNT(*) / :articlesForEachPage) FROM articolo INNER JOIN caratterizza ON articolo.id = caratterizza.id_articolo WHERE caratterizza.tag = :tag');
     $pageCountQuery->bindParam(":tag", $_GET['tag']);
-  } else if ($_GET['search']) {
+  } else if (isset($_GET['search'])) {
     $pageCountQuery = $db->prepare('SELECT CEIL(COUNT(*) / :articlesForEachPage) FROM articolo WHERE MATCH(corpo) AGAINST (:searchTerm);');
     $pageCountQuery->bindParam(":searchTerm", $_GET['search']);
   } else {
@@ -30,7 +30,7 @@
   // Mostra un errore in caso di pagina errata
   if ($pageCount < $pageNumber) {
     require('../lib/error.php');
-    if ($_GET['search'])
+    if (isset($_GET['search']))
       drawError("Nessun risultato trovato");
     else
       drawError("Numero di pagina richiesto non disponibile");
@@ -42,9 +42,9 @@
   $params = array(
     'page' => $pageNumber,
   );
-  if ($_GET['tag'])
+  if (isset($_GET['tag']))
     $params['tag'] = $_GET['tag'];
-  if ($_GET['search'])
+  if (isset($_GET['search']))
     $params['search'] = $_GET['search'];
 ?>
 
