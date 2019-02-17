@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS utente (
     username VARCHAR(20) PRIMARY KEY,
     nome VARCHAR(20) NOT NULL,
     cognome VARCHAR(20) NOT NULL,
-    email TINYTEXT UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
     password TINYTEXT NOT NULL,
     percorsoImmagine VARCHAR(20) NULL,
     riceveNewsletter BOOLEAN NOT NULL,

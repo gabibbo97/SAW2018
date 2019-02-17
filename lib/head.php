@@ -1,8 +1,10 @@
 <?php
   function drawHead($title, $descrizione, $extra = NULL) {
 
-    // Crea la sessione se non é giá presente
-    if (session_status() === PHP_SESSION_NONE)
+    // Crea la sessione se 
+    // - non é giá presente
+    // - non abbiamo giá mandato gli header
+    if (session_status() === PHP_SESSION_NONE && !headers_sent())
       session_start();
 
     // Leggi il file con il template
