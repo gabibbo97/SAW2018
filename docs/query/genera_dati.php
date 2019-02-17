@@ -58,7 +58,7 @@
     }
 
     // Utenti
-    $queryInserisciUtente = $connessione->prepare("INSERT INTO utente(username, nome, cognome, email, password, percorsoImmagine, riceveNewsletter, tipoUtente, regione) VALUES (:username, :nome, :cognome, :email, :password, NULL, :riceveNewsletter, :tipoUtente, :regione)");
+    $queryInserisciUtente = $connessione->prepare("INSERT INTO utente(username, nome, cognome, email, password, immagine, riceveNewsletter, tipoUtente, regione) VALUES (:username, :nome, :cognome, :email, :password, NULL, :riceveNewsletter, :tipoUtente, :regione)");
     $queryInserisciUtente->bindParam(":username", $username);
     $queryInserisciUtente->bindParam(":nome", $nome);
     $queryInserisciUtente->bindParam(":cognome", $cognome);

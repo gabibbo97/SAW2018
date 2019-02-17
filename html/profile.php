@@ -59,20 +59,26 @@
       drawError("Non é stata caricata una immagine ben formata");
     
     // Carica l'immagine
-    $uploadDir = '../images';
-    if (!is_dir($uploadDir))
-      mkdir($uploadDir, 0666);
-    
-    $fileName = substr(sha1($_SESSION['username']), 0, 20);
-    if(!move_uploaded_file($_FILES['profilePicture']['tmp_name'], $uploadDir.'/'.$fileName))
-      drawError("C'è stato un errore durante l'impostazione della tua immagine");
+    $fileHandle = fopen($_FILES['profilePicture']['tmp_name'], 'rb');
     
     require ('../lib/db.php');
     $db = dbConnect();
-    $profileImageQuery = $db->prepare('UPDATE utente SET percorsoImmagine = :percorso WHERE username = :username');
+    $profileImageQuery = $db->prepare('UPDATE utente SET immagine = :immagine WHERE username = :username');
     $profileImageQuery->bindParam(":username", $_SESSION['username']);
-    $profileImageQuery->bindParam(":percorso", $fileName);
-    $profileImageQuery->execute();
+    $profileImageQuery->bindParam(":immagine", $fileHandle, PDO::PARAM_LOB);
+
+    if (!$profileImageQuery->execute()) {
+      require ('../lib/config.php');
+      if ($isDevelopment) {
+        // Mostra errore completo
+        drawError("Errore durante il caricamento dell'immagine: ".join(' ', $db->errorInfo()));
+      } else {
+        // Mostra errore generico
+        drawError("Errore durante il caricamento dell'immagine");
+      }
+    }
+      
+
     header("Location: profile.php");
     die();
   }
@@ -245,7 +251,7 @@
   // Ottieni i dati dell'utente
   require ('../lib/db.php');
   $db = dbConnect();
-  $userDetailsQuery = $db->prepare('SELECT nome,cognome,email,percorsoImmagine,riceveNewsletter,regione FROM utente WHERE username = :username');
+  $userDetailsQuery = $db->prepare('SELECT nome,cognome,email,riceveNewsletter,regione FROM utente WHERE username = :username');
   $userDetailsQuery->bindParam(":username", $_SESSION['username']);
   $userDetailsQuery->execute();
   $userDetails = $userDetailsQuery->fetch(PDO::FETCH_ASSOC);
@@ -261,36 +267,11 @@
 <body>
   <?php require ('../lib/header.php'); ?>
   <main>
-    <div class="section" <?php if ($_SESSION['role'] != 'ADMIN') { print('style="display: none"'); } ?>>
-      <div class="tabs is-centered is-medium is-toggle">
-        <ul>
-          <li class="is-active">
-            <a onclick="menu(this, 'profile')">
-              <span class="icon is-small"><i class="fas fa-user" aria-hidden="true"></i></span>
-              <span>Profilo</span>
-            </a>
-          </li>
-          <li>
-            <a onclick="menu(this, 'blog')">
-              <span class="icon is-small"><i class="far fa-newspaper" aria-hidden="true"></i></span>
-              <span>Blog</span>
-            </a>
-          </li>
-          <li>
-            <a onclick="menu(this, 'newsletter')">
-              <span class="icon is-small"><i class="far fa-envelope-open" aria-hidden="true"></i></span>
-              <span>Newsletter</span>
-            </a>
-          </li>
-          <li>
-            <a onclick="menu(this, 'users')">
-              <span class="icon is-small"><i class="fas fa-users" aria-hidden="true"></i></span>
-              <span>Utenti</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
+    <?php
+      // Importa i comandi da amministratore
+      if ($_SESSION['role'] == 'ADMIN')
+        readfile('../lib/profile-admin-menu.html');
+    ?>
     <div id="profile" class="section">
       <form class="columns" method="POST" action="profile.php?uploadPicture=yes" enctype="multipart/form-data">
         <div class="column is-3">
@@ -299,8 +280,8 @@
         </div>
         <div class="column">
           <nav class="columns is-vcentered">
-            <div class="column is-narrow has-text-centered">
-              <figure class="image is-128x128">
+            <div class="column is-narrow has-text-centered" style="max-width: 30%;">
+              <figure class="image is-128by128">
                 <img alt="Immagine del profilo" class="is-rounded" src="profile-picture.php">
               </figure>
             </div>
@@ -511,122 +492,17 @@
             <p>Tutti i tuoi dati saranno persi e non potrai piú recuperarli</p>
           </div>
           <footer class="modal-card-foot">
-            <a href="?delete=yes" class="button is-danger">S&iacute; sono sicuro</button>
+            <a href="?delete=yes" class="button is-danger">S&iacute; sono sicuro</a>
             <a class="button" onclick="closeDeleteModal()">Annulla</a>
           </footer>
         </div>
       </form>
     </div>
-    <div id="blog" class="section">
-      <form>
-        <div class="field">
-          <label class="label">Titolo del post</label>
-          <div class="control">
-            <input class="input is-primary" type="text" placeholder="Titolo del post">
-          </div>
-        </div>
-        <div class="field">
-          <label class="label">Testo del post</label>
-          <div class="control">
-            <textarea class="textarea is-primary" placeholder="Testo del post" rows="15"></textarea>
-          </div>
-        </div>
-        <div class="field">
-          <label class="label">Tags <small>(separa i tags con la virgola)</small></label>
-          <div class="control">
-            <input class="input is-primary" type="text" placeholder="Tags">
-          </div>
-        </div>
-        <div class="field">
-          <a class="button is-warning is-fullwidth">Pubblica</a>
-        </div>
-      </form>
-    </div>
-    <div id="newsletter" class="section">
-      <form>
-        <div class="field">
-          <label class="label">Oggetto</label>
-          <div class="control">
-            <input class="input is-primary" type="text" placeholder="Oggetto della mail">
-          </div>
-        </div>
-        <div class="field">
-          <label class="label">Testo dell'email</label>
-          <div class="control">
-            <textarea class="textarea is-primary" placeholder="Testo dell'email" rows="15"></textarea>
-          </div>
-        </div>
-        <div class="field">
-          <a class="button is-warning is-fullwidth">Invia</a>
-        </div>
-      </form>
-    </div>
-    <div id="users" class="section">
-      <form style="overflow-x:auto;">
-        <table class="table is-striped is-fullwidth">
-          <thead>
-            <tr>
-              <td>Username</td>
-              <td>Email</td>
-              <td>Nome</td>
-              <td>Cognome</td>
-              <td>Regione</td>
-              <td>Azioni</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Babdidd</td>
-              <td>ffsdasd</td>
-              <td>dasdasdad</td>
-              <td>gdgdgd</td>
-              <td>gsdgsdgsg</td>
-              <td>gsgdsgsdg</td>
-            </tr>
-            <tr>
-              <td>Babdidd</td>
-              <td>ffsdasd</td>
-              <td>dasdasdad</td>
-              <td>gdgdgd</td>
-              <td>gsdgsdgsg</td>
-              <td>gsgdsgsdg</td>
-            </tr>
-            <tr>
-              <td>Babdidd</td>
-              <td>ffsdasd</td>
-              <td>dasdasdad</td>
-              <td>gdgdgd</td>
-              <td>gsdgsdgsg</td>
-              <td>gsgdsgsdg</td>
-            </tr>
-            <tr>
-              <td>Babdidd</td>
-              <td>ffsdasd</td>
-              <td>dasdasdad</td>
-              <td>gdgdgd</td>
-              <td>gsdgsdgsg</td>
-              <td>gsgdsgsdg</td>
-            </tr>
-            <tr>
-              <td>Babdidd</td>
-              <td>ffsdasd</td>
-              <td>dasdasdad</td>
-              <td>gdgdgd</td>
-              <td>gsdgsdgsg</td>
-              <td>gsgdsgsdg</td>
-            </tr>
-            <tr>
-              <td>Babdidd</td>
-              <td>ffsdasd</td>
-              <td>dasdasdad</td>
-              <td>gdgdgd</td>
-              <td>gsdgsdgsg</td>
-              <td>gsgdsgsdg</td>
-            </tr>
-          </tbody>
-        </table>
-      </form>
-    </div>
+    <?php
+      // Importa i comandi da amministratore
+      if ($_SESSION['role'] == 'ADMIN')
+        require('../lib/profile-admin.php');
+    ?>
   </main>
   <?php require ('../lib/footer.php'); ?>
 </body>

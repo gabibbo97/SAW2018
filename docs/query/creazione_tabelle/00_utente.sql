@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS utente (
     cognome VARCHAR(20) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     password TINYTEXT NOT NULL,
-    percorsoImmagine VARCHAR(20) NULL,
+    immagine LONGBLOB NULL,
     riceveNewsletter BOOLEAN NOT NULL,
     tipoUtente ENUM('USER', 'ADMIN') NOT NULL,
     -- If a DEFAULT clause is missing, the default value will be the first value in the enumaration

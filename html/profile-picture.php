@@ -1,34 +1,37 @@
 <?php
-  $userPicturesDir = '../images';
-  $placeHolderImage = 'assets/images/profile.png';
+  session_start();
 
-  function outputImage($fileName) {
-    $contentType = mime_content_type($fileName);
+  function outputPlaceholder() {
+    $placeHolderImage = 'assets/images/profile.png';
+
+    $contentType = mime_content_type($placeHolderImage);
     header('Content-Type: '.$contentType);
-    readfile($fileName);
+    readfile($placeHolderImage);
     die();
   }
 
   if (isset($_SESSION['username'])) {
     require ('../lib/db.php');
     $db = dbConnect();
-    $userDetailsQuery = $db->prepare('SELECT percorsoImmagine FROM utente WHERE username = :username');
+    $userDetailsQuery = $db->prepare('SELECT immagine FROM utente WHERE username = :username');
+
     $userDetailsQuery->bindParam(":username", $_SESSION['username']);
     $userDetailsQuery->execute();
-    $userDetails = $userDetailsQuery->fetch(PDO::FETCH_ASSOC);
 
-    if ($userDetails['percorsoImmagine'] == null) {
-      outputImage($placeHolderImage);
-    } else {
+    // Prendi i dati dell'immagine
+    $image = $userDetailsQuery->fetchColumn(0);
 
-      $userPicture = $userPicturesDir.'/'.$userDetails['percorsoImmagine'];
+    // Se l'utente non ha un'immagine stampa il default
+    if ($image == NULL)
+      outputPlaceholder();
 
-      if (file_exists($userPicture))
-        outputImage($userPicture);
-      else
-        outputImage($placeHolderImage);
-    }
+    // Cerca il mime-type dell'immagine
+    $fileInfo = new finfo(FILEINFO_MIME);
+    header('Content-Type: '.$fileInfo->buffer($image));
+
+    // Stampa l'immagine
+    print($image);
   } else {
-    outputImage($placeHolderImage);
+    outputPlaceholder();
   }
 ?>
