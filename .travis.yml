@@ -6,12 +6,6 @@ services:
 
 language: minimal
 
-addons:
-  apt:
-    packages:
-      - wget
-      - lftp
-
 jobs:
   include:
     - stage: Lint
@@ -24,16 +18,9 @@ jobs:
     - stage: Lint
       before_script:
       # Prepara i container per il lancio
-        - docker pull phpstan/phpstan
-      script:
-      # Analizza staticamente il PHP
-        - docker run --rm -it -v $(pwd)/:/saw phpstan/phpstan analyze --level=max /saw || true
-    - stage: Lint
-      before_script:
-      # Prepara i container per il lancio
         - docker pull node:latest
       # Lancia in background il container
-        - docker run --rm --detach --name node -v $(pwd)/.eslintrc.json:/eslintrc.json -v $(pwd)/:/saw node:latest tail -f /dev/null
+        - docker run --rm --detach --name node -v $(pwd)/.eslintrc.json:/eslintrc.json -v $(pwd)/:/saw node:latest /bin/sh -c 'while true; do sleep 3600; done'
       # Installa i tool nel container
         - docker exec node npm install -g eslint
       script:
@@ -43,13 +30,10 @@ jobs:
       # Spegni il container
         - docker rm --force node
     - stage: Validate
-      before_script:
-      # Prepara i container per il lancio
-        - docker pull validator/validator
-      script:
-      # Valida staticamente i contenuti
-        - docker run --rm -it -v $(pwd)/:/saw validator/validator java -jar /vnu.jar --skip-non-html --also-check-css --format text /saw || true
-    - stage: Validate
+      addons:
+        apt:
+          packages:
+            - wget
       before_script:
       # Prepara i container per il lancio
         - docker pull validator/validator
@@ -57,7 +41,7 @@ jobs:
       # Attiva il sito web
         - docker-compose up --detach
       # Attendi che sia online
-        - until wget -q --spider http://127.0.0.1:8080; do sleep 1; done
+        - until nc -z 127.0.0.1 8080; do sleep 1; done
       # Scarica ogni singola pagina
         - wget --recursive --level=4096 --convert-links --page-requisites --no-directories --directory-prefix=downloaded http://127.0.0.1:8080
       script:
@@ -67,9 +51,19 @@ jobs:
       # Spegni il sito
         - docker-compose down
     - stage: Upload
+      addons:
+        apt:
+          packages:
+            - lftp
       script:
+      # Prepara la configurazione
+        - sed -ie "s/databaseName = \"saw\"/databaseName = \"${USER}\"/" lib/config.php
+        - sed -ie "s/databaseUser = \"saw\"/databaseUser = \"${USER}\"/" lib/config.php
+        - sed -ie "s/databasePassword = \"saw\"/databasePassword = \"${PASS}\"/" lib/config.php
+        - sed -ie "s/isDevelopment = TRUE/isDevelopment = FALSE/" lib/config.php
       # Carica sul server
-        - lftp -e "set sftp:auto-confirm yes; mirror --continue --delete --recursion=always --reverse --verbose lib lib; exit" -u ${USER},${PASS} sftp://${SERVER}        
+        - lftp -e "set sftp:auto-confirm yes; mirror --continue --delete --recursion=always --reverse --verbose docs docs; exit" -u ${USER},${PASS} sftp://${SERVER}
+        - lftp -e "set sftp:auto-confirm yes; mirror --continue --delete --recursion=always --reverse --verbose lib lib; exit" -u ${USER},${PASS} sftp://${SERVER}
         - lftp -e "set sftp:auto-confirm yes; mirror --continue --delete --recursion=always --reverse --verbose html public_html; exit" -u ${USER},${PASS} sftp://${SERVER}
 
 notifications:
