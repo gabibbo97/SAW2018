@@ -2,7 +2,7 @@
 require '../lib/head.php';
 drawHead("Catalogo", "I nostri prodotti", array(
     '<link rel="stylesheet" href="https://unpkg.com/bulma-slider@2.0.0/dist/css/bulma-slider.min.css" />',
-    '<style rel="stylesheet" href="assets/css/catalog.css"></style>',
+    '<link rel="stylesheet" href="assets/css/catalog.css" />',
     '<script src="assets/js/catalog.js"></script>',
 ));
 ?>

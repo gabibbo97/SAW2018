@@ -42,7 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['new'])) {
         $tagExistsQuery = $db->prepare('SELECT nome FROM tag WHERE nome = :nome');
         $tagExistsQuery->bindParam(":nome", $tagName);
         foreach ($tags['existing_tags'] as $tagName) {
-            $tagExistsQuery->execute();
+            if (!$tagExistsQuery->execute())
+                drawError("Non sono riuscito a cercare tra la lista dei tag per i vecchi");
             if ($tagExistsQuery->rowCount() == 0)
                 drawError("Indicato tag non esistente");
         }
@@ -53,12 +54,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['new'])) {
         $newTagExistsQuery = $db->prepare('SELECT nome FROM tag WHERE nome = :nome');
         $newTagExistsQuery->bindParam(":nome", $tagName);
         foreach ($tags['new_tags'] as $tagName) {
-            $newTagExistsQuery->execute();
+            if (!$newTagExistsQuery->execute())
+                drawError("Non sono riuscito a cercare tra la lista dei tag per i nuovi");
             // Inserisci il tag se non esistente
             if ($newTagExistsQuery->rowCount() == 0) {
                 $newTagQuery = $db->prepare('INSERT INTO tag (nome) VALUES (:nome)');
                 $newTagQuery->bindParam(":nome", $tagName);
-                $newTagQuery->execute();
+                if (!$newTagQuery->execute())
+                    drawError("Non sono riuscito a inserire un nuovo tag");
             }
             // Altrimenti ignora
         }
@@ -67,11 +70,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['new'])) {
     // Inserimento nuovo articolo
     $newArticleQuery = $db->prepare('INSERT INTO articolo (titolo,sottotitolo,corpo,autore) VALUES (:titolo, :sottotitolo, :corpo, :autore)');
     $newArticleQuery->bindParam(":titolo", $_POST['titolo']);
-    $newArticleQuery->bindParam(":sottotitolo", $_POST['sottotitolo']);
+
+    $newArticleQuery->bindParam(":sottotitolo", $sottotitolo);
+    if (is_null(trim($_POST['sottotitolo'])))
+        $sottotitolo = trim($_POST['sottotitolo']);
+    else
+        $sottotitolo = NULL;
+
     $newArticleQuery->bindParam(":corpo", $_POST['testo']);
     $newArticleQuery->bindParam(":autore", $_SESSION['username']);
 
-    $newArticleQuery->execute();
+    if(!$newArticleQuery->execute())
+     drawError("Non sono riuscito a inserire un articolo");
 
     // Aggiunta tags
     $tagsQuery = $db->prepare('INSERT INTO caratterizza (id_articolo, tag) VALUES (:articolo, :tag)');
@@ -81,7 +91,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['new'])) {
     $tagsQuery->bindParam(":tag", $tag);
 
     foreach (array_merge($tags['existing_tags'], $tags['new_tags']) as $tag) {
-        $tagsQuery->execute();
+        if (!$tagsQuery->execute())
+            drawError("Non sono riuscito a abbinare un tag all'articolo");
     }
 
     header("Location: blog.php");

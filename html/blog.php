@@ -55,32 +55,30 @@ if (isset($_GET['search'])) {
 ?>
 
 <body>
-  <?php require '../lib/header.php';?>
-  <main class="section">
-    <div class="columns">
-      <aside class="menu column is-one-quarter">
-        <p class="menu-label">
-          Ricerca
-        </p>
-        <ul class="menu-list">
-          <form>
-            <li class="field has-addons">
-              <div class="control">
-                <input class="input" type="text" placeholder="Ricerca" name="search">
-              </div>
-              <div class="control">
-                <button type="submit" class="button is-info">
-                  Cerca
-                </button>
-              </div>
-            </li>
-          </form>
-        </ul>
-        <p class="menu-label">
-          Tags
-        </p>
-        <ul class="menu-list">
-          <?php
+    <?php require '../lib/header.php';?>
+    <main class="section">
+        <div class="columns">
+            <aside class="menu column is-one-quarter">
+                <p class="menu-label">
+                    Ricerca
+                </p>
+                <form class="menu-list">
+                    <div class="field has-addons">
+                        <div class="control is-expanded">
+                            <input class="input" type="text" placeholder="Ricerca" name="search">
+                        </div>
+                        <div class="control">
+                            <button type="submit" class="button is-info">
+                                Cerca
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <p class="menu-label">
+                    Tags
+                </p>
+                <ul class="menu-list">
+                    <?php
 // Prendi la lista dei tag dal database
 if (($risQueryTags = $db->query('SELECT nome, descrizione FROM tag ORDER BY LENGTH (nome), nome'))) {
 
@@ -112,10 +110,10 @@ if (($risQueryTags = $db->query('SELECT nome, descrizione FROM tag ORDER BY LENG
     $params['tag'] = $oldTag;
 }
 ?>
-        </ul>
-      </aside>
-      <div class="column">
-        <?php
+                </ul>
+            </aside>
+            <div class="column">
+                <?php
 // Prepara la query per gli articoli
 if (isset($_GET['tag'])) {
     $articlesQuery = $db->prepare('SELECT id, titolo, sottotitolo, data FROM articolo INNER JOIN caratterizza ON articolo.id = caratterizza.id_articolo WHERE caratterizza.tag = :tag ORDER BY data, id DESC LIMIT :limit OFFSET :offset');
@@ -185,9 +183,9 @@ while ($pagesDisplayed < 5 && $currentPage <= $pageCount) {
     // Stampa la pagina
     $params['page'] = $currentPage;
     if ($pageNumber === $currentPage) {
-        print('<li><a href=?' . http_build_query($params) . ' class="pagination-link is-current">' . $currentPage . '</a></li>');
+        print('<li><a href="?' . http_build_query($params) . '" class="pagination-link is-current">' . $currentPage . '</a></li>');
     } else {
-        print('<li><a href=?' . http_build_query($params) . ' class="pagination-link">' . $currentPage . '</a></li>');
+        print('<li><a href="?' . http_build_query($params) . '" class="pagination-link">' . $currentPage . '</a></li>');
     }
     $pagesDisplayed++;
 
@@ -205,10 +203,10 @@ if ($currentPage <= $pageCount) {
 print('</ul>');
 print('</nav>');
 ?>
-      </div>
-    </div>
-  </main>
-  <?php require '../lib/footer.php';?>
+            </div>
+        </div>
+    </main>
+    <?php require '../lib/footer.php';?>
 </body>
 
 </html>

@@ -15,7 +15,7 @@ drawHead("Chi siamo", "I nostri punti vendita", array(
         <h1 class="title">Le mille più uno paperelle è dal 2018 il leader nel settore della vendita di papere di gomma.</h1>
         <h2 class="subtitle" style="margin-bottom: 0.7em">Trova il punto vendita più vicino a te.</h2>
       </div>
-      <map>
+      <map name="mappa">
         <div class="container is-fluid" id="map" style="height: 40em;">
         </div>
       </map>

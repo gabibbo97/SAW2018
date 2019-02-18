@@ -1,15 +1,12 @@
-<!DOCTYPE html>
-<html lang="it">
-
 <?php
 require('../lib/head.php');
 drawHead("Homepage", "La nostra homepage");
 ?>
 
 <body>
-  <section class="hero is-light is-fullheight">
-    <div class="hero-body">
-      <main class="container">
+  <div class="hero is-light is-fullheight">
+    <main class="hero-body">
+      <div class="container">
         <div class="message is-danger">
           <div class="message-header">
             <h1 class="title">Errore</h1>
@@ -31,12 +28,12 @@ drawHead("Homepage", "La nostra homepage");
             <a class="button is-danger is-large is-fullwidth is-outlined" onclick="window.history.back();">Torna indietro</a>
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
     <div class="hero-foot has-text-black">
       <?php require('../lib/footer.php'); ?>
     </div>
-  </section>
+  </div>
 </body>
 
 </html>

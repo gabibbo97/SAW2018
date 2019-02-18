@@ -86,11 +86,16 @@ function updateTags () {
   };
 
   // Prendi i tag esistenti selezionati
-  tags['existing_tags'] = 
-    Array.from(document.getElementById("existingTags").children) // Prendi tutti i figli del div contenente i tag
-      .map((e) => e.children[0])                                 // Trasforma ogni elemento nel suo primo figlio
-      .filter((e) => e.children[1].children[0].checked)          // Seleziona solo gli elementi in la checkbox é premuta
-      .map((e) => e.children[0].textContent);                    // Prendi il contenuto
+  if (document.getElementById("existingTags").children[0].tagName == 'SMALL') {
+    // Se c'é solo il messaggio "Nessun tag presente" ignora
+    tags['existing_tags'] = [];
+  } else {
+    tags['existing_tags'] = 
+      Array.from(document.getElementById("existingTags").children) // Prendi tutti i figli del div contenente i tag
+        .map((e) => e.children[0])                                 // Trasforma ogni elemento nel suo primo figlio
+        .filter((e) => e.children[1].children[0].checked)          // Seleziona solo gli elementi in la checkbox é premuta
+        .map((e) => e.children[0].textContent);                    // Prendi il contenuto
+  }
   
   // Prendi i tag esistenti selezionati
   tags['new_tags'] = 

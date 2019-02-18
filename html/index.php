@@ -13,15 +13,15 @@ drawHead("Homepage", "La nostra homepage", array(
         <div class="tile is-ancestor">
             <div class="tile is-4 is-vertical is-parent">
 
-                <article class=" is-child message is-link">
+                <div class=" is-child message is-link">
                     <div class="message-body">
                         <p class="title">Le mille piú uno paperelle</p>
                         <p>Scegli la tua paperella preferita tra una ricca collezione di papere selezionate dai
                             migliori esperti del globo in pennuti in vinile. <br> Visita io nostro catalogo!</p>
                     </div>
-                </article>
+                </div>
 
-                <article class=" is-child message is-warning">
+                <div class=" is-child message is-warning">
                     <div class="message-body">
                         <p class="title">Un prodotto pregiato</p>
                         <div class="content">
@@ -35,9 +35,9 @@ drawHead("Homepage", "La nostra homepage", array(
                             </ul>
                         </div>
                     </div>
-                </article>
+                </div>
 
-                <article class=" is-child message is-success is-hidden-touch">
+                <div class=" is-child message is-success is-hidden-touch">
                     <div class="message-body">
                         <p class="title">Collezionale tutte</p>
                         <div class="content">
@@ -50,12 +50,12 @@ drawHead("Homepage", "La nostra homepage", array(
                         </div>
                         <p>Vieni a trovarci, ti aspettiamo!</p>
                     </div>
-                </article>
+                </div>
 
             </div>
             <div class="tile is-8 is-vertical is-parent">
                 <div class='is-child carousel carousel-animated carousel-animate-slide' data-autoplay="true;"
-                    style="max-height: 50em;">
+                    style="max-height: 60em;">
                     <div class='carousel-container'>
                         <div class='carousel-item has-background is-active'>
                             <img class="is-background" src="assets/images/carousel-1.jpg" alt="Paperelle nel canal grande" />
