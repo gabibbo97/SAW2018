@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['new'])) {
     $newArticleQuery->bindParam(":titolo", $_POST['titolo']);
 
     $newArticleQuery->bindParam(":sottotitolo", $sottotitolo);
-    if (is_null(trim($_POST['sottotitolo'])))
+    if (!is_null(trim($_POST['sottotitolo'])))
         $sottotitolo = trim($_POST['sottotitolo']);
     else
         $sottotitolo = NULL;
