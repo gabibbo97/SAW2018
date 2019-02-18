@@ -13,7 +13,7 @@ drawHead("Catalogo", "I nostri prodotti", array(
     <div id="imagePreview" class="modal">
       <div class="modal-background"></div>
       <div class="modal-content">
-        <p class="image is-4by3">
+        <p class="image is-1by1">
           <img src="https://bulma.io/images/placeholders/1280x960.png" alt="">
         </p>
       </div>
@@ -61,122 +61,266 @@ drawHead("Catalogo", "I nostri prodotti", array(
         <div class="columns is-multiline">
           <div class="column is-one-quarter card">
             <div onclick="openImagePreview(this)" class="card-image">
-              <figure class="image is-4by3">
-                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+              <figure class="image is-1by1">
+                <img src="assets/images/products/alNaturale/paperellaBlu.png" alt="Paperella blu">
               </figure>
             </div>
             <div class="card-content">
-              <p class="title">Prodotto</p>
-              <p class="subtitle">Categoria</p>
-              <p>43.20 euro</p>
+              <p class="title">Paperella blu</p>
+              <p class="subtitle">Al naturale</p>
+              <p>5.90 euro</p>
             </div>
           </div>
           <div class="column is-one-quarter card">
             <div onclick="openImagePreview(this)" class="card-image">
-              <figure class="image is-4by3">
-                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+              <figure class="image is-1by1">
+                <img src="assets/images/products/alNaturale/paperellaGialla.png" alt="Paperella gialla">
               </figure>
             </div>
             <div class="card-content">
-              <p class="title">Prodotto</p>
-              <p class="subtitle">Categoria</p>
-              <p>43.20 euro</p>
+              <p class="title">Paperella gialla</p>
+              <p class="subtitle">Al naturale</p>
+              <p>5.90 euro</p>
             </div>
           </div>
           <div class="column is-one-quarter card">
             <div onclick="openImagePreview(this)" class="card-image">
-              <figure class="image is-4by3">
-                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+              <figure class="image is-1by1">
+                <img src="assets/images/products/alNaturale/paperellaRosa.png" alt="Paperella rosa">
               </figure>
             </div>
             <div class="card-content">
-              <p class="title">Prodotto</p>
+              <p class="title">Paperella rosa</p>
+              <p class="subtitle">Al naturale</p>
+              <p>5.90 euro</p>
+            </div>
+          </div>
+          <div class="column is-one-quarter card">
+            <div onclick="openImagePreview(this)" class="card-image">
+              <figure class="image is-1by1">
+                <img src="assets/images/products/alNaturale/paperellaVerde.png" alt="Paperella verde">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title">Paperella verde</p>
+              <p class="subtitle">Al naturale</p>
+              <p>5.90 euro</p>
+            </div>
+          </div>
+          <div class="column is-one-quarter card">
+            <div onclick="openImagePreview(this)" class="card-image">
+              <figure class="image is-1by1">
+                <img src="assets/images/products/celebrita/elvis.png" alt="Elvis">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title">Elvis</p>
+              <p class="subtitle">Celebritá</p>
+              <p>51.90 euro</p>
+            </div>
+          </div>
+          <div class="column is-one-quarter card">
+            <div onclick="openImagePreview(this)" class="card-image">
+              <figure class="image is-1by1">
+                <img src="assets/images/products/celebrita/statuaLiberta.png" alt="Statua della libertá">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title">Statua della libertá</p>
+              <p class="subtitle">Celebritá</p>
+              <p>51.90 euro</p>
+            </div>
+          </div>
+          <div class="column is-one-quarter card">
+            <div onclick="openImagePreview(this)" class="card-image">
+              <figure class="image is-1by1">
+                <img src="assets/images/products/celebrita/trump.png" alt="Trump">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title">Trump</p>
+              <p class="subtitle">Celebritá</p>
+              <p>51.90 euro</p>
+            </div>
+          </div>
+          <div class="column is-one-quarter card">
+            <div onclick="openImagePreview(this)" class="card-image">
+              <figure class="image is-1by1">
+                <img src="assets/images/products/eroi/chewbecca.png" alt="Chewbecca">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title">Chewbecca</p>
               <p class="subtitle">Eroi</p>
-              <p>43.20 euro</p>
+              <p>43.90 euro</p>
             </div>
           </div>
           <div class="column is-one-quarter card">
             <div onclick="openImagePreview(this)" class="card-image">
-              <figure class="image is-4by3">
-                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+              <figure class="image is-1by1">
+                <img src="assets/images/products/eroi/harryPotter.png" alt="Harry Potter">
               </figure>
             </div>
             <div class="card-content">
-              <p class="title">Prodotto</p>
+              <p class="title">Harry Potter</p>
               <p class="subtitle">Eroi</p>
-              <p>43.20 euro</p>
+              <p>43.90 euro</p>
             </div>
           </div>
           <div class="column is-one-quarter card">
             <div onclick="openImagePreview(this)" class="card-image">
-              <figure class="image is-4by3">
-                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+              <figure class="image is-1by1">
+                <img src="assets/images/products/eroi/hulk.png" alt="Hulk">
               </figure>
             </div>
             <div class="card-content">
-              <p class="title">Prodotto</p>
-              <p class="subtitle">Categoria</p>
-              <p>43.20 euro</p>
+              <p class="title">Hulk</p>
+              <p class="subtitle">Eroi</p>
+              <p>43.90 euro</p>
             </div>
           </div>
           <div class="column is-one-quarter card">
             <div onclick="openImagePreview(this)" class="card-image">
-              <figure class="image is-4by3">
-                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+              <figure class="image is-1by1">
+                <img src="assets/images/products/eroi/sherlock.png" alt="Sherlock">
               </figure>
             </div>
             <div class="card-content">
-              <p class="title">Prodotto</p>
+              <p class="title">Sherlock</p>
+              <p class="subtitle">Eroi</p>
+              <p>43.90 euro</p>
+            </div>
+          </div>
+          <div class="column is-one-quarter card">
+            <div onclick="openImagePreview(this)" class="card-image">
+              <figure class="image is-1by1">
+                <img src="assets/images/products/eroi/superman.png" alt="Superman">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title">Superman</p>
+              <p class="subtitle">Eroi</p>
+              <p>43.90 euro</p>
+            </div>
+          </div>
+          <div class="column is-one-quarter card">
+            <div onclick="openImagePreview(this)" class="card-image">
+              <figure class="image is-1by1">
+                <img src="assets/images/products/professioni/dottore.png" alt="Dottore">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title">Dottore</p>
+              <p class="subtitle">Professioni</p>
+              <p>17.90 euro</p>
+            </div>
+          </div>
+          <div class="column is-one-quarter card">
+            <div onclick="openImagePreview(this)" class="card-image">
+              <figure class="image is-1by1">
+                <img src="assets/images/products/professioni/ingegnere.png" alt="Ingegnere">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title">Ingegnere</p>
+              <p class="subtitle">Professioni</p>
+              <p>17.90 euro</p>
+            </div>
+          </div>
+          <div class="column is-one-quarter card">
+            <div onclick="openImagePreview(this)" class="card-image">
+              <figure class="image is-1by1">
+                <img src="assets/images/products/professioni/manager.png" alt="Manager">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title">Manager</p>
+              <p class="subtitle">Professioni</p>
+              <p>17.90 euro</p>
+            </div>
+          </div>
+          <div class="column is-one-quarter card">
+            <div onclick="openImagePreview(this)" class="card-image">
+              <figure class="image is-1by1">
+                <img src="assets/images/products/professioni/panettiere.png" alt="Paniere">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title">Paniere</p>
+              <p class="subtitle">Professioni</p>
+              <p>17.90 euro</p>
+            </div>
+          </div>
+          <div class="column is-one-quarter card">
+            <div onclick="openImagePreview(this)" class="card-image">
+              <figure class="image is-1by1">
+                <img src="assets/images/products/professioni/parrucchiera.png" alt="Parrucchiera">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title">Parrucchiera</p>
+              <p class="subtitle">Professioni</p>
+              <p>17.90 euro</p>
+            </div>
+          </div>
+          <div class="column is-one-quarter card">
+            <div onclick="openImagePreview(this)" class="card-image">
+              <figure class="image is-1by1">
+                <img src="assets/images/products/professioni/pilota.png" alt="Pilota">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title">Pilota</p>
+              <p class="subtitle">Professioni</p>
+              <p>17.90 euro</p>
+            </div>
+          </div>
+          <div class="column is-one-quarter card">
+            <div onclick="openImagePreview(this)" class="card-image">
+              <figure class="image is-1by1">
+                <img src="assets/images/products/sport/basketball.png" alt="Basketball">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title">Basketball</p>
               <p class="subtitle">Sport</p>
-              <p>43.20 euro</p>
+              <p>25.90 euro</p>
             </div>
           </div>
           <div class="column is-one-quarter card">
             <div onclick="openImagePreview(this)" class="card-image">
-              <figure class="image is-4by3">
-                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+              <figure class="image is-1by1">
+                <img src="assets/images/products/sport/calciatore.png" alt="Calciatore">
               </figure>
             </div>
             <div class="card-content">
-              <p class="title">Prodotto</p>
-              <p class="subtitle">Categoria</p>
-              <p>43.20 euro</p>
+              <p class="title">Calciatore</p>
+              <p class="subtitle">Sport</p>
+              <p>25.90 euro</p>
             </div>
           </div>
           <div class="column is-one-quarter card">
             <div onclick="openImagePreview(this)" class="card-image">
-              <figure class="image is-4by3">
-                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+              <figure class="image is-1by1">
+                <img src="assets/images/products/sport/snowboard.png" alt="Snowboard">
               </figure>
             </div>
             <div class="card-content">
-              <p class="title">Prodotto</p>
-              <p class="subtitle">Categoria</p>
-              <p>43.20 euro</p>
+              <p class="title">Snowboard</p>
+              <p class="subtitle">Sport</p>
+              <p>25.90 euro</p>
             </div>
           </div>
           <div class="column is-one-quarter card">
             <div onclick="openImagePreview(this)" class="card-image">
-              <figure class="image is-4by3">
-                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+              <figure class="image is-1by1">
+                <img src="assets/images/products/sport/tennista.png" alt="Tennista">
               </figure>
             </div>
             <div class="card-content">
-              <p class="title">Prodotto</p>
-              <p class="subtitle">Categoria</p>
-              <p>22.20 euro</p>
-            </div>
-          </div>
-          <div class="column is-one-quarter card">
-            <div onclick="openImagePreview(this)" class="card-image">
-              <figure class="image is-4by3">
-                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-              </figure>
-            </div>
-            <div class="card-content">
-              <p class="title">Prodotto</p>
-              <p class="subtitle">Categoria</p>
-              <p>37.20 euro</p>
+              <p class="title">Tennista</p>
+              <p class="subtitle">Sport</p>
+              <p>25.90 euro</p>
             </div>
           </div>
         </div>
