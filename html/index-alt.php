@@ -1,18 +1,19 @@
 <?php
-require('../lib/head.php');
+require '../lib/head.php';
 drawHead("Homepage", "La nostra homepage", array(
-  '<link rel="stylesheet" href=" https://unpkg.com/bulma-carousel@3.0.0/dist/css/bulma-carousel.min.css" />',
-  '<script async defer src="https://unpkg.com/bulma-carousel@3.0.0/dist/js/bulma-carousel.min.js"></script>',
-  '<script>document.addEventListener("DOMContentLoaded", () => { var carousels = bulmaCarousel.attach();  })</script>'
+    '<link rel="stylesheet" href=" https://unpkg.com/bulma-carousel@3.0.0/dist/css/bulma-carousel.min.css" />',
+    '<script async defer src="https://unpkg.com/bulma-carousel@3.0.0/dist/js/bulma-carousel.min.js"></script>',
+    '<script>document.addEventListener("DOMContentLoaded", () => { var carousels = bulmaCarousel.attach();  })</script>',
 ));
 ?>
 
 <body>
-  <?php require('../lib/header.php'); ?>
+  <?php require '../lib/header.php';?>
   <main class="section">
+    <div class = "box">
     <div class="tile is-ancestor">
       <div class="tile is-4 is-vertical is-parent">
-        
+
         <article class=" is-child message is-link">
             <div class="message-body">
                 <p class="title">Le mille piú uno paperelle</p>
@@ -20,7 +21,7 @@ drawHead("Homepage", "La nostra homepage", array(
                   migliori esperti del globo in pennuti in vinile. <br> Visita io nostro catalogo!</p>
             </div>
           </article>
-          
+
           <article class=" is-child message is-warning">
               <div class="message-body">
                   <p class="title">Un prodotto pregiato</p>
@@ -35,7 +36,7 @@ drawHead("Homepage", "La nostra homepage", array(
                 </div>
               </div>
             </article>
-           
+
             <article class=" is-child message is-success is-hidden-touch">
                 <div class="message-body">
                     <p class="title">Collezionale tutte</p>
@@ -50,9 +51,9 @@ drawHead("Homepage", "La nostra homepage", array(
                     <p>Vieni a trovarci, ti aspettiamo!</p>
                 </div>
               </article>
-       
+
       </div>
-      
+
           <div class='is-child carousel carousel-animated carousel-animate-slide' data-autoplay="true;" style="max-height: 800px;;">
               <div class='carousel-container' >
                 <div class='carousel-item has-background is-active'>
@@ -60,17 +61,17 @@ drawHead("Homepage", "La nostra homepage", array(
                 </div>
                 <div class='carousel-item has-background'>
                   <img class="is-background" src="assets/images/carousel-2.jpg" alt="" width="640" height="310" />
-                
+
                 </div>
                 <div class='carousel-item has-background'>
                   <img class="is-background" src="assets/images/register.jpg" alt="" width="640" height="310" />
-                 
+
                 </div>
                 <div class='carousel-item has-background'>
                   <img class="is-background" src="assets/images/home.jpg" alt="" width="640" height="310" />
-               
+
                 </div>
-             
+
               </div>
                <div class="carousel-navigation is-overlay">
                 <div class="carousel-nav-left">
@@ -80,9 +81,9 @@ drawHead("Homepage", "La nostra homepage", array(
                   <i class="fa fa-chevron-right"></i>
                 </div>
               </div>
-            
-            <br> 
-            <br> 
+
+            <br>
+            <br>
             <article class="is-child message is-success is-hidden-desktop">
                 <div class="message-body">
                     <p class="title">Collezionale tutte</p>
@@ -98,10 +99,10 @@ drawHead("Homepage", "La nostra homepage", array(
               </article>
             </div>
       </div>
-      
-    
+</div>
+
 </main>
-  <?php require('../lib/footer.php'); ?>
+  <?php require '../lib/footer.php';?>
 </body>
 
 </html>
