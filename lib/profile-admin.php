@@ -30,21 +30,21 @@
   </form>
 </div>
 <div id="newsletter" class="section">
-  <form>
+  <form method="POST" action="profile.php?newsletter=yes">
     <div class="field">
       <label class="label">Oggetto</label>
       <div class="control">
-        <input class="input is-primary" type="text" placeholder="Oggetto della mail">
+        <input class="input is-primary" type="text" placeholder="Oggetto della mail" required name="oggetto">
       </div>
     </div>
     <div class="field">
       <label class="label">Testo dell'email</label>
       <div class="control">
-        <textarea class="textarea is-primary" placeholder="Testo dell'email" rows="15"></textarea>
+        <textarea class="textarea is-primary" placeholder="Testo dell'email" rows="15" required name="email"></textarea>
       </div>
     </div>
     <div class="field">
-      <a class="button is-warning is-fullwidth">Invia</a>
+      <button type="submit" class="button is-warning is-fullwidth">Invia</button>
     </div>
   </form>
 </div>

@@ -1,4 +1,5 @@
 <?php
+
   session_start();
 
   // Login
@@ -246,6 +247,84 @@
 
     header("Location: index.php");
     die();
+  }
+
+  // Gestione newsletter
+  if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['newsletter'])) {
+
+    require('../lib/error.php');
+
+    // Controllo parametri forniti
+    if (!isset($_POST['oggetto']))
+      drawError('Nessun oggetto inserito');
+    if (!isset($_POST['email']))
+      drawError("Testo dell'email vuoto");
+
+    require ('../external_libs/PHPMailer/src/PHPMailer.php');
+    require ('../external_libs/PHPMailer/src/Exception.php');
+    require ('../external_libs/PHPMailer/src/SMTP.php');
+
+    $mail = new PHPMailer(TRUE);
+    try {
+
+      // Invia messaggi via SMTP
+      $mail->SMTPDebug = 3;
+      $mail->isSMTP();
+
+      // Imposta i parametri per la email
+      $mail->Host = 'smtp.unige.it';
+      $mail->SMTPAuth = TRUE;
+      $mail->Username = '***REMOVED***';
+      $mail->Password = '***REMOVED***';
+      $mail->SMTPSecure = 'tls';
+      $mail->Port = 465;
+
+      // Impostazione soggetto
+      $mail->setFrom('S4336477@studenti.unige.it', 'Le mille piú uno paperelle');
+      $mail->addAddress('alessandro.orlich@live.it', 'Alejandro Orlshish');
+      $mail->addAddress('roberta.tassara.97@gmail.com', 'Roberta Taslarara');
+      $mail->addAddress('gabibbo97@gmail.com', 'Jacopo Lobgo');
+
+      // Contenuto email
+      $mail->isHTML(TRUE);
+      $mail->Subject = htmlspecialchars($_POST['oggetto']);
+      $mail->Body = nl2br(htmlspecialchars($_POST['email']));
+
+      // Manda il messaggio
+      $mail->send();
+    } catch (Exception $e) {
+      drawError('Invio email fallito: '.$mail->ErrorInfo);
+    }
+
+    header("Location: profile.php");
+    die();
+  }
+
+  // Gestione modifica permessi
+  if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['editUser']) && isset($_GET['action']) && $_SESSION['role'] == 'ADMIN') {
+    
+    require ('../lib/db.php');
+    $db = dbConnect();
+
+    $updatePrivilegesQuery = $db->prepare('UPDATE utente SET tipoUtente = :tipoUtente WHERE username = :username');
+    $updatePrivilegesQuery->bindParam(":username", $_GET['editUser']);
+    $updatePrivilegesQuery->bindParam(":tipoUtente", $userKind);
+
+    // Seleziona quale operazione svolgere sulla base di `action`
+    if ($_GET['action'] == 'setAdmin') {
+      $userKind = 'ADMIN';
+    } else if ($_GET['action'] == 'setUser') {
+      $userKind = 'USER';
+    } else {
+      require('../lib/error.php');
+      drawError('Azione non supportata');
+    }
+
+    $updatePrivilegesQuery->execute();
+
+    header("Location: profile.php");
+    die();
+
   }
 
   // Ottieni i dati dell'utente

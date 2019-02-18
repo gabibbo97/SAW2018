@@ -78,25 +78,30 @@
             // Prendi la lista dei tag dal database
             if (($risQueryTags = $db->query('SELECT nome, descrizione FROM tag ORDER BY LENGTH (nome), nome'))) {
 
-              // Salva e ripristina params['tag']
+              // Salva params['tag'] per ripristinarlo dopo il loop
               $oldTag = $params['tag'];
 
               // Per ogni riga ritornata
               while (($tag = $risQueryTags->fetch(PDO::FETCH_ASSOC))) {
 
+                // Imposta tag=[ TAG CORRENTE ]
                 $params['tag'] = $tag['nome'];
 
                 // Se in GET viene passato tag e il tag é il corrente
                 if (isset($_GET['tag']) && $_GET['tag'] === $tag['nome']) {
+
+                  // Mostra la descrizione sul tag correntemente selezionato
                   if (isset($tag['descrizione']))
                     print ('<li><a href="?'.http_build_query($params).'" class="is-active">'.htmlspecialchars($tag['nome'], ENT_HTML5).'<br><small>'.$tag['descrizione'].'</small></a></li>');
                   else
                     print ('<li><a href="?'.http_build_query($params).'" class="is-active">'.htmlspecialchars($tag['nome'], ENT_HTML5).'</a></li>');
+
                 } else {
                   print ('<li><a href="?'.http_build_query($params).'">'.htmlspecialchars($tag['nome'], ENT_HTML5).'</a></li>');
                 }
               }
 
+              // Recupera il valore iniziale di $params['tag']
               $params['tag'] = $oldTag;
             }
           ?>
@@ -108,7 +113,7 @@
           if (isset($_GET['tag'])) {
             $articlesQuery = $db->prepare('SELECT id, titolo, sottotitolo, data FROM articolo INNER JOIN caratterizza ON articolo.id = caratterizza.id_articolo WHERE caratterizza.tag = :tag ORDER BY data, id DESC LIMIT :limit OFFSET :offset');
             $articlesQuery->bindParam(":tag", $_GET['tag']);
-          } else if ($_GET['search']) {
+          } else if (isset($_GET['search'])) {
             $articlesQuery = $db->prepare('SELECT id, titolo, sottotitolo, data FROM articolo WHERE MATCH(corpo) AGAINST (:searchTerm) LIMIT :limit OFFSET :offset');
             $articlesQuery->bindParam(":searchTerm", $_GET['search']);
           } else {
@@ -135,6 +140,7 @@
             } else {
               print('<h2 class="subtitle">'.$article['data'].'</h2>');
             }
+
             print('<a href="blog-article.php?id='.$article['id'].'" class="button">Leggi di piú</a>');
             print('</div>');
           }
