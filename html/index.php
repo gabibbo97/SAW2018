@@ -24,7 +24,7 @@ drawHead("Homepage", "La nostra homepage", array(
                 <article class=" is-child message is-warning">
                     <div class="message-body">
                         <p class="title">Un prodotto pregiato</p>
-                        <div class="content ">
+                        <div class="content">
                             <ul>
                                 <li>Tutte le nostre papere sono certificate CE (Comunitá Europea).</li>
                                 <li>Nessun materiale tossico o nocivo.</li>
@@ -40,7 +40,7 @@ drawHead("Homepage", "La nostra homepage", array(
                 <article class=" is-child message is-success is-hidden-touch">
                     <div class="message-body">
                         <p class="title">Collezionale tutte</p>
-                        <div class="content ">
+                        <div class="content">
                             <ul>
                                 <li>Originali</li>
                                 <li>Divertenti</li>

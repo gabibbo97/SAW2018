@@ -17,14 +17,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['new'])) {
         drawError("Testo dell'articolo assente");
     }
 
-    $tags = array();
-    if (isset($_POST['tags'])) {
-        $tags = explode(',', $_POST['tags']);
+    // Prendi i tag dall'oggetto JSON (profonditá massima 3)
+    $tags = json_decode($_POST['tags'], TRUE, 3);
+
+    // Mancano delle proprietá
+    if (!isset($tags['existing_tags'])) {
+        $tags['existing_tags'] = array();
     }
+    if (!isset($tags['new_tags'])) {
+        $tags['new_tags'] = array();
+    }
+
+    // Trasforma tutti i tag nelle loro versioni minuscole e senza spazi
+    $tags['existing_tags'] = array_map("trim", $tags['existing_tags']);
+    $tags['existing_tags'] = array_map("strtolower", $tags['existing_tags']);
+    $tags['new_tags'] = array_map("trim", $tags['new_tags']);
+    $tags['new_tags'] = array_map("strtolower", $tags['new_tags']);
 
     require '../lib/db.php';
     $db = dbConnect();
 
+    // Controllo esistenza tag
+    if (count($tags['existing_tags']) != 0) {
+        $tagExistsQuery = $db->prepare('SELECT nome FROM tag WHERE nome = :nome');
+        $tagExistsQuery->bindParam(":nome", $tagName);
+        foreach ($tags['existing_tags'] as $tagName) {
+            $tagExistsQuery->execute();
+            if ($tagExistsQuery->rowCount() == 0)
+                drawError("Indicato tag non esistente");
+        }
+    }
+
+    // I tag nuovi dovrebbero essere non esistenti
+    if (count($tags['new_tags']) != 0) {
+        $newTagExistsQuery = $db->prepare('SELECT nome FROM tag WHERE nome = :nome');
+        $newTagExistsQuery->bindParam(":nome", $tagName);
+        foreach ($tags['new_tags'] as $tagName) {
+            $newTagExistsQuery->execute();
+            // Inserisci il tag se non esistente
+            if ($newTagExistsQuery->rowCount() == 0) {
+                $newTagQuery = $db->prepare('INSERT INTO tag (nome) VALUES (:nome)');
+                $newTagQuery->bindParam(":nome", $tagName);
+                $newTagQuery->execute();
+            }
+            // Altrimenti ignora
+        }
+    }
+
+    // Inserimento nuovo articolo
     $newArticleQuery = $db->prepare('INSERT INTO articolo (titolo,sottotitolo,corpo,autore) VALUES (:titolo, :sottotitolo, :corpo, :autore)');
     $newArticleQuery->bindParam(":titolo", $_POST['titolo']);
     $newArticleQuery->bindParam(":sottotitolo", $_POST['sottotitolo']);
@@ -33,17 +73,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['new'])) {
 
     $newArticleQuery->execute();
 
+    // Aggiunta tags
     $tagsQuery = $db->prepare('INSERT INTO caratterizza (id_articolo, tag) VALUES (:articolo, :tag)');
     // lastInsertId é locale alla connessione
     // Quindi l'ID ritornato sará sempre quello della insert sopra
     $tagsQuery->bindParam(":articolo", $db->lastInsertId('id'));
     $tagsQuery->bindParam(":tag", $tag);
 
-    $newTagQuery = $db->prepare('INSERT IGNORE INTO tag (nome) VALUES (:nome)');
-    $newTagQuery->bindParam(":nome", $tag);
-
-    foreach ($tags as $tag) {
-        $newTagQuery->execute();
+    foreach (array_merge($tags['existing_tags'], $tags['new_tags']) as $tag) {
         $tagsQuery->execute();
     }
 

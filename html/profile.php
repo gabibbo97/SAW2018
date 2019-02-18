@@ -268,10 +268,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['delete'])) {
     die();
 }
 
+// Gestione descrizione tag
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['editTag']) && isset($_GET['tagName'])) {
+
+  require '../lib/error.php';
+  if ($_SESSION['role'] != 'ADMIN') {
+    drawError('Non sei autorizzato a compiere questa azione');
+  }
+
+  if (!is_null($_POST[$_GET['tagName']])) {
+
+    require '../lib/db.php';
+    $db = dbConnect();
+
+    $updateDescriptionQuery = $db->prepare('UPDATE tag SET descrizione = :descrizione WHERE nome = :nome');
+    $updateDescriptionQuery->bindParam(":descrizione", $tagDescription);
+
+    $tagDescription = trim($_POST[$_GET['tagName']]);
+    $tagDescription = strtolower($tagDescription);
+
+    $updateDescriptionQuery->bindParam(":nome", $_GET['tagName']);
+    $updateDescriptionQuery->execute();
+  }
+
+  header('Location: profile.php');
+  die();
+
+}
+
 // Gestione newsletter
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['newsletter'])) {
 
     require '../lib/error.php';
+    if ($_SESSION['role'] != 'ADMIN') {
+      drawError('Non sei autorizzato a compiere questa azione');
+    }
 
     // Controllo parametri forniti
     if (!isset($_POST['oggetto'])) {
