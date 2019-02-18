@@ -29,27 +29,6 @@ jobs:
       after_script:
       # Spegni il container
         - docker rm --force node
-    - stage: Validate
-      addons:
-        apt:
-          packages:
-            - wget
-      before_script:
-      # Prepara i container per il lancio
-        - docker pull validator/validator
-        - docker-compose pull
-      # Attiva il sito web
-        - docker-compose up --detach
-      # Attendi che sia online
-        - until nc -z 127.0.0.1 8080; do sleep 1; done
-      # Scarica ogni singola pagina
-        - wget --recursive --level=4096 --convert-links --page-requisites --no-directories --directory-prefix=downloaded http://127.0.0.1:8080
-      script:
-      # Valida le pagine scaricate
-        - docker run --rm -it -v $(pwd)/downloaded:/saw validator/validator java -jar /vnu.jar --skip-non-html --also-check-css --format text /saw
-      after_script:
-      # Spegni il sito
-        - docker-compose down
     - stage: Upload
       addons:
         apt:
@@ -65,6 +44,17 @@ jobs:
         - lftp -e "set sftp:auto-confirm yes; mirror --continue --delete --recursion=always --reverse --verbose docs docs; exit" -u ${USER},${PASS} sftp://${SERVER}
         - lftp -e "set sftp:auto-confirm yes; mirror --continue --delete --recursion=always --reverse --verbose lib lib; exit" -u ${USER},${PASS} sftp://${SERVER}
         - lftp -e "set sftp:auto-confirm yes; mirror --continue --delete --recursion=always --reverse --verbose html public_html; exit" -u ${USER},${PASS} sftp://${SERVER}
+    - stage: Validate
+      addons:
+        apt:
+          packages:
+            - wget
+      before_script:
+      # Scarica ogni singola pagina
+        - wget --recursive --level=4096 --convert-links --page-requisites --no-directories --directory-prefix=downloaded https://webdev.dibris.unige.it/~S4336488
+      script:
+      # Valida le pagine scaricate
+        - docker run --rm -it -v $(pwd)/downloaded:/saw validator/validator java -jar /vnu.jar --skip-non-html --also-check-css --format text /saw
 
 notifications:
   email:
