@@ -10,7 +10,7 @@
 
     // Impostazioni email
     $mailServer = 'smtp.unige.it';
-    $mailUsername = '***REMOVED***';
-    $mailPassword = '***REMOVED***';
+    $mailUsername = 'xxx';
+    $mailPassword = 'xxx';
     $mailSender = $mailUsername;
 ?>
