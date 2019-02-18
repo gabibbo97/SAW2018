@@ -14,7 +14,7 @@ drawHead("Catalogo", "I nostri prodotti", array(
       <div class="modal-background"></div>
       <div class="modal-content">
         <p class="image is-1by1">
-          <img src="https://bulma.io/images/placeholders/1280x960.png" alt="">
+          <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Nessuna immagine">
         </p>
       </div>
       <button class="modal-close is-large" aria-label="close" onclick="closeImagePreview()"></button>
@@ -242,11 +242,11 @@ drawHead("Catalogo", "I nostri prodotti", array(
           <div class="column is-one-quarter card">
             <div onclick="openImagePreview(this)" class="card-image">
               <figure class="image is-1by1">
-                <img src="assets/images/products/professioni/panettiere.png" alt="Paniere">
+                <img src="assets/images/products/professioni/panettiere.png" alt="Panettiere">
               </figure>
             </div>
             <div class="card-content">
-              <p class="title">Paniere</p>
+              <p class="title">Panettiere</p>
               <p class="subtitle">Professioni</p>
               <p>17.90 euro</p>
             </div>

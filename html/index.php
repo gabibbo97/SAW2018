@@ -58,21 +58,18 @@ drawHead("Homepage", "La nostra homepage", array(
                     style="max-height: 50em;">
                     <div class='carousel-container'>
                         <div class='carousel-item has-background is-active'>
-                            <img class="is-background" src="assets/images/carousel-1.jpg" alt="" width="640"
-                                height="310" />
+                            <img class="is-background" src="assets/images/carousel-1.jpg" alt="Paperelle nel canal grande" />
                         </div>
                         <div class='carousel-item has-background'>
-                            <img class="is-background" src="assets/images/carousel-2.jpg" alt="" width="640"
-                                height="310" />
+                            <img class="is-background" src="assets/images/carousel-2.jpg" alt="Paperella da debugging" />
 
                         </div>
                         <div class='carousel-item has-background'>
-                            <img class="is-background" src="assets/images/register.jpg" alt="" width="640"
-                                height="310" />
+                            <img class="is-background" src="assets/images/register.jpg" alt="Paperella in giardino" />
 
                         </div>
                         <div class='carousel-item has-background'>
-                            <img class="is-background" src="assets/images/home.jpg" alt="" width="640" height="310" />
+                            <img class="is-background" src="assets/images/home.jpg" alt="Tre paperelle che fanno il bagnetto" />
 
                         </div>
 
