@@ -7,4 +7,10 @@
 
     // Impostazioni per la modalitá sviluppo
     $isDevelopment = TRUE;
+
+    // Impostazioni email
+    $mailServer = 'smtp.unige.it';
+    $mailUsername = '***REMOVED***';
+    $mailPassword = '***REMOVED***';
+    $mailSender = $mailUsername;
 ?>

@@ -7,53 +7,50 @@
 # Spegnimento del server
 #   ./fedora.sh down
 # Accedere ai servizi
-#   http://127.0.0.1:8080   Progetto
+#   http://127.0.0.1:80     Progetto
 #   http://127.0.0.1:8000   Adminer
 #   http://127.0.0.1:8888   Validatore HTML
 #   127.0.0.1:3306          MySQL
 
 case "$1" in  # In base al primo argomento del programma
   u|up|U|UP)
-    #
-    #   Avvio
-    #
-
-    # Crea un gruppo di container
-    sudo podman pod create --name "SAW" \
-      --publish 127.0.0.1:8080:80 \
-      --publish 127.0.0.1:8000:8080 \
-      --publish 127.0.0.1:8888:8888 \
-      --publish 127.0.0.1:3306:3306
-    sudo podman run --pod SAW \
+    sudo podman run \
       --name webserver \
       --detach \
+      --net host \
       --volume "${PWD}/:/var/www/:z" \
       --entrypoint /bin/sh \
       php:apache \
       -c 'docker-php-ext-install pdo_mysql && docker-php-entrypoint apache2-foreground'
-    sudo podman run --pod SAW \
+    sudo podman run \
       --name adminer \
       --detach \
+      --net host \
       --env ADMINER_DEFAULT_SERVER='127.0.0.1' \
       adminer
-    sudo podman run --pod SAW \
+    sudo podman run \
       --name sqldb \
       --detach \
+      --net host \
       --env MYSQL_ROOT_PASSWORD='saw' \
       --env MYSQL_DATABASE='saw' \
       --env MYSQL_USER='saw' \
       --env MYSQL_PASSWORD='saw' \
       mariadb:latest
-    sudo podman run --pod SAW \
+    sudo podman run \
       --name validator \
       --detach \
+      --net host \
       validator/validator java -cp /vnu.jar nu.validator.servlet.Main 8888
     ;;
   d|down|D|DOWN)
     #
     #   Spegnimento
     #
-    sudo podman pod rm --all --force
+    sudo podman rm -f webserver || true
+    sudo podman rm -f adminer || true
+    sudo podman rm -f sqldb || true
+    sudo podman rm -f validator || true
     ;;
   *)
     #

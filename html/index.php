@@ -1,10 +1,10 @@
 <?php
-  require ('../lib/head.php');
-  drawHead("Homepage", "La nostra homepage");
+require '../lib/head.php';
+drawHead("Homepage", "La nostra homepage");
 ?>
 
 <body>
-  <?php require ('../lib/header.php'); ?>
+  <?php require '../lib/header.php';?>
   <main class="section">
     <section class="box hero is-warning is-bold">
       <div class="hero-body">
@@ -39,7 +39,7 @@
       </div>
     </section>
   </main>
-  <?php require ('../lib/footer.php'); ?>
+  <?php require '../lib/footer.php';?>
 </body>
 
 </html>

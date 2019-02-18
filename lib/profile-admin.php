@@ -39,6 +39,11 @@
     </div>
     <div class="field">
       <label class="label">Testo dell'email</label>
+      <div class="notification is-primary">
+        <p><strong>Sostituzioni disponibili:</strong></p>
+        <p><strong>{{ nome }}</strong>: Il nome del destinatario</p>
+        <p><strong>{{ cognome }}</strong>: Il cognome del destinatario</p>
+      </div>
       <div class="control">
         <textarea class="textarea is-primary" placeholder="Testo dell'email" rows="15" required name="email"></textarea>
       </div>

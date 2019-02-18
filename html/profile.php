@@ -1,10 +1,13 @@
 <?php
 
-  session_start();
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 
-  // Login
-  if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset($_POST['password'])) {
-    require ('../lib/db.php');
+session_start();
+
+// Login
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset($_POST['password'])) {
+    require '../lib/db.php';
     $db = dbConnect();
 
     $loginQuery = $db->prepare('SELECT password, tipoUtente FROM utente WHERE username = :username');
@@ -13,158 +16,167 @@
 
     $userDetail = $loginQuery->fetch(PDO::FETCH_ASSOC);
 
-    if ($userDetail == FALSE) {
-      require('../lib/error.php');
-      drawError('Username o password errati');
-    } else {
-      if (password_verify($_POST['password'], $userDetail['password'])) {
-        $_SESSION['username'] = $_POST['username'];
-        $_SESSION['role'] = $userDetail['tipoUtente'];
-        header('Location: profile.php');
-        die();
-      } else {
-        require('../lib/error.php');
+    if ($userDetail == false) {
+        require '../lib/error.php';
         drawError('Username o password errati');
-      }
+    } else {
+        if (password_verify($_POST['password'], $userDetail['password'])) {
+            $_SESSION['username'] = $_POST['username'];
+            $_SESSION['role'] = $userDetail['tipoUtente'];
+            header('Location: profile.php');
+            die();
+        } else {
+            require '../lib/error.php';
+            drawError('Username o password errati');
+        }
     }
-  }
+}
 
-  // Mostra errore se l'utente non é loggato
-  if (!isset($_SESSION['username'])) {
-    require ('../lib/error.php');
+// Mostra errore se l'utente non é loggato
+if (!isset($_SESSION['username'])) {
+    require '../lib/error.php';
     drawError("Area riservata, effettuare l'accesso");
-  }
+}
 
-  // Logout
-  if (isset($_GET['logout']) && $_GET['logout'] == 'yes') {
+// Logout
+if (isset($_GET['logout']) && $_GET['logout'] == 'yes') {
     session_destroy();
     $_SESSION = array();
     header("Location: index.php");
     die();
-  }
+}
 
-  // Gestione immagine del profilo
-  if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['uploadPicture'])) {
-    require ('../lib/error.php');
+// Gestione immagine del profilo
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['uploadPicture'])) {
+    require '../lib/error.php';
 
     // Controlla se é presente l'immagine
-    if ($_FILES['profilePicture']['error'] != UPLOAD_ERR_OK)
-      drawError("Nessuna immagine caricata");
-    
+    if ($_FILES['profilePicture']['error'] != UPLOAD_ERR_OK) {
+        drawError("Nessuna immagine caricata");
+    }
+
     // Controlla la dimensione
-    if ($_FILES['profilePicture']['size'] > 200000)
-      drawError("Immagine troppo grande, hai caricato una immagine di ".(round($_FILES['profilePicture']['size'] / 1024))."KB e il massimo ammesso é 200KB");
-    
+    if ($_FILES['profilePicture']['size'] > 200000) {
+        drawError("Immagine troppo grande, hai caricato una immagine di " . (round($_FILES['profilePicture']['size'] / 1024)) . "KB e il massimo ammesso é 200KB");
+    }
+
     // Controlla il tipo dell'immagine
-    if (!preg_match('/^image/', mime_content_type($_FILES['profilePicture']['tmp_name'])))
-      drawError("Non é stata caricata una immagine ben formata");
-    
+    if (!preg_match('/^image/', mime_content_type($_FILES['profilePicture']['tmp_name']))) {
+        drawError("Non é stata caricata una immagine ben formata");
+    }
+
     // Carica l'immagine
     $fileHandle = fopen($_FILES['profilePicture']['tmp_name'], 'rb');
-    
-    require ('../lib/db.php');
+
+    require '../lib/db.php';
     $db = dbConnect();
     $profileImageQuery = $db->prepare('UPDATE utente SET immagine = :immagine WHERE username = :username');
     $profileImageQuery->bindParam(":username", $_SESSION['username']);
     $profileImageQuery->bindParam(":immagine", $fileHandle, PDO::PARAM_LOB);
 
     if (!$profileImageQuery->execute()) {
-      require ('../lib/config.php');
-      if ($isDevelopment) {
-        // Mostra errore completo
-        drawError("Errore durante il caricamento dell'immagine: ".join(' ', $db->errorInfo()));
-      } else {
-        // Mostra errore generico
-        drawError("Errore durante il caricamento dell'immagine");
-      }
+        require '../lib/config.php';
+        if ($isDevelopment) {
+            // Mostra errore completo
+            drawError("Errore durante il caricamento dell'immagine: " . join(' ', $db->errorInfo()));
+        } else {
+            // Mostra errore generico
+            drawError("Errore durante il caricamento dell'immagine");
+        }
     }
-      
 
     header("Location: profile.php");
     die();
-  }
+}
 
-  // Gestione dati utente
-  if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['updateProfile'])) {
-    require ('../lib/error.php');
-    
+// Gestione dati utente
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['updateProfile'])) {
+    require '../lib/error.php';
+
     // Controllo email
-    if (!isset($_POST['email']))
-      drawError("Email assente");
-    if (strlen($_POST['email']) < 6)
-      drawError("Email troppo corta");
-    if (strlen($_POST['email']) > 255)
-      drawError("Email troppo lunga");
-    if (!preg_match("/.+@.+\..+/", $_POST['email']))
-      drawError("Email con caratteri non ammessi");
-    
-    switch ($_POST['regione']) {
-      case "Abruzzo":
-        $regione = "Abruzzo";
-        break;
-      case "Basilicata":
-        $regione = "Basilicata";
-        break;
-      case "Calabria":
-        $regione = "Calabria";
-        break;
-      case "Campania":
-        $regione = "Campania";
-        break;
-      case "Emilia-Romagna":
-        $regione = "EmiliaRomagna";
-        break;
-      case "Friuli-Venezia Giulia":
-        $regione = "FriuliVeneziaGiulia";
-        break;
-      case "Lazio":
-        $regione = "Lazio";
-        break;
-      case "Liguria":
-        $regione = "Liguria";
-        break;
-      case "Lombardia":
-        $regione = "Lombardia";
-        break;
-      case "Marche":
-        $regione = "Marche";
-        break;
-      case "Molise":
-        $regione = "Molise";
-        break;
-      case "Piemonte":
-        $regione = "Piemonte";
-        break;
-      case "Puglia":
-        $regione = "Puglia";
-        break;
-      case "Sardegna":
-        $regione = "Sardegna";
-        break;
-      case "Sicilia":
-        $regione = "Sicilia";
-        break;
-      case "Toscana":
-        $regione = "Toscana";
-        break;
-      case "Trentino-Alto Adige":
-        $regione = "TrentinoAltoAdige";
-        break;
-      case "Umbria":
-        $regione = "Umbria";
-        break;
-      case "Valle d'Aosta":
-        $regione = "ValleDAosta";
-        break;
-      case "Veneto":
-        $regione = "Veneto";
-        break;
-      default:
-        $regione = NULL;
-        break;
+    if (!isset($_POST['email'])) {
+        drawError("Email assente");
     }
 
-    require ('../lib/db.php');
+    if (strlen($_POST['email']) < 6) {
+        drawError("Email troppo corta");
+    }
+
+    if (strlen($_POST['email']) > 255) {
+        drawError("Email troppo lunga");
+    }
+
+    if (!preg_match("/.+@.+\..+/", $_POST['email'])) {
+        drawError("Email con caratteri non ammessi");
+    }
+
+    switch ($_POST['regione']) {
+        case "Abruzzo":
+            $regione = "Abruzzo";
+            break;
+        case "Basilicata":
+            $regione = "Basilicata";
+            break;
+        case "Calabria":
+            $regione = "Calabria";
+            break;
+        case "Campania":
+            $regione = "Campania";
+            break;
+        case "Emilia-Romagna":
+            $regione = "EmiliaRomagna";
+            break;
+        case "Friuli-Venezia Giulia":
+            $regione = "FriuliVeneziaGiulia";
+            break;
+        case "Lazio":
+            $regione = "Lazio";
+            break;
+        case "Liguria":
+            $regione = "Liguria";
+            break;
+        case "Lombardia":
+            $regione = "Lombardia";
+            break;
+        case "Marche":
+            $regione = "Marche";
+            break;
+        case "Molise":
+            $regione = "Molise";
+            break;
+        case "Piemonte":
+            $regione = "Piemonte";
+            break;
+        case "Puglia":
+            $regione = "Puglia";
+            break;
+        case "Sardegna":
+            $regione = "Sardegna";
+            break;
+        case "Sicilia":
+            $regione = "Sicilia";
+            break;
+        case "Toscana":
+            $regione = "Toscana";
+            break;
+        case "Trentino-Alto Adige":
+            $regione = "TrentinoAltoAdige";
+            break;
+        case "Umbria":
+            $regione = "Umbria";
+            break;
+        case "Valle d'Aosta":
+            $regione = "ValleDAosta";
+            break;
+        case "Veneto":
+            $regione = "Veneto";
+            break;
+        default:
+            $regione = null;
+            break;
+    }
+
+    require '../lib/db.php';
     $db = dbConnect();
     $profileImageQuery = $db->prepare('UPDATE utente SET email = :email, regione = :regione WHERE username = :username');
     $profileImageQuery->bindParam(":username", $_SESSION['username']);
@@ -173,11 +185,11 @@
     $profileImageQuery->execute();
     header("Location: profile.php");
     die();
-  }
+}
 
-  // Gestione update password
-  if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['updatePassword'])) {
-    require ('../lib/db.php');
+// Gestione update password
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['updatePassword'])) {
+    require '../lib/db.php';
     $db = dbConnect();
 
     $getPasswordQuery = $db->prepare('SELECT password FROM utente WHERE username = :username');
@@ -186,34 +198,41 @@
 
     $userDetail = $getPasswordQuery->fetch(PDO::FETCH_ASSOC);
 
-    require('../lib/error.php');
+    require '../lib/error.php';
 
     if (password_verify($_POST['oldPassword'], $userDetail['password'])) {
-      // Controllo password inserite
-      if (!isset($_POST['password1']))
-        drawError("Password assente");
-      if (strlen($_POST['password1']) < 6)
-        drawError("Password troppo corta");
-      if (strlen($_POST['password1']) > 255)
-        drawError("Password troppo lunga");
-      if ($_POST['password1'] != $_POST['password2'])
-        drawError("Le password non corrispondono");
-      
-      // Aggiornamento password
-      $updatePasswordQuery = $db->prepare('UPDATE utente SET password = :password WHERE username = :username');
-      $updatePasswordQuery->bindParam(":username", $_SESSION['username']);
-      $updatePasswordQuery->bindParam(":password", password_hash($_POST['password1'], PASSWORD_DEFAULT));
-      $updatePasswordQuery->execute();
-      header("Location: profile.php");
-      die();
-    } else {
-      drawError('Password errata');
-    }
-  }
+        // Controllo password inserite
+        if (!isset($_POST['password1'])) {
+            drawError("Password assente");
+        }
 
-  // Gestione update newsletter
-  if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['updateNewsletter'])) {
-    require ('../lib/db.php');
+        if (strlen($_POST['password1']) < 6) {
+            drawError("Password troppo corta");
+        }
+
+        if (strlen($_POST['password1']) > 255) {
+            drawError("Password troppo lunga");
+        }
+
+        if ($_POST['password1'] != $_POST['password2']) {
+            drawError("Le password non corrispondono");
+        }
+
+        // Aggiornamento password
+        $updatePasswordQuery = $db->prepare('UPDATE utente SET password = :password WHERE username = :username');
+        $updatePasswordQuery->bindParam(":username", $_SESSION['username']);
+        $updatePasswordQuery->bindParam(":password", password_hash($_POST['password1'], PASSWORD_DEFAULT));
+        $updatePasswordQuery->execute();
+        header("Location: profile.php");
+        die();
+    } else {
+        drawError('Password errata');
+    }
+}
+
+// Gestione update newsletter
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['updateNewsletter'])) {
+    require '../lib/db.php';
     $db = dbConnect();
 
     $updateRegionQuery = $db->prepare('UPDATE utente SET riceveNewsletter = :riceveNewsletter WHERE username = :username');
@@ -221,21 +240,21 @@
     $updateRegionQuery->bindParam(":riceveNewsletter", $riceveNewsletter);
 
     if ($_POST['newsletter'] == 'on') {
-      $riceveNewsletter = 1;
+        $riceveNewsletter = 1;
     } else {
-      $riceveNewsletter = 0;
+        $riceveNewsletter = 0;
     }
 
     $updateRegionQuery->execute();
 
     header("Location: profile.php");
     die();
-  }
+}
 
-  // Gestione cancellazione account
-  if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['delete'])) {
+// Gestione cancellazione account
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['delete'])) {
 
-    require ('../lib/db.php');
+    require '../lib/db.php';
     $db = dbConnect();
 
     $updateRegionQuery = $db->prepare('DELETE FROM utente WHERE username = :username');
@@ -247,63 +266,89 @@
 
     header("Location: index.php");
     die();
-  }
+}
 
-  // Gestione newsletter
-  if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['newsletter'])) {
+// Gestione newsletter
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['newsletter'])) {
 
-    require('../lib/error.php');
+    require '../lib/error.php';
 
     // Controllo parametri forniti
-    if (!isset($_POST['oggetto']))
-      drawError('Nessun oggetto inserito');
-    if (!isset($_POST['email']))
-      drawError("Testo dell'email vuoto");
+    if (!isset($_POST['oggetto'])) {
+        drawError('Nessun oggetto inserito');
+    }
 
-    require ('../external_libs/PHPMailer/src/PHPMailer.php');
-    require ('../external_libs/PHPMailer/src/Exception.php');
-    require ('../external_libs/PHPMailer/src/SMTP.php');
+    if (!isset($_POST['email'])) {
+        drawError("Testo dell'email vuoto");
+    }
 
-    $mail = new PHPMailer(TRUE);
-    try {
+    require '../external_libs/PHPMailer/src/PHPMailer.php';
+    require '../external_libs/PHPMailer/src/Exception.php';
+    require '../external_libs/PHPMailer/src/SMTP.php';
 
-      // Invia messaggi via SMTP
-      $mail->SMTPDebug = 3;
-      $mail->isSMTP();
+    require '../lib/db.php';
+    $db = dbConnect();
+    $queryEmails = $db->query('SELECT email, nome, cognome FROM utente WHERE riceveNewsletter = 1');
 
-      // Imposta i parametri per la email
-      $mail->Host = 'smtp.unige.it';
-      $mail->SMTPAuth = TRUE;
-      $mail->Username = '***REMOVED***';
-      $mail->Password = '***REMOVED***';
-      $mail->SMTPSecure = 'tls';
-      $mail->Port = 465;
+    require '../lib/config.php';
 
-      // Impostazione soggetto
-      $mail->setFrom('S4336477@studenti.unige.it', 'Le mille piú uno paperelle');
-      $mail->addAddress('alessandro.orlich@live.it', 'Alejandro Orlshish');
-      $mail->addAddress('roberta.tassara.97@gmail.com', 'Roberta Taslarara');
-      $mail->addAddress('gabibbo97@gmail.com', 'Jacopo Lobgo');
+    while (($address = $queryEmails->fetch(PDO::FETCH_ASSOC))) {
+        $mail = new PHPMailer(true);
+        try {
 
-      // Contenuto email
-      $mail->isHTML(TRUE);
-      $mail->Subject = htmlspecialchars($_POST['oggetto']);
-      $mail->Body = nl2br(htmlspecialchars($_POST['email']));
+            // Invia messaggi via SMTP
+            // $mail->SMTPDebug = 4;
+            $mail->isSMTP();
 
-      // Manda il messaggio
-      $mail->send();
-    } catch (Exception $e) {
-      drawError('Invio email fallito: '.$mail->ErrorInfo);
+            // Imposta i parametri per la email
+            $mail->Host = $mailServer;
+            $mail->SMTPAuth = true;
+            $mail->Mailer = 'smtp';
+            $mail->Username = $mailUsername;
+            $mail->Password = $mailPassword;
+            $mail->SMTPSecure = 'ssl';
+            $mail->Port = 465;
+
+            // Impostazione soggetto
+            $mail->setFrom($mailSender, htmlspecialchars('Le mille piú uno paperelle'));
+            $mail->addAddress($address['email']);
+
+            // Contenuto email
+            $mail->isHTML(true);
+
+            $mailSubject = $_POST['oggetto'];
+            $mailSubject = str_replace('{{ nome }}', $address['nome'], $mailSubject);
+            $mailSubject = str_replace('{{ cognome }}', $address['cognome'], $mailSubject);
+
+            $mail->Subject = htmlspecialchars($mailSubject);
+
+            $mailBody = $_POST['email'];
+            $mailBody = str_replace('{{ nome }}', $address['nome'], $mailBody);
+            $mailBody = str_replace('{{ cognome }}', $address['cognome'], $mailBody);
+
+            $mail->Body = nl2br(htmlspecialchars($mailBody));
+
+            $mail->CharSet = 'UTF-8';
+            $mail->Encoding = 'base64';
+
+            // Proprietá email
+            $mail->Timeout = 5;
+
+            // Manda il messaggio
+            $mail->send();
+        } catch (Exception $e) {
+            drawError('Invio email fallito: ' . $mail->ErrorInfo);
+        }
     }
 
     header("Location: profile.php");
     die();
-  }
+}
 
-  // Gestione modifica permessi
-  if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['editUser']) && isset($_GET['action']) && $_SESSION['role'] == 'ADMIN') {
-    
-    require ('../lib/db.php');
+// Gestione modifica permessi
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['editUser']) && isset($_GET['action']) && $_SESSION['role'] == 'ADMIN') {
+
+    require '../lib/db.php';
     $db = dbConnect();
 
     $updatePrivilegesQuery = $db->prepare('UPDATE utente SET tipoUtente = :tipoUtente WHERE username = :username');
@@ -312,12 +357,12 @@
 
     // Seleziona quale operazione svolgere sulla base di `action`
     if ($_GET['action'] == 'setAdmin') {
-      $userKind = 'ADMIN';
+        $userKind = 'ADMIN';
     } else if ($_GET['action'] == 'setUser') {
-      $userKind = 'USER';
+        $userKind = 'USER';
     } else {
-      require('../lib/error.php');
-      drawError('Azione non supportata');
+        require '../lib/error.php';
+        drawError('Azione non supportata');
     }
 
     $updatePrivilegesQuery->execute();
@@ -325,32 +370,34 @@
     header("Location: profile.php");
     die();
 
-  }
+}
 
-  // Ottieni i dati dell'utente
-  require ('../lib/db.php');
-  $db = dbConnect();
-  $userDetailsQuery = $db->prepare('SELECT nome,cognome,email,riceveNewsletter,regione FROM utente WHERE username = :username');
-  $userDetailsQuery->bindParam(":username", $_SESSION['username']);
-  $userDetailsQuery->execute();
-  $userDetails = $userDetailsQuery->fetch(PDO::FETCH_ASSOC);
+// Ottieni i dati dell'utente
+require '../lib/db.php';
+$db = dbConnect();
+$userDetailsQuery = $db->prepare('SELECT nome,cognome,email,riceveNewsletter,regione FROM utente WHERE username = :username');
+$userDetailsQuery->bindParam(":username", $_SESSION['username']);
+$userDetailsQuery->execute();
+$userDetails = $userDetailsQuery->fetch(PDO::FETCH_ASSOC);
 
-  require ('../lib/head.php');
-  drawHead("Profilo", "Gestione attivitá", array(
+require '../lib/head.php';
+drawHead("Profilo", "Gestione attivitá", array(
     '<link rel="stylesheet" href="assets/css/profile.css">',
     '<script src="assets/js/profile.js"></script>',
-    '<script src="assets/js/registration.js"></script>'
-  ));
+    '<script src="assets/js/registration.js"></script>',
+));
 ?>
 
 <body>
-  <?php require ('../lib/header.php'); ?>
+  <?php require '../lib/header.php';?>
   <main>
     <?php
-      // Importa i comandi da amministratore
-      if ($_SESSION['role'] == 'ADMIN')
-        readfile('../lib/profile-admin-menu.html');
-    ?>
+// Importa i comandi da amministratore
+if ($_SESSION['role'] == 'ADMIN') {
+    readfile('../lib/profile-admin-menu.html');
+}
+
+?>
     <div id="profile" class="section">
       <form class="columns" method="POST" action="profile.php?uploadPicture=yes" enctype="multipart/form-data">
         <div class="column is-3">
@@ -397,13 +444,13 @@
           <div class="field">
             <label class="label">Name</label>
             <div class="control">
-              <input required class="input is-primary" type="text" disabled placeholder="Nome" name="nome" value="<?php print(htmlspecialchars($userDetails['nome'])); ?>">
+              <input required class="input is-primary" type="text" disabled placeholder="Nome" name="nome" value="<?php print(htmlspecialchars($userDetails['nome']));?>">
             </div>
           </div>
           <div class="field">
             <label class="label">Cognome</label>
             <div class="control">
-              <input required class="input is-primary" type="text" disabled placeholder="Cognome" name="cognome" value="<?php print(htmlspecialchars($userDetails['cognome'])); ?>">
+              <input required class="input is-primary" type="text" disabled placeholder="Cognome" name="cognome" value="<?php print(htmlspecialchars($userDetails['cognome']));?>">
             </div>
           </div>
           <div class="field">
@@ -413,7 +460,7 @@
                         input is-warning giallo
                         input is-danger rosso
                         input is-info blu-->
-              <input required class="input is-primary" type="text" disabled placeholder="Username" name="username" value="<?php print(htmlspecialchars($_SESSION['username'])); ?>">
+              <input required class="input is-primary" type="text" disabled placeholder="Username" name="username" value="<?php print(htmlspecialchars($_SESSION['username']));?>">
               <span class="icon is-small is-left">
                 <i class="fas fa-user"></i>
               </span>
@@ -426,7 +473,7 @@
           <div class="field">
             <label class="label">Email</label>
             <div class="control has-icons-left has-icons-right">
-              <input required class="input is-primary" type="email" onchange="checkEmail(this, '<?php print($userDetails['email']); ?>');" minlength="6" maxlength="255" placeholder="Email" name="email" value="<?php print(htmlspecialchars($userDetails['email'])); ?>">
+              <input required class="input is-primary" type="email" onchange="checkEmail(this, '<?php print($userDetails['email']);?>');" minlength="6" maxlength="255" placeholder="Email" name="email" value="<?php print(htmlspecialchars($userDetails['email']));?>">
               <span class="icon is-small is-left">
                 <i class="fas fa-envelope"></i>
               </span>
@@ -441,27 +488,27 @@
             <div class="control">
               <div class="select">
                 <select name="regione">
-                  <option <?php if ($userDetails['regione'] == NULL) { print('selected disabled'); } ?>><?php if ($userDetails['regione'] == NULL) { print('Seleziona regione'); } else { print('Rimuovi preferenza'); } ?></option>
-                  <option <?php if ($userDetails['regione'] == 'Abruzzo') { print('selected'); } ?>>Abruzzo</option>
-                  <option <?php if ($userDetails['regione'] == 'Basilicata') { print('selected'); } ?>>Basilicata</option>
-                  <option <?php if ($userDetails['regione'] == 'Calabria') { print('selected'); } ?>>Calabria</option>
-                  <option <?php if ($userDetails['regione'] == 'Campania') { print('selected'); } ?>>Campania</option>
-                  <option <?php if ($userDetails['regione'] == 'EmiliaRomagna') { print('selected'); } ?>>Emilia-Romagna</option>
-                  <option <?php if ($userDetails['regione'] == 'FriuliVeneziaGiulia') { print('selected'); } ?>>Friuli-Venezia Giulia</option>
-                  <option <?php if ($userDetails['regione'] == 'Lazio') { print('selected'); } ?>>Lazio</option>
-                  <option <?php if ($userDetails['regione'] == 'Liguria') { print('selected'); } ?>>Liguria</option>
-                  <option <?php if ($userDetails['regione'] == 'Lombardia') { print('selected'); } ?>>Lombardia</option>
-                  <option <?php if ($userDetails['regione'] == 'Marche') { print('selected'); } ?>>Marche</option>
-                  <option <?php if ($userDetails['regione'] == 'Molise') { print('selected'); } ?>>Molise</option>
-                  <option <?php if ($userDetails['regione'] == 'Piemonte') { print('selected'); } ?>>Piemonte</option>
-                  <option <?php if ($userDetails['regione'] == 'Puglia') { print('selected'); } ?>>Puglia</option>
-                  <option <?php if ($userDetails['regione'] == 'Sardegna') { print('selected'); } ?>>Sardegna</option>
-                  <option <?php if ($userDetails['regione'] == 'Sicilia') { print('selected'); } ?>>Sicilia</option>
-                  <option <?php if ($userDetails['regione'] == 'Toscana') { print('selected'); } ?>>Toscana</option>
-                  <option <?php if ($userDetails['regione'] == 'TrentinoAltoAdige') { print('selected'); } ?>>Trentino-Alto Adige</option>
-                  <option <?php if ($userDetails['regione'] == 'Umpria') { print('selected'); } ?>>Umbria</option>
-                  <option <?php if ($userDetails['regione'] == 'ValleDAosta') { print('selected'); } ?>>Valle d'Aosta</option>
-                  <option <?php if ($userDetails['regione'] == 'Veneto') { print('selected'); } ?>>Veneto</option>
+                  <option <?php if ($userDetails['regione'] == null) {print('selected disabled');}?>><?php if ($userDetails['regione'] == null) {print('Seleziona regione');} else {print('Rimuovi preferenza');}?></option>
+                  <option <?php if ($userDetails['regione'] == 'Abruzzo') {print('selected');}?>>Abruzzo</option>
+                  <option <?php if ($userDetails['regione'] == 'Basilicata') {print('selected');}?>>Basilicata</option>
+                  <option <?php if ($userDetails['regione'] == 'Calabria') {print('selected');}?>>Calabria</option>
+                  <option <?php if ($userDetails['regione'] == 'Campania') {print('selected');}?>>Campania</option>
+                  <option <?php if ($userDetails['regione'] == 'EmiliaRomagna') {print('selected');}?>>Emilia-Romagna</option>
+                  <option <?php if ($userDetails['regione'] == 'FriuliVeneziaGiulia') {print('selected');}?>>Friuli-Venezia Giulia</option>
+                  <option <?php if ($userDetails['regione'] == 'Lazio') {print('selected');}?>>Lazio</option>
+                  <option <?php if ($userDetails['regione'] == 'Liguria') {print('selected');}?>>Liguria</option>
+                  <option <?php if ($userDetails['regione'] == 'Lombardia') {print('selected');}?>>Lombardia</option>
+                  <option <?php if ($userDetails['regione'] == 'Marche') {print('selected');}?>>Marche</option>
+                  <option <?php if ($userDetails['regione'] == 'Molise') {print('selected');}?>>Molise</option>
+                  <option <?php if ($userDetails['regione'] == 'Piemonte') {print('selected');}?>>Piemonte</option>
+                  <option <?php if ($userDetails['regione'] == 'Puglia') {print('selected');}?>>Puglia</option>
+                  <option <?php if ($userDetails['regione'] == 'Sardegna') {print('selected');}?>>Sardegna</option>
+                  <option <?php if ($userDetails['regione'] == 'Sicilia') {print('selected');}?>>Sicilia</option>
+                  <option <?php if ($userDetails['regione'] == 'Toscana') {print('selected');}?>>Toscana</option>
+                  <option <?php if ($userDetails['regione'] == 'TrentinoAltoAdige') {print('selected');}?>>Trentino-Alto Adige</option>
+                  <option <?php if ($userDetails['regione'] == 'Umpria') {print('selected');}?>>Umbria</option>
+                  <option <?php if ($userDetails['regione'] == 'ValleDAosta') {print('selected');}?>>Valle d'Aosta</option>
+                  <option <?php if ($userDetails['regione'] == 'Veneto') {print('selected');}?>>Veneto</option>
                 </select>
               </div>
             </div>
@@ -533,12 +580,12 @@
         <div class="column">
           <div class="control is-size-5">
             <label class="radio">
-              <input type="radio" name="newsletter" value="on" <?php if ($userDetails['riceveNewsletter'] == 1) { print('checked'); } ?>>
+              <input type="radio" name="newsletter" value="on" <?php if ($userDetails['riceveNewsletter'] == 1) {print('checked');}?>>
               <strong>Iscritto</strong> alla newsletter
             </label>
             <br>
             <label class="radio">
-              <input type="radio" name="newsletter" value="off" <?php if ($userDetails['riceveNewsletter'] == 0) { print('checked'); } ?>>
+              <input type="radio" name="newsletter" value="off" <?php if ($userDetails['riceveNewsletter'] == 0) {print('checked');}?>>
               <strong>Disiscritto</strong> dalla newsletter
             </label>
           </div>
@@ -578,12 +625,14 @@
       </form>
     </div>
     <?php
-      // Importa i comandi da amministratore
-      if ($_SESSION['role'] == 'ADMIN')
-        require('../lib/profile-admin.php');
-    ?>
+// Importa i comandi da amministratore
+if ($_SESSION['role'] == 'ADMIN') {
+    require '../lib/profile-admin.php';
+}
+
+?>
   </main>
-  <?php require ('../lib/footer.php'); ?>
+  <?php require '../lib/footer.php';?>
 </body>
 
 </html>
