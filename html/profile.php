@@ -178,11 +178,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['updateProfile'])) {
 
     require '../lib/db.php';
     $db = dbConnect();
-    $profileImageQuery = $db->prepare('UPDATE utente SET email = :email, regione = :regione WHERE username = :username');
-    $profileImageQuery->bindParam(":username", $_SESSION['username']);
-    $profileImageQuery->bindParam(":email", $_POST['email']);
-    $profileImageQuery->bindParam(":regione", $regione);
-    $profileImageQuery->execute();
+    $updateProfileQuery = $db->prepare('UPDATE utente SET email = :email, regione = :regione WHERE username = :username');
+    $updateProfileQuery->bindParam(":username", $_SESSION['username']);
+    $updateProfileQuery->bindParam(":email", $_POST['email']);
+    $updateProfileQuery->bindParam(":regione", $regione);
+    if (!$updateProfileQuery->execute())
+      drawError("Non siamo riusciti a modificare il tuo profilo");
     header("Location: profile.php");
     die();
 }
@@ -192,13 +193,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['updatePassword'])) {
     require '../lib/db.php';
     $db = dbConnect();
 
+    require '../lib/error.php';
+
     $getPasswordQuery = $db->prepare('SELECT password FROM utente WHERE username = :username');
     $getPasswordQuery->bindParam(":username", $_SESSION['username']);
-    $getPasswordQuery->execute();
+    if(!$getPasswordQuery->execute())
+      drawError("Qualcosa é andato storto, riprovare piú tardi");
 
     $userDetail = $getPasswordQuery->fetch(PDO::FETCH_ASSOC);
-
-    require '../lib/error.php';
 
     if (password_verify($_POST['oldPassword'], $userDetail['password'])) {
         // Controllo password inserite
@@ -222,7 +224,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['updatePassword'])) {
         $updatePasswordQuery = $db->prepare('UPDATE utente SET password = :password WHERE username = :username');
         $updatePasswordQuery->bindParam(":username", $_SESSION['username']);
         $updatePasswordQuery->bindParam(":password", password_hash($_POST['password1'], PASSWORD_DEFAULT));
-        $updatePasswordQuery->execute();
+        if (!$updatePasswordQuery->execute())
+          drawError("Non siamo riusciti ad aggiornare la password");
         header("Location: profile.php");
         die();
     } else {
@@ -245,7 +248,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['updateNewsletter'])) {
         $riceveNewsletter = 0;
     }
 
-    $updateRegionQuery->execute();
+    if(!$updateRegionQuery->execute()) {
+      require '../lib/error.php';
+      drawError("Qualcosa é andato storto, riprovare piú tardi");
+    }
 
     header("Location: profile.php");
     die();
@@ -259,7 +265,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['delete'])) {
 
     $updateRegionQuery = $db->prepare('DELETE FROM utente WHERE username = :username');
     $updateRegionQuery->bindParam(":username", $_SESSION['username']);
-    $updateRegionQuery->execute();
+    if(!$updateRegionQuery->execute()) {
+      require '../lib/error.php';
+      drawError("Qualcosa é andato storto, riprovare piú tardi");
+    }
 
     session_destroy();
     $_SESSION = array();
@@ -288,7 +297,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['editTag']) && isset($_
     $tagDescription = strtolower($tagDescription);
 
     $updateDescriptionQuery->bindParam(":nome", $_GET['tagName']);
-    $updateDescriptionQuery->execute();
+
+    if(!$updateDescriptionQuery->execute()) {
+      drawError("Qualcosa é andato storto, riprovare piú tardi");
+    }
+
   }
 
   header('Location: profile.php');
@@ -396,7 +409,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['editUser']) && isset($_
         drawError('Azione non supportata');
     }
 
-    $updatePrivilegesQuery->execute();
+    if(!$updatePrivilegesQuery->execute()) {
+      require '../lib/error.php';
+      drawError("Qualcosa é andato storto, riprovare piú tardi");
+    }
 
     header("Location: profile.php");
     die();
@@ -408,7 +424,12 @@ require '../lib/db.php';
 $db = dbConnect();
 $userDetailsQuery = $db->prepare('SELECT nome,cognome,email,riceveNewsletter,regione FROM utente WHERE username = :username');
 $userDetailsQuery->bindParam(":username", $_SESSION['username']);
-$userDetailsQuery->execute();
+
+if(!$userDetailsQuery->execute()) {
+  require '../lib/error.php';
+  drawError("Qualcosa é andato storto, riprovare piú tardi");
+}
+
 $userDetails = $userDetailsQuery->fetch(PDO::FETCH_ASSOC);
 
 require '../lib/head.php';
