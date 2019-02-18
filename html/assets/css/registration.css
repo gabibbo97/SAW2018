@@ -6,7 +6,7 @@ html {
   justify-content: center;
 
   /* Imposta immagine di sfondo */
-  background-image: url('/assets/images/register.jpg');
+  background-image: url('../images/register.jpg');
 
   /* Imposta immagine di sfondo centrata, senza ripetizioni e grande come la pagina */
   background-position: center;

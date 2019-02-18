@@ -25,7 +25,16 @@ if (isset($_GET['tag'])) {
     $pageCountQuery = $db->prepare('SELECT CEIL(COUNT(*) / :articlesForEachPage) FROM articolo');
 }
 $pageCountQuery->bindParam(":articlesForEachPage", $articlesForEachPage, PDO::PARAM_INT);
-$pageCountQuery->execute();
+
+if (!$pageCountQuery->execute() && isset($_GET['search'])) {
+    // Query di fallback per MySQL <5.6 che non supporta gli indici FULLTEXT
+    $pageCountQuery = $db->prepare('SELECT CEIL(COUNT(*) / :articlesForEachPage) FROM articolo WHERE corpo LIKE :searchTerm');
+    $pageCountQuery->bindParam(":articlesForEachPage", $articlesForEachPage, PDO::PARAM_INT);    
+    $pageCountQuery->bindParam(":searchTerm", $searchTerm);
+    $searchTerm = '%'.$_GET['search'].'%';
+    $pageCountQuery->execute();
+}
+
 $pageCount = $pageCountQuery->fetchColumn(0);
 // Mostra un errore in caso di pagina errata
 if ($pageCount < $pageNumber) {
@@ -46,6 +55,8 @@ $params = array(
 );
 if (isset($_GET['tag'])) {
     $params['tag'] = $_GET['tag'];
+} else {
+    $params['tag'] = null;
 }
 
 if (isset($_GET['search'])) {
@@ -116,13 +127,13 @@ if (($risQueryTags = $db->query('SELECT nome, descrizione FROM tag ORDER BY LENG
                 <?php
 // Prepara la query per gli articoli
 if (isset($_GET['tag'])) {
-    $articlesQuery = $db->prepare('SELECT id, titolo, sottotitolo, data FROM articolo INNER JOIN caratterizza ON articolo.id = caratterizza.id_articolo WHERE caratterizza.tag = :tag ORDER BY data, id DESC LIMIT :limit OFFSET :offset');
+    $articlesQuery = $db->prepare('SELECT id, titolo, sottotitolo, data FROM articolo INNER JOIN caratterizza ON articolo.id = caratterizza.id_articolo WHERE caratterizza.tag = :tag ORDER BY data DESC LIMIT :limit OFFSET :offset');
     $articlesQuery->bindParam(":tag", $_GET['tag']);
 } else if (isset($_GET['search'])) {
     $articlesQuery = $db->prepare('SELECT id, titolo, sottotitolo, data FROM articolo WHERE MATCH(corpo) AGAINST (:searchTerm) LIMIT :limit OFFSET :offset');
     $articlesQuery->bindParam(":searchTerm", $_GET['search']);
 } else {
-    $articlesQuery = $db->prepare('SELECT id, titolo, sottotitolo, data FROM articolo ORDER BY data, id DESC LIMIT :limit OFFSET :offset');
+    $articlesQuery = $db->prepare('SELECT id, titolo, sottotitolo, data FROM articolo ORDER BY data DESC LIMIT :limit OFFSET :offset');
 }
 $articlesQuery->bindParam(":limit", $articlesForEachPage, PDO::PARAM_INT);
 $articlesQuery->bindParam(":offset", $articlesOffset, PDO::PARAM_INT);
@@ -131,7 +142,15 @@ $articlesQuery->bindParam(":offset", $articlesOffset, PDO::PARAM_INT);
 $articlesOffset = $articlesForEachPage * ($pageNumber - 1);
 
 // Lancia la query sul database
-$articlesQuery->execute();
+if (!$articlesQuery->execute() && isset($_GET['search'])) {
+    // Query di fallback per MySQL <5.6 che non supporta gli indici FULLTEXT
+    $articlesQuery = $db->prepare('SELECT id, titolo, sottotitolo, data FROM articolo WHERE corpo LIKE :searchTerm LIMIT :limit OFFSET :offset');
+    $articlesQuery->bindParam(":searchTerm", $searchTerm);
+    $articlesQuery->bindParam(":limit", $articlesForEachPage, PDO::PARAM_INT);
+    $articlesQuery->bindParam(":offset", $articlesOffset, PDO::PARAM_INT);
+    $searchTerm = '%'.$_GET['search'].'%';
+    $articlesQuery->execute();
+}
 
 // Prendi e disegna gli articoli
 while (($article = $articlesQuery->fetch(PDO::FETCH_ASSOC))) {

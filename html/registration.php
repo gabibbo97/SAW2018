@@ -215,7 +215,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['username'] = strtolower($_POST['username']);
         $_SESSION['role'] = 'USER';
 
-        header('Location: /profile.php');
+        header('Location: profile.php');
     } else {
         require '../config.php';
         if ($isDevelopment) {

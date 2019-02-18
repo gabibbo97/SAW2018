@@ -32,10 +32,12 @@
       - il file viene semplicemente "creato" con dimensione 0 byte
       - l'operazione di inizializzazione é resa idempotente da IF NOT EXISTS
     */
-    $initializedFile = dirname($_SERVER['SCRIPT_FILENAME']).'/db-initialized';
-    if (file_exists($initializedFile))
-      return;
-    touch ($initializedFile);
+    /*
+      $initializedFile = dirname($_SERVER['SCRIPT_FILENAME']).'/db-initialized';
+      if (file_exists($initializedFile))
+        return;
+      touch ($initializedFile);
+    */
 
     require('config.php'); // Includi le impostazioni di configurazione
 

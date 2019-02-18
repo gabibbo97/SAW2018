@@ -6,6 +6,6 @@ thead > tr > td, tbody > tr > td {
   text-align: center;
 }
 
-#blog, #newsletter, #users {
+#blog, #newsletter, #users, #tags {
   display: none;
 }
