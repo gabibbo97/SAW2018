@@ -36,12 +36,12 @@ jobs:
             - lftp
       script:
       # Prepara la configurazione
-        - sed -ie "s/databaseName = \"saw\"/databaseName = \"${USER}\"/" lib/config.php
-        - sed -ie "s/databaseUser = \"saw\"/databaseUser = \"${USER}\"/" lib/config.php
-        - sed -ie "s/databasePassword = \"saw\"/databasePassword = \"${PASS}\"/" lib/config.php
-        - sed -ie "s/isDevelopment = TRUE/isDevelopment = FALSE/" lib/config.php
-        - sed -ie "s/$mailUsername = 'xxx'/$mailUsername = '${MAIL_USER}'/" lib/config.php
-        - sed -ie "s/$mailPassword = 'xxx'/$mailPassword = '${MAIL_PASS}'/" lib/config.php
+        - sed -i -e "s/databaseName = \"saw\"/databaseName = \"${USER}\"/" lib/config.php
+        - sed -i -e "s/databaseUser = \"saw\"/databaseUser = \"${USER}\"/" lib/config.php
+        - sed -i -e "s/databasePassword = \"saw\"/databasePassword = \"${PASS}\"/" lib/config.php
+        - sed -i -e "s/isDevelopment = TRUE/isDevelopment = FALSE/" lib/config.php
+        - sed -i -e "s/$mailUsername = 'xxx'/$mailUsername = '${MAIL_USER}'/" lib/config.php
+        - sed -i -e "s/$mailPassword = 'xxx'/$mailPassword = '${MAIL_PASS}'/" lib/config.php
       # Carica sul server
         - lftp -e "set sftp:auto-confirm yes; mirror --continue --delete --recursion=always --reverse --verbose docs docs; exit" -u ${USER},${PASS} sftp://${SERVER}
         - lftp -e "set sftp:auto-confirm yes; mirror --continue --delete --recursion=always --reverse --verbose external_libs external_libs; exit" -u ${USER},${PASS} sftp://${SERVER}
