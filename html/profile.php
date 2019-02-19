@@ -588,7 +588,7 @@ if ($_SESSION['role'] == 'ADMIN') {
           <label class="label">Vecchia password</label>
           <div class="field has-addons">
             <p class="control has-icons-left is-expanded">
-              <input id="oldPassword" class="input is-primary" type="password" placeholder="Vecchia password" name="oldPassword">
+              <input id="oldPassword" class="input is-primary" type="password" placeholder="Vecchia password" name="oldPassword" required>
               <span class="icon is-small is-left">
                 <i class="fas fa-lock"></i>
               </span>
@@ -605,7 +605,7 @@ if ($_SESSION['role'] == 'ADMIN') {
             <label class="label">Nuova password</label>
             <div class="field has-addons">
               <div class="control is-expanded">
-                <input required class="input is-primary" type="password" placeholder="Password" name="password1">
+                <input id="newPassword1" required class="input is-primary" type="password" onchange="checkNewPassword();" placeholder="Password" name="password1" minlength="3" maxlength="255" required>
               </div>
             </div>
           </div>
@@ -613,7 +613,7 @@ if ($_SESSION['role'] == 'ADMIN') {
             <label class="label">Ripeti nuova password</label>
             <div class="field has-addons">
               <div class="control is-expanded">
-                <input required class="input is-primary" type="password" placeholder="Ripeti password" name="password2">
+                <input id="newPassword2" required class="input is-primary" type="password" onchange="checkNewPassword();" placeholder="Ripeti password" name="password2" minlength="3" maxlength="255" required>
               </div>
             </div>
           </div>

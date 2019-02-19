@@ -170,3 +170,39 @@ function addNewTag () {
   newTagInput.value = '';
   updateTags();
 }
+
+function checkNewPassword () {
+
+  "use strict";
+
+  // Prendi i due input password
+  const password1 = document.getElementById("newPassword1");
+  const password2 = document.getElementById("newPassword2");
+
+  // Se password 2 é vuoto non controllare
+  if (password2.value.length < 1)
+    return;
+  
+  if (password1.value == password2.value) {
+
+    password1.classList.remove("is-danger");
+    password1.classList.add("is-success");
+    password1.setCustomValidity("");
+
+    password2.classList.remove("is-danger");
+    password2.classList.add("is-success");
+    password2.setCustomValidity("");
+
+  } else {
+
+    password1.classList.remove("is-success");
+    password1.classList.add("is-danger");
+    password1.setCustomValidity("Le password non corrispondono");
+
+    password2.classList.remove("is-success");
+    password2.classList.add("is-danger");
+    password2.setCustomValidity("Le password non corrispondono");
+
+  }
+
+}

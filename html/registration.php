@@ -279,7 +279,7 @@ drawHead("Profilo", "Gestione attivitá", array(
                 <label class="label">Password</label>
                 <div class="field has-addons">
                   <div class="control is-expanded">
-                    <input required class="input" onchange="checkPassword();" maxlength="255" type="password" placeholder="Password" name="password1">
+                    <input required class="input" onchange="checkPassword();" minlength="6" maxlength="255" type="password" placeholder="Password" name="password1">
                   </div>
                 </div>
               </div>
