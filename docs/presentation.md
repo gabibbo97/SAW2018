@@ -85,5 +85,11 @@ Ogni email inviata risulta essere inviata a un singolo destinatario, evitando di
 - HTML5 per le pagine web
 - JavaScript per gli elementi interattivi
 - PHP per il backend
-- SQL per l'accesso ai dati
+- SQL per l'accesso ai dati, mediante il PDO
 - CSS per lo stile, (é stato utilizzato il framework Bulma)
+
+Sono stati usati i prepared statement per proteggere il sito da SQL injection.
+
+Ogni controllo client side é considerato esclusivamente "assistenza" per l'utente e ha una controparte server-side.
+
+É stato usato AJAX per alcuni controlli client-side.
