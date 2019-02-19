@@ -390,8 +390,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['newsletter'])) {
 }
 
 // Gestione modifica permessi
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['editUser']) && isset($_GET['action']) && $_SESSION['role'] == 'ADMIN') {
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['editUser']) && isset($_GET['action'])) {
 
+    if ($_SESSION['role'] != 'ADMIN') {
+      require '../lib/error.php';
+      drawError('Non sei autorizzato a compiere questa azione');
+    }
+  
     require '../lib/db.php';
     $db = dbConnect();
 
