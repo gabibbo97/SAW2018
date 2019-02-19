@@ -130,14 +130,14 @@ if ($article = $articleQuery->fetch(PDO::FETCH_ASSOC)) {
     array_push($pageContent, '<h3 class="subtitle">Scritto da <i>' . htmlspecialchars($article['autore'], ENT_HTML5) . '</i></h3>');
     // Barra precedente / successivo
     if (isset($article['id_prec']) || isset($article['id_succ'])) {
-        array_push($pageContent, '<nav class="level is-mobile">');
+        array_push($pageContent, '<nav class="columns is-centered is-clipped">');
 
         if (isset($article['id_prec'])) {
-            array_push($pageContent, '<a href="?id=' . $article['id_prec'] . '" class="level-item">← ' . htmlspecialchars($article['titolo_prec'], ENT_HTML5) . '</a>');
+            array_push($pageContent, '<a href="?id=' . $article['id_prec'] . '" class="column is-narrow">← ' . htmlspecialchars($article['titolo_prec'], ENT_HTML5) . '</a>');
         }
 
         if (isset($article['id_succ'])) {
-            array_push($pageContent, '<a href="?id=' . $article['id_succ'] . '" class="level-item">' . htmlspecialchars($article['titolo_succ'], ENT_HTML5) . ' →</a>');
+            array_push($pageContent, '<a href="?id=' . $article['id_succ'] . '" class="column is-narrow">' . htmlspecialchars($article['titolo_succ'], ENT_HTML5) . ' →</a>');
         }
 
         array_push($pageContent, '</nav>');
