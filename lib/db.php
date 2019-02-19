@@ -5,7 +5,7 @@
       $db = new PDO('mysql:'.'charset=UTF8;'.'dbname='.$databaseName.';host='.$databaseHost, $databaseUser, $databasePassword);
       
       // Inizializza automaticamente il database
-      dbInit($db);
+      // dbInit($db);
       
       return $db;
     } catch (PDOException $exception) {
