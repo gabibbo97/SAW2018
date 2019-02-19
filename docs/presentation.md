@@ -6,7 +6,7 @@ Non si occupa della vendita dei prodotti stessi, avendo solo finalitá promozion
 
 ## Immagine della homepage
 
-
+![Immagine homepage](homepage.jpg "Immagine homepage")
 
 ## Funzionalitá implementate
 
@@ -80,6 +80,60 @@ Gli utenti amministratori possono spedire un messaggio a tutti gli utenti che ha
 
 Ogni email inviata risulta essere inviata a un singolo destinatario, evitando di esporre le email agli altri utenti.
 
+## Schema database
+
+### Entitá
+
+- `Articolo` rappresenta un articolo del blog
+- `Tag` rappresenta un tag assegnato a un articolo del blog
+- `Utente` rappresenta un utente iscritto al sito
+
+### Attributi
+
+#### Articolo
+
+| Nome campo    | Proprietá                  | Descrizione                |
+| ------------- | -------------------------- | -------------------------- |
+| `id`          | chiave, numero progressivo | Identificatore             |
+| `titolo`      | testo                      | Titolo dell'articolo       |
+| `sottotitolo` | testo                      | Sottotitolo dell'articolo  |
+| `data`        | data                       | Data di pubblicazione      |
+| `corpo`       | testo                      | Il contenuto dell'articolo |
+
+#### Tag
+
+| Nome campo    | Proprietá | Descrizione                  |
+| ------------- | --------- | ---------------------------- |
+| `nome`        | chiave    | Nome del tag                 |
+| `descrizione` | testo     | Descrizione in breve del tag |
+
+#### Utente
+
+| Nome campo         | Proprietá | Descrizione                              |
+| ------------------ | --------- | ---------------------------------------- |
+| `cognome`          | testo     | Cognome dell'utente                      |
+| `email`            | testo     | Email dell'utente                        |
+| `nome`             | testo     | Nome dell'utente                         |
+| `password`         | testo     | Hash + salt della password               |
+| `immagine`         | opzionale | L'immagine del profilo                   |
+| `regione`          | opzionale | Regione di provenienza dell'utente       |
+| `riceveNewsletter` | booleano  | Se l'utente desidera ricevere newsletter |
+| `tipoUtente`       | enum      | `ADMIN` / `USER`                         |
+| `username`         | chiave    | Username dell'utente                     |
+
+### Relazioni
+
+- __Caratterizza__ _(Tag <-> Articolo)_ [N:M]: Collega un articolo con i suoi tag
+- __Scrive__ _(Utente <-> Articolo)_ [1:N]: Collega un articolo con il suo autore
+
+### Schema ER
+
+![ER](er.png "ER")
+
+### Schema tabelle
+
+![Tabelle](tabelle.png "Tabelle")
+
 ## Soluzioni tecniche
 
 - HTML5 per le pagine web
@@ -93,3 +147,5 @@ Sono stati usati i prepared statement per proteggere il sito da SQL injection.
 Ogni controllo client side é considerato esclusivamente "assistenza" per l'utente e ha una controparte server-side.
 
 É stato usato AJAX per alcuni controlli client-side.
+
+Il sito é responsive ed utilizzabile anche da dispositivi mobili, senza perdita di funzionalitá.
