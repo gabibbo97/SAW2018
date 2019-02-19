@@ -1,5 +1,3 @@
-let categories = [];
-
 function updateCategories (button) {
 
   "use strict";
@@ -8,58 +6,8 @@ function updateCategories (button) {
   button.classList.toggle("is-outlined");
   button.classList.toggle("is-danger");
 
-  // Prendi la mia categoria
-  const category = button.textContent;
-
-  // Prendi tutte le card
-  const cards = Array.from(document.querySelectorAll(".columns > .card"));
-
-  if (Array.from(button.classList).includes("is-danger")) {
-
-    // Il pulsante é premuto
-    categories.push(category);
-
-  } else {
-
-    // Il pulsante non é premuto
-    categories = categories.filter((cat) => {
-      
-      return cat != category; 
-    
-    });
-
-  }
-
-  if (categories.length === 0) {
-
-    // Mostra tutte le card
-    cards.forEach((card) => { card.style.display = 'block'; });
-
-  } else {
-
-    // Nascondi le card la cui categoria non é selezionata
-    cards.filter((card) => {
-
-      return !categories.includes(card.children[1].children[1].textContent);
-
-    }).forEach((card) => {
-
-      card.style.display = 'none';
-
-    });
-
-    // Mostra le card la cui categoria é selezionata
-    cards.filter((card) => {
-
-      return categories.includes(card.children[1].children[1].textContent);
-
-    }).forEach((card) => {
-
-      card.style.display = 'block';
-
-    });
-
-  }
+  // Chiama la ricerca
+  unifiedSearch ()
 
 }
 
@@ -73,38 +21,8 @@ function updatePrice(newPrice) {
   // Imposta il prezzo al numero, con due cifre decimali
   priceTag.textContent = `${Number(newPrice).toFixed(2)} euro`;
 
-  // Prendi tutte le card
-  const cards = Array.from(document.querySelectorAll(".columns > .card"));
-
-  // Seleziona tutte le card che vanno nascoste
-  cards.filter((card) => {
-
-    return Number(card            // Con il cast a `Number` converto tutto a numero
-      .children[1]                // Seleziona la parte sotto la foto
-      .children[2]                // Seleziona il paragrafo con il prezzo
-      .textContent.split(' ')[0]  // Separa il numero da 'euro'
-    ) > newPrice                  // Controllo il prezzo
-
-  }).forEach((card) => {
-
-    card.style.display = 'none';
-
-  });
-
-  // Seleziona tutte le card che vanno mostrate
-  cards.filter((card) => {
-
-    return Number(card            // Con il cast a `Number` converto tutto a numero
-      .children[1]                // Seleziona la parte sotto la foto
-      .children[2]                // Seleziona il paragrafo con il prezzo
-      .textContent.split(' ')[0]  // Separa il numero da 'euro'
-    ) <= newPrice                 // Controllo il prezzo
-
-  }).forEach((card) => {
-
-    card.style.display = 'block';
-
-  });
+  // Chiama la ricerca
+  unifiedSearch ();
 
 }
 
@@ -126,57 +44,16 @@ function searchByName() {
 
   }
 
-  // Prendi tutte le card
-  const cards = Array.from(document.querySelectorAll(".columns > .card"));
-
   // Cambia il colore al tasto
   searchButton.classList.toggle("is-danger");
 
   if (searchButton.textContent.trim() === "Cerca") {
-
-    // Effettua la ricerca
-    const searchTerm = searchBar.value.toLowerCase().trim(); // Prendi il termine di ricerca
-
-    cards.filter((card) => {
-
-      return card
-        .children[1]                // Seleziona la parte sotto la foto
-        .children[0]                // Seleziona il paragrafo con il nome
-        .textContent                // Seleziona il testo del nome
-        .toLowerCase()              // Minuscolo
-        .search(searchTerm) !== -1  // Confronta con il testo cercato
-
-    }).forEach((card) => {
-
-      card.style.display = 'block';
-
-    });
-    cards.filter((card) => {
-
-      return card
-        .children[1]               // Seleziona la parte sotto la foto
-        .children[0]               // Seleziona il paragrafo con il nome
-        .textContent               // Seleziona il testo del nome
-        .toLowerCase()             // Minuscolo
-        .search(searchTerm) === -1 // Confronta con il testo cercato
-
-    }).forEach((card) => {
-
-      card.style.display = 'none';
-
-    });
-
     // Imposta la casella di ricerca su disabilitata
     searchBar.disabled = true;
 
     // Cambia il testo del pulsante
     searchButton.textContent = "Mostra tutte";
   } else {
-    // Reimposta i risultati
-
-    // Mostra tutte le card
-    cards.forEach((card) => { card.style.display = 'block'; });
-
     // Imposta la casella di ricerca su abilitata
     searchBar.disabled = false;
 
@@ -185,8 +62,10 @@ function searchByName() {
 
     // Cambia il testo del pulsante
     searchButton.textContent = "Cerca";
-
   }
+
+  // Chiama la ricerca
+  unifiedSearch ();
 
 }
 
@@ -225,4 +104,65 @@ function openImagePreview(cardImage) {
 
   }
 
+}
+
+function unifiedSearch () {
+
+  "use strict";
+
+  // Prendi gli elementi del form di ricerca
+  const searchBar = document.getElementById("searchBar");
+  const searchButton = document.getElementById("searchButton");
+  const searchTerm = searchBar.value.toLowerCase().trim(); // Prendi il termine di ricerca
+
+  // Prendi il selettore del prezzo
+  const priceSelector = document.getElementById('priceSelector');
+
+  // Prendi i pulsanti selezionati
+  const categoriesButtons = Array.from(document.querySelectorAll('a[class~="is-danger"]:not(#searchButton)'));
+  const selectedCategories = categoriesButtons.map((button) => button.textContent);
+
+  // Prendi tutte le cards
+  const cards = Array.from(document.querySelectorAll(".columns > .card"));
+
+  const cardsToShow = cards
+    .filter((card) => {
+      if (searchBar.value.length < 1) {
+        // Se non é stato inserito nulla accetta tutti gli elementi
+        return true;
+      } else if (searchButton.textContent == 'Cerca') {
+        // Se non é stato premuto cerca accetta tutti gli elementi
+        return true;
+      } else {
+        // Ricerca per nome
+        return card
+          .children[1]                // Seleziona la parte sotto la foto
+          .children[0]                // Seleziona il paragrafo con il nome
+          .textContent                // Seleziona il testo del nome
+          .toLowerCase()              // Minuscolo
+          .search(searchTerm) !== -1  // Confronta con il testo cercato
+      }
+    })
+    .filter((card) => { // Ricerca per prezzo
+      return Number(card            // Con il cast a `Number` converto tutto a numero
+        .children[1]                // Seleziona la parte sotto la foto
+        .children[2]                // Seleziona il paragrafo con il prezzo
+        .textContent.split(' ')[0]  // Separa il numero da 'euro'
+      ) <= priceSelector.value      // Controllo il prezzo
+    })
+    .filter((card) => {
+      if (selectedCategories.length == 0)
+        // Se non é stata selezionata nessuna categoria accetta tutti gli elementi
+        return true;
+      else
+        return selectedCategories.includes(card.children[1].children[1].textContent);
+    });
+  
+  // Mostra tutte le card
+  cardsToShow
+    .forEach((card) => { card.style.display = 'block'; });
+  // Nascondi tutte le card
+  cards
+    .filter((card) => { return ! cardsToShow.includes(card); })
+    .forEach((card) => { card.style.display = 'none'; });
 }

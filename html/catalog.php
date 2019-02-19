@@ -4,7 +4,7 @@ drawHead("Catalogo", "I nostri prodotti", array(
     '<link rel="stylesheet" href="https://unpkg.com/bulma-slider@2.0.0/dist/css/bulma-slider.min.css" />',
     '<link rel="stylesheet" href="assets/css/catalog.css" />',
     '<script src="assets/js/catalog.js"></script>',
-    '<style>#imagePreview, #imagePreview > * { overflow: hidden; }</style>' // Nasconde le barre di scorrimento dal modale
+    '<style>#imagePreview, #imagePreview > * { overflow: hidden; }</style>', // Nasconde le barre di scorrimento dal modale
 ));
 ?>
 
@@ -113,7 +113,7 @@ drawHead("Catalogo", "I nostri prodotti", array(
             <div class="card-content">
               <p class="title">Elvis</p>
               <p class="subtitle">Celebritá</p>
-              <p>51.90 euro</p>
+              <p>49.90 euro</p>
             </div>
           </div>
           <div class="column is-one-quarter card">
@@ -125,7 +125,7 @@ drawHead("Catalogo", "I nostri prodotti", array(
             <div class="card-content">
               <p class="title">Statua della libertá</p>
               <p class="subtitle">Celebritá</p>
-              <p>51.90 euro</p>
+              <p>49.90 euro</p>
             </div>
           </div>
           <div class="column is-one-quarter card">
@@ -137,7 +137,7 @@ drawHead("Catalogo", "I nostri prodotti", array(
             <div class="card-content">
               <p class="title">Trump</p>
               <p class="subtitle">Celebritá</p>
-              <p>51.90 euro</p>
+              <p>49.90 euro</p>
             </div>
           </div>
           <div class="column is-one-quarter card">
