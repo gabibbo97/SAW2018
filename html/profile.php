@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['updateProfile'])) {
         drawError("Email troppo lunga");
     }
 
-    if (!preg_match("/.+@.+\..+/", $_POST['email'])) {
+    if (!preg_match("/^.+@.+\..+$/", $_POST['email'])) {
         drawError("Email con caratteri non ammessi");
     }
 
