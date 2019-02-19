@@ -58,7 +58,7 @@ function searchByName() {
     searchBar.disabled = false;
 
     // Resetta il contenuto della casella di ricerca
-    searchBar.textContent = '';
+    searchBar.value = '';
 
     // Cambia il testo del pulsante
     searchButton.textContent = "Cerca";
