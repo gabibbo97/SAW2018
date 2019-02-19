@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         drawError("Nome troppo lungo");
     }
 
-    if (!preg_match("/[A-Za-zèùàòé][a-zA-Z'èùàòé ]*/", $_POST['nome'])) {
+    if (!preg_match("/^[A-Za-zèùàòé][a-zA-Z'èùàòé ]*$/", $_POST['nome'])) {
         drawError("Nome con caratteri non ammessi");
     }
 
@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         drawError("Cognome troppo lungo");
     }
 
-    if (!preg_match("/[A-Za-zèùàòé][a-zA-Z'èùàòé ]*/", $_POST['cognome'])) {
+    if (!preg_match("/^[A-Za-zèùàòé][a-zA-Z'èùàòé ]*$/", $_POST['cognome'])) {
         drawError("Cognome con caratteri non ammessi");
     }
 
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         drawError("Username troppo lungo");
     }
 
-    if (!preg_match("/[a-zA-Z0-9_-]+/", $_POST['username'])) {
+    if (!preg_match('/^[a-zA-Z0-9_-]+$/', $_POST['username'])) {
         drawError("Username con caratteri non ammessi");
     }
 
@@ -249,13 +249,13 @@ drawHead("Profilo", "Gestione attivitá", array(
               <div class="field">
                 <label class="label">Name</label>
                 <div class="control">
-                  <input required class="input" maxlength="20" type="text" placeholder="Nome" name="nome" <?php if (isset($_POST['nome'])) {print('value="' . $_POST['nome'] . '"');}?>>
+                  <input required class="input" minlength="2" maxlength="20" type="text" placeholder="Nome" name="nome" <?php if (isset($_POST['nome'])) {print('value="' . $_POST['nome'] . '"');}?>>
                 </div>
               </div>
               <div class="field">
                 <label class="label">Cognome</label>
                 <div class="control">
-                  <input required class="input" maxlength="20" type="text" placeholder="Cognome" name="cognome" <?php if (isset($_POST['cognome'])) {print('value="' . $_POST['cognome'] . '"');}?>>
+                  <input required class="input" minlength="2" maxlength="20" type="text" placeholder="Cognome" name="cognome" <?php if (isset($_POST['cognome'])) {print('value="' . $_POST['cognome'] . '"');}?>>
                 </div>
               </div>
               <div class="field">
@@ -265,7 +265,7 @@ drawHead("Profilo", "Gestione attivitá", array(
                   input is-warning giallo
                   input is-danger rosso
                   input is-info blu-->
-                  <input required class="input" onchange="checkUsername(this);" minlength="3" maxlength="20" type="text" placeholder="Username" name="username" <?php if (isset($_POST['username'])) {print('value="' . $_POST['username'] . '"');}?>>
+                  <input required class="input" onchange="checkUsername(this);" minlength="3" maxlength="20" type="text" placeholder="Username" name="username" pattern="^[a-zA-Z0-9_-]+$" <?php if (isset($_POST['username'])) {print('value="' . $_POST['username'] . '"');}?>>
                   <span class="icon is-small is-left">
                     <i class="fas fa-user"></i>
                   </span>

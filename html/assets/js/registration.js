@@ -42,7 +42,7 @@ function checkUsername(inputElement) {
 
     "use strict";
 
-    if (inputElement.value.length < 3) {
+    if (inputElement.value.length < 3 || !inputElement.value.match(RegExp(inputElement.pattern))) {
         inputElement.classList.remove("is-success");
         inputElement.classList.add("is-danger");
         return;
