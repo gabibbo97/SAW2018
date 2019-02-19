@@ -563,7 +563,7 @@ if ($_SESSION['role'] == 'ADMIN') {
                   <option <?php if ($userDetails['regione'] == 'Sicilia') {print('selected');}?>>Sicilia</option>
                   <option <?php if ($userDetails['regione'] == 'Toscana') {print('selected');}?>>Toscana</option>
                   <option <?php if ($userDetails['regione'] == 'TrentinoAltoAdige') {print('selected');}?>>Trentino-Alto Adige</option>
-                  <option <?php if ($userDetails['regione'] == 'Umpria') {print('selected');}?>>Umbria</option>
+                  <option <?php if ($userDetails['regione'] == 'Umbria') {print('selected');}?>>Umbria</option>
                   <option <?php if ($userDetails['regione'] == 'ValleDAosta') {print('selected');}?>>Valle d'Aosta</option>
                   <option <?php if ($userDetails['regione'] == 'Veneto') {print('selected');}?>>Veneto</option>
                 </select>
