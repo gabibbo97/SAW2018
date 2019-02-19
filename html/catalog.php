@@ -4,6 +4,7 @@ drawHead("Catalogo", "I nostri prodotti", array(
     '<link rel="stylesheet" href="https://unpkg.com/bulma-slider@2.0.0/dist/css/bulma-slider.min.css" />',
     '<link rel="stylesheet" href="assets/css/catalog.css" />',
     '<script src="assets/js/catalog.js"></script>',
+    '<style>#imagePreview, #imagePreview > * { overflow: hidden; }</style>' // Nasconde le barre di scorrimento dal modale
 ));
 ?>
 
@@ -13,49 +14,45 @@ drawHead("Catalogo", "I nostri prodotti", array(
     <div id="imagePreview" class="modal">
       <div class="modal-background"></div>
       <div class="modal-content">
-        <p class="image is-1by1">
+        <figure class="image is-square">
           <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Nessuna immagine">
-        </p>
+        </figure>
       </div>
       <button class="modal-close is-large" aria-label="close" onclick="closeImagePreview()"></button>
     </div>
     <div class="tile is-ancestor">
       <div class="tile is-child is-3 section">
-        <form>
-          <p class="title is-size-4">Ricerca per nome:</p>
-          <div class="field has-addons">
-            <div class="control is-expanded">
-              <input id="searchBar" class="input is-info" type="text" placeholder="Cerca una paperella">
-            </div>
-            <div class="control">
-              <a id="searchButton" class="button is-info" onclick="searchByName(this)">
-                Cerca
-              </a>
-            </div>
+        <p class="title is-size-4">Ricerca per nome:</p>
+        <div class="field has-addons">
+          <div class="control is-expanded">
+            <input id="searchBar" class="input is-info" type="text" placeholder="Cerca una paperella">
           </div>
-          <br>
-          <p class="title is-size-4">Ricerca per prezzo:</p>
-          <p>Prezzo massimo: <output for="priceSelector">50.00 euro</output></p>
-          <input id="priceSelector" class="slider is-fullwidth is-large is-warning" step="5" min="5" max="50" value="50"
-            type="range" oninput="updatePrice(this.value)" onchange="updatePrice(this.value)">
-          <br>
-          <p class="title is-size-4">Ricerca per categorie:</p>
-          <div class="field">
-            <a class="button is-outlined is-fullwidth" onclick="updateCategories(this)">Al naturale</a>
+          <div class="control">
+            <a id="searchButton" type="submit" id="searchButton" class="button is-info" onclick="searchByName()">Cerca</a>
           </div>
-          <div class="field">
-            <a class="button is-outlined is-fullwidth" onclick="updateCategories(this)">Celebritá</a>
-          </div>
-          <div class="field">
-            <a class="button is-outlined is-fullwidth" onclick="updateCategories(this)">Eroi</a>
-          </div>
-          <div class="field">
-            <a class="button is-outlined is-fullwidth" onclick="updateCategories(this)">Professioni</a>
-          </div>
-          <div class="field">
-            <a class="button is-outlined is-fullwidth" onclick="updateCategories(this)">Sport</a>
-          </div>
-        </form>
+        </div>
+        <br>
+        <p class="title is-size-4">Ricerca per prezzo:</p>
+        <p>Prezzo massimo: <output for="priceSelector">50.00 euro</output></p>
+        <input id="priceSelector" class="slider is-fullwidth is-large is-warning" step="5" min="5" max="50" value="50"
+          type="range" oninput="updatePrice(this.value)" onchange="updatePrice(this.value)">
+        <br>
+        <p class="title is-size-4">Ricerca per categorie:</p>
+        <div class="field">
+          <a class="button is-outlined is-fullwidth" onclick="updateCategories(this)">Al naturale</a>
+        </div>
+        <div class="field">
+          <a class="button is-outlined is-fullwidth" onclick="updateCategories(this)">Celebritá</a>
+        </div>
+        <div class="field">
+          <a class="button is-outlined is-fullwidth" onclick="updateCategories(this)">Eroi</a>
+        </div>
+        <div class="field">
+          <a class="button is-outlined is-fullwidth" onclick="updateCategories(this)">Professioni</a>
+        </div>
+        <div class="field">
+          <a class="button is-outlined is-fullwidth" onclick="updateCategories(this)">Sport</a>
+        </div>
       </div>
       <div class="tile is-child is-9 section">
         <div class="columns is-multiline">

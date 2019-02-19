@@ -108,10 +108,15 @@ function updatePrice(newPrice) {
 
 }
 
-function searchByName(button) {
+function searchByName() {
+
+  "use strict";
 
   // Prendi la barra di ricerca
   const searchBar = document.getElementById("searchBar");
+
+  // Prendi il pulsante di ricerca
+  const searchButton = document.getElementById("searchButton");
 
   // Se il testo della barra é troppo corto esci
   if (searchBar.value.length < 1) {
@@ -125,9 +130,9 @@ function searchByName(button) {
   const cards = Array.from(document.querySelectorAll(".columns > .card"));
 
   // Cambia il colore al tasto
-  button.classList.toggle("is-danger");
+  searchButton.classList.toggle("is-danger");
 
-  if (button.textContent.trim() === "Cerca") {
+  if (searchButton.textContent.trim() === "Cerca") {
 
     // Effettua la ricerca
     const searchTerm = searchBar.value.toLowerCase().trim(); // Prendi il termine di ricerca
@@ -165,7 +170,7 @@ function searchByName(button) {
     searchBar.disabled = true;
 
     // Cambia il testo del pulsante
-    button.textContent = "Mostra tutte";
+    searchButton.textContent = "Mostra tutte";
   } else {
     // Reimposta i risultati
 
@@ -179,7 +184,7 @@ function searchByName(button) {
     searchBar.textContent = '';
 
     // Cambia il testo del pulsante
-    button.textContent = "Cerca";
+    searchButton.textContent = "Cerca";
 
   }
 
