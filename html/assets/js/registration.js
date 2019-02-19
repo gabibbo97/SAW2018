@@ -2,7 +2,7 @@ function checkEmail(inputElement, oldEmail) {
 
     "use strict";
 
-    if (inputElement.value.length < 3 || !inputElement.checkValidity()) {
+    if (inputElement.value.length < 3) {
         inputElement.classList.remove("is-success");
         inputElement.classList.add("is-danger");
         return;
