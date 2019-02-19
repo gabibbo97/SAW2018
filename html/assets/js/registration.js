@@ -2,7 +2,7 @@ function checkEmail(inputElement, oldEmail) {
 
     "use strict";
 
-    if (inputElement.value.length < 3 || !inputElement.value.match('^.+@.+\..+$')) {
+    if (inputElement.value.length < 6 || !inputElement.value.match('^.+@.+\..+$')) {
         inputElement.classList.remove("is-success");
         inputElement.classList.add("is-danger");
         return;
