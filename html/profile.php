@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
         drawError('Username o password errati');
     } else {
         if (password_verify($_POST['password'], $userDetail['password'])) {
-            $_SESSION['username'] = $_POST['username'];
+            $_SESSION['username'] = strtolower($_POST['username']);
             $_SESSION['role'] = $userDetail['tipoUtente'];
             header('Location: profile.php');
             die();
