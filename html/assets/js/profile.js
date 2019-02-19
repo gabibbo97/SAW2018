@@ -183,7 +183,7 @@ function checkNewPassword () {
   if (password2.value.length < 1)
     return;
   
-  if (password1.value == password2.value) {
+  if (password1.value == password2.value && password1.value.length > 5) {
 
     password1.classList.remove("is-danger");
     password1.classList.add("is-success");
