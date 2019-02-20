@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require '../lib/error.php';
 
     // Nome
-    if (!isset($_POST['nome'])) {
+    if (!isset($_POST['nome']) || empty($_POST['nome'])) {
         drawError("Nome assente");
     }
 
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Cognome
-    if (!isset($_POST['cognome'])) {
+    if (!isset($_POST['cognome']) || empty($_POST['cognome'])) {
         drawError("Cognome assente");
     }
 
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Username
-    if (!isset($_POST['username'])) {
+    if (!isset($_POST['username']) || empty($_POST['username'])) {
         drawError("Username assente");
     }
 
@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Password
-    if (!isset($_POST['password1'])) {
+    if (!isset($_POST['password1']) || empty($_POST['password1'])) {
         drawError("Password assente");
     }
 
@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Email
-    if (!isset($_POST['email'])) {
+    if (!isset($_POST['email']) || empty($_POST['email'])) {
         drawError("Email assente");
     }
 

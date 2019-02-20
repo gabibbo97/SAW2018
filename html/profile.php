@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['updateProfile'])) {
     require '../lib/error.php';
 
     // Controllo email
-    if (!isset($_POST['email'])) {
+    if (!isset($_POST['email']) || empty($_POST['email'])) {
         drawError("Email assente");
     }
 
@@ -285,7 +285,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['editTag']) && isset($_
     drawError('Non sei autorizzato a compiere questa azione');
   }
 
-  if (!is_null($_POST[$_GET['tagName']])) {
+  if (!is_null($_POST[$_GET['tagName']]) || empty($_POST[$_GET['tagName']])) {
 
     require '../lib/db.php';
     $db = dbConnect();
@@ -318,11 +318,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['newsletter'])) {
     }
 
     // Controllo parametri forniti
-    if (!isset($_POST['oggetto'])) {
+    if (!isset($_POST['oggetto']) || empty($_POST['oggetto'])) {
         drawError('Nessun oggetto inserito');
     }
 
-    if (!isset($_POST['email'])) {
+    if (!isset($_POST['email']) || empty($_POST['email'])) {
         drawError("Testo dell'email vuoto");
     }
 

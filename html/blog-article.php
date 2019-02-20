@@ -9,11 +9,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['new'])) {
         drawError('Non sei autorizzato a compiere questa azione');
     }
 
-    if (!isset($_POST['titolo'])) {
+    if (!isset($_POST['titolo']) || empty($_POST['titolo'])) {
         drawError("Titolo assente");
     }
 
-    if (!isset($_POST['testo'])) {
+    if (!isset($_POST['testo']) || empty($_POST['testo'])) {
         drawError("Testo dell'articolo assente");
     }
 
